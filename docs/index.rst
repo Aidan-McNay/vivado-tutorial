@@ -4,14 +4,14 @@
    contain the root `toctree` directive.
 
 Vivado Tutorial
-=============================
+==========================================================================
 
-Add your content using ``reStructuredText`` syntax. See the
-`reStructuredText <https://www.sphinx-doc.org/en/master/usage/restructuredtext/index.html>`_
-documentation for details.
+Welcome! This website aims to take you through working with Vivado
+Design Studio, walking you through an example project from start to finish
 
 
 .. toctree::
-   :maxdepth: 2
-   :caption: Contents:
+   :maxdepth: 1
+
+   overview
 
