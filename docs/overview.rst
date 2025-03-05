@@ -24,7 +24,7 @@ This tutorial assumes that:
 
    Cornell ECE students have access to Vivado Design Suite through
    ECELinux (as of time of writing). This is done by first loading
-   the `xilinx` module:
+   the ``xilinx`` module:
 
    .. code-block:: bash
 
