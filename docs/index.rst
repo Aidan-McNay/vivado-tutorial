@@ -17,4 +17,5 @@ Design Studio, walking you through an example project from start to finish
    setup
    sources
    simulation
+   block_designs
 
