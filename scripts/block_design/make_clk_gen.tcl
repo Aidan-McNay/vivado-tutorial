@@ -18,3 +18,9 @@ if {[catch {current_project } result ]} {
 # Generated with File -> Export -> Export Block Diagram
 
 source ../scripts/block_design/CLK_gen.tcl
+
+# ------------------------------------------------------------------------
+# Generate the design files
+# ------------------------------------------------------------------------
+
+generate_target all [get_files ./vivado-walkthrough.srcs/sources_1/bd/CLK_gen/CLK_gen.bd]
