@@ -4,3 +4,4 @@
 # Build files to ignore
 
 build/
+project/
