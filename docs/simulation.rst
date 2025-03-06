@@ -79,4 +79,9 @@ We should now be able to run our simulation to test our design!
        .. admonition:: Example Task
           :class: important
 
-          This is a task to run actions with a Tcl script!
+          Either from **Tools -> Run Tcl Script** or from the command
+          line (shown below), run the ``simulate_design.tcl`` script
+
+          .. code-block:: bash
+
+             vivado -mode batch -source ../scripts/simulation/simulate_design.tcl

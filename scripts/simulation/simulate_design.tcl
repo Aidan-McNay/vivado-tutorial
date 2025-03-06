@@ -13,13 +13,7 @@ if {[catch {current_project } result ]} {
 }
 
 # ------------------------------------------------------------------------
-# Start the simulator to compile/elaborate the design
+# Simulate the design
 # ------------------------------------------------------------------------
 
 launch_simulation
-
-# ------------------------------------------------------------------------
-# Run the generated simulation Tcl file
-# ------------------------------------------------------------------------
-
-source GrayCodeTest.tcl
