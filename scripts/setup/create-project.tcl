@@ -4,17 +4,12 @@
 # A Tcl script to create a project for the Zybo Z7-10
 
 # ------------------------------------------------------------------------
-# Create the project with our part
-# ------------------------------------------------------------------------
-
-create_project vivado-walkthrough . -part xc7z010clg400-1
-
-# ------------------------------------------------------------------------
 # Set the location to install boards (same as Vivado's default for 2019.2)
 # ------------------------------------------------------------------------
 
 set vivado_version {version -short}
-set_param board.repoPaths "$::env(HOME)/.Xilinx/Vivado/{$vivado_version}/xhub/board_store"
+set_param board.repoPaths {$::env(HOME)/.Xilinx/Vivado/{$vivado_version}/xhub/board_store}
+get_param board.repoPaths
 
 # ------------------------------------------------------------------------
 # Refresh the board catalog, just in case it wasn't installed already
@@ -23,6 +18,12 @@ set_param board.repoPaths "$::env(HOME)/.Xilinx/Vivado/{$vivado_version}/xhub/bo
 xhub::refresh_catalog [xhub::get_xstores xilinx_board_store]
 xhub::install [xhub::get_xitems -of_objects [xhub::get_xstores xilinx_board_store]]
 xhub::update [xhub::get_xitems -of_objects [xhub::get_xstores xilinx_board_store]]
+
+# ------------------------------------------------------------------------
+# Create the project with our part
+# ------------------------------------------------------------------------
+
+create_project vivado-walkthrough . -part xc7z010clg400-1
 
 # ------------------------------------------------------------------------
 # Identify the exact board (not just the part)
