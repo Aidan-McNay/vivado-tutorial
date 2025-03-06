@@ -9,7 +9,6 @@
 
 set vivado_version [version -short]
 set_param board.repoPaths "$::env(HOME)/.Xilinx/Vivado/${vivado_version}/xhub/board_store"
-puts [get_param board.repoPaths]
 
 # ------------------------------------------------------------------------
 # Refresh the board catalog, just in case it wasn't installed already

@@ -14,4 +14,5 @@ Design Studio, walking you through an example project from start to finish
    :maxdepth: 1
 
    overview
+   setup
 
