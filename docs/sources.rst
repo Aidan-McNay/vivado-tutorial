@@ -17,7 +17,7 @@ files that describe the actual hardware that we want our FPGA to emulate
           :class: important
 
           * Navigate to **File -> Add Sources**
-          * Make sure **Add or create design sources** is checked,
+          * Make sure **Add or create design sources** is selected,
             then click **Next**
           * Click **Add Files**, then find the source file
             ``src/gray_code.sv`` in the tutorial repository.
@@ -54,19 +54,48 @@ In the **Sources** window, under "Design Sources", you should now see the
 Testing/Simulation Sources
 --------------------------------------------------------------------------
 
+In addition to our design files, we may also want to add *simulation*
+sources; these are files that are only used to simulate our design, and
+won't end up in the final hardware.
+
+The only difference between these steps under the hood is the "fileset"
+we add them to. By default, Vivado stores all of the simulation sources
+in a fileset titled ``sim_1``
+
 .. tabs::
 
     .. group-tab:: GUI
 
-       .. admonition:: Example Task
+       .. admonition:: Adding a Simulation Source
           :class: important
 
-          This is a task to be run in Vivado's Graphical User
-          Interface (GUI)!
+          * Navigate to **File -> Add Sources**
+          * Make sure **Add or create simulation sources** is selected,
+            then click **Next**
+          * Note that under **Specify simulation set**, we currently have
+            ``sim_1``. This is the default simulation fileset, and is
+            good for our purposes.
+          * Click **Add Files**, then find the source file
+            ``test/gray_code_test.sv`` in the tutorial repository.
+            Click **OK**
+          * Click **Finish**
 
     .. group-tab:: TCL
 
-       .. admonition:: Example Task
+       .. admonition:: Adding a Simulation Source
           :class: important
 
-          This is a task to run actions with a Tcl script!
+          Either from **Tools -> Run Tcl Script** or from the command
+          line (shown below), run the ``add_sim_sources.tcl`` script
+
+          .. code-block:: bash
+
+             vivado -mode batch -source ../scripts/sources/add_sim_sources.tcl
+
+In the **Sources** window, under "Simulation Sources", you can see the
+``sim_1`` fileset. In there, Vivado should now show the ``GrayCodeTest``
+module, found in ``gray_code_test.sv``. This window also shows the
+hierarchy; from the dropdown, we can see that ``GrayCodeTest``
+instantiates the ``GrayCode`` module (which Vivado already knows about,
+since we left "Include all design sources for simulation" checked when
+adding ``gray_code.sv``)
