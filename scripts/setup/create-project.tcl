@@ -10,6 +10,13 @@
 create_project vivado-walkthrough . -part xc7z010clg400-1
 
 # ------------------------------------------------------------------------
+# Set the location to install boards (same as Vivado's default for 2019.2)
+# ------------------------------------------------------------------------
+
+set vivado_version {version -short}
+set_param board.repoPaths "$::env(HOME)/.Xilinx/Vivado/{$vivado_version}/xhub/board_store"
+
+# ------------------------------------------------------------------------
 # Refresh the board catalog, just in case it wasn't installed already
 # ------------------------------------------------------------------------
 
