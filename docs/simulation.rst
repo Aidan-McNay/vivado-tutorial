@@ -85,3 +85,20 @@ We should now be able to run our simulation to test our design!
           .. code-block:: bash
 
              vivado -mode batch -source ../scripts/simulation/simulate_design.tcl
+
+          From there, follow along with the steps in the GUI commands to
+          examine the results. Note that if running in batch mode, while
+          you won't be able to examine the signals/waveform, you should
+          still see "All tests passed!" printed to the terminal.
+
+Lastly, suppose you're in the GUI, and want to see the results of the
+simulation without re-running it. All of the simulation files are kept
+in our project directory, under ``vivado-walkthrough.sim``. Click on
+**Flow -> Open Static Simulation**; in the project directory, navigate to 
+``vivado-walkthrough.sim/sim_1/behav/xsim``, click on ``GrayCodeTest_behav.wdb``,
+then click **OK**. This will re-open the simulation as though you had
+just run it (although I had to click on **Window -> Waveform** to re-open
+the actual waveform)
+
+Once you're done, click on the **X** at the top of the **Simulation** window
+to return to the regular view.

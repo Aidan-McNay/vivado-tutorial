@@ -15,4 +15,6 @@ Design Studio, walking you through an example project from start to finish
 
    overview
    setup
+   sources
+   simulation
 
