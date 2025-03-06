@@ -185,4 +185,57 @@ Here, we'll create a new collection of IP to generate a slower clock.
 Connecting to Our Design
 --------------------------------------------------------------------------
 
-To use our block design, we can instantiate it like any other module
+To use our block design, we can instantiate it like any other RTL module.
+Let's create a top-level file to connect our block design and gray code
+module!
+
+.. admonition:: Creating a Top-Level File
+   :class: important
+
+   Create a new design source file (either with your preferred code editor,
+   or through the Vivado GUI with **File -> Add Sources**, choosing a
+   design source, and "Create File") named ``top.sv`` with the following
+   content:
+
+   .. code-block:: sv
+
+      // =======================================================================
+      // top.sv
+      // =======================================================================
+      // Our top-level design file
+      
+      module top (
+        output logic [3:0] gray_count
+      );
+      
+        // ---------------------------------------------------------------------
+        // Instantiate our block design
+        // ---------------------------------------------------------------------
+      
+        logic clk_10mhz, reset_10mhz;
+      
+        CLK_gen clk_gen (
+          .clk_10mhz   (clk_10mhz),
+          .reset_10mhz (reset_10mhz)
+        );
+      
+        // ---------------------------------------------------------------------
+        // Instantiate our gray code counter
+        // ---------------------------------------------------------------------
+      
+        GrayCode gray_code (
+          .clk        (clk_10mhz),
+          .rst        (reset_10mhz),
+          .gray_count (gray_count)
+        );
+      
+      endmodule
+
+   If you didn't create the file through Vivado, follow the steps from
+   :doc:`sources` to add it as a design source.
+
+   Vivado should now reorganize the design hierarchy in the **Sources**
+   window to show ``top`` as the top-level module, additionally shown by
+   bolding it. If you ever wish to manually change/identify the top-level
+   module, you can do so by clicking the gear icon to access the project
+   settings.
