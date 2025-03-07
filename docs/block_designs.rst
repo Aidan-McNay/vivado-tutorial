@@ -143,8 +143,9 @@ Here, we'll create a new collection of IP to generate a slower clock.
 
           * **Validation**: Vivado can help validate our block design,
             to try and catch any obvious mistakes. Click on
-            **Tools -> Validate Design**. You should hopefully get that
-            validation was successful!
+            **Tools -> Validate Design**. You may get some warnings about
+            the DDR interface (since it uses unconventional timing),
+            but the design should otherwise be good!
           * **Generation**: We additionally need to generate the design
             files for our block design. On the left-hand side, in
             **Flow Navigator**, under **IP Integrator**, click on
