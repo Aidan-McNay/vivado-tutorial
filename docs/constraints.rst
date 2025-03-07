@@ -20,7 +20,7 @@ created.
 Constraint Types
 --------------------------------------------------------------------------
 
-There are two main types of constraints that we need to worry about:
+There are three main types of constraints that we need to worry about:
 
 * **Timing Constraints**: Telling Vivado information about timing, such
   as what frequencies different clocks run at
@@ -39,8 +39,6 @@ There are two main types of constraints that we need to worry about:
 Most of the time, you'll only need to work with the timing and I/O
 constraints, although you can gain more control by viewing/editing the
 others.
-
-Other constraints exist (such as *Device Constraints*)
 
 .. tabs::
 

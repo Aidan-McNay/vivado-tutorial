@@ -205,6 +205,7 @@ module!
       // Our top-level design file
       
       module top (
+        input  logic       en,
         output logic [3:0] gray_count
       );
       
@@ -226,6 +227,7 @@ module!
         GrayCode gray_code (
           .clk        (clk_10mhz),
           .rst        (reset_10mhz),
+          .en         (en),
           .gray_count (gray_count)
         );
       

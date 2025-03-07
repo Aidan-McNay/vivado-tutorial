@@ -9,6 +9,7 @@
 module GrayCode (
   input  logic       clk,
   input  logic       rst,
+  input  logic       en,
 
   output logic [3:0] gray_count
 );
@@ -19,7 +20,7 @@ module GrayCode (
   always_ff @( posedge clk ) begin
     if( rst )
       count <= 4'b0;
-    else
+    else if( en )
       count <= count + 4'b1;
   end
 

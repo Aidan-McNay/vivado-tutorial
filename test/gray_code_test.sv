@@ -30,12 +30,13 @@ module GrayCodeTest;
   // Instantiate the DUT
   // ---------------------------------------------------------------------
 
-  logic clk, rst;
+  logic clk, rst, en;
   logic [3:0] dut_gray_count;
 
   GrayCode dut (
     .clk        (clk),
     .rst        (rst),
+    .en         (en),
     .gray_count (dut_gray_count)
   );
 
@@ -49,6 +50,8 @@ module GrayCodeTest;
   // ---------------------------------------------------------------------
   // Exhaustive testing
   // ---------------------------------------------------------------------
+
+  assign en = 1'b1;
 
   initial begin
     rst = 1'b1;
