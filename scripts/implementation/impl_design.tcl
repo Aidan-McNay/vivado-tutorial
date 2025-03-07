@@ -1,7 +1,7 @@
 # ========================================================================
-# set_constraints.tcl
+# impl_design.tcl
 # ========================================================================
-# A Tcl script to set our design's constraints
+# A Tcl script to implement our design
 
 # ------------------------------------------------------------------------
 # Open the project if needed (when run in batch)
@@ -13,19 +13,19 @@ if {[catch {current_project } result ]} {
 }
 
 # ------------------------------------------------------------------------
-# Add our constraints file
+# Reset implementation (if needed)
 # ------------------------------------------------------------------------
 
-add_files -fileset constrs_1 ../scripts/constraints/walkthrough-constraints.xdc
+reset_run impl_1
 
 # ------------------------------------------------------------------------
-# Set our constraints file as the target file
+# Run implementation
 # ------------------------------------------------------------------------
 
-set_property target_constrs_file ../scripts/constraints/walkthrough-constraints.xdc [current_fileset --constrset]
+launch_runs impl_1 -jobs 4
 
 # ------------------------------------------------------------------------
-# Re-run synthesis
+# Wait for implementation to finish
 # ------------------------------------------------------------------------
 
-source ../scripts/synthesis/synthesize_design.tcl
+wait_on_run impl_1

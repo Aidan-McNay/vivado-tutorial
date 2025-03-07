@@ -94,7 +94,8 @@ Vivado expects our design to use.
 
           Lastly, if you return to the **Project Summary** window,
           you can see a high-level overview of the utilization in 
-          the bottom-left hand corner.
+          the bottom-left hand corner (as well as many warnings,
+          which we'll resolve in the next section).
 
     .. group-tab:: TCL
 

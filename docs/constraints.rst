@@ -56,15 +56,15 @@ others.
           can make a new one by going to **File -> Add Sources**:
 
           * Select **Add or create constraints**, then click **Next**
-          * Verify that the constraints set is **constrs_1** - this
-            is the default fileset for constraints, similar to **sim_1**
+          * Verify that the constraints set is ``constrs_1`` - this
+            is the default fileset for constraints, similar to ``sim_1``
             for simulation sources.
           * Click **Create File**. Name the constraints
             **walkthrough-constraints**, and keep them local to the project.
             Click **OK**, then **Finish** to create the file.
          
           You should now see the file in the **Sources** window, in the
-          **constrs_1** fileset under **Constraints**. Right-click on it,
+          ``constrs_1`` fileset under **Constraints**. Right-click on it,
           then select **Set as Target Constraint File**. This means that
           any constraints we later add will be added to this file.
 
@@ -76,7 +76,8 @@ others.
 
           On the left-hand side, in **Flow Navigator**, under
           **Synthesis** in **Open Synthesized Design**, click on
-          **Constraints Wizard**:
+          **Constraints Wizard** (reload the design if necessary,
+          from the new constraints):
 
           * On the Welcome page, click **Next**
           * In the "Primary Clocks" page, we shouldn't have to do
@@ -90,16 +91,13 @@ others.
           * We have no external loops, so we can skip past "External
             Feedback Delays" as well. Click **Next**.
           * "Input Delays" is where we might start describing delays;
-            if we had external clocks, this is where we could specify
-            their relative delay. You could use the "Clock Networks"
-            button to identify a clock network, and add a delay to it.
-            However, this isn't relevant for us, so click **Next**.
-          * "Output Delays" is where we could specify any timing
-            constraints for our outputs. Here, Vivado recommends
-            adding a timing constraint to our ``gray_count`` signal,
+            we can specify the delays of any input pins. Here,
+            Vivado recommends adding a timing constraint to ``en``,
             and shows a waveform to indicate the possible parameters;
             however, since this is a free-running demo design, we'll
             ignore this. Uncheck the constraint and click **Next**.
+          * Similarly, for "Output Delays", we'll ignore any delays
+            on ``gray_count``; uncheck the constraint, then click **Next**
           * From here, there are a few more pages, such as clock
             domain crossings, but we won't edit any of them; click
             **Skip to Finish**, then **Finish**.
@@ -140,6 +138,10 @@ others.
           * ``gray_count[2]`` to pin G14
           * ``gray_count[1]`` to pin M15
           * ``gray_count[0]`` to pin M14
+
+          Similarly, under ``Scalar ports``, you'll find our
+          single-bit (scalar) input ``en``. Connect this to the
+          first slider switch on pin G15.
 
        Once you're done, manually save the constraints (similar to
        the block design), either with ``Ctrl+S`` or by clicking
