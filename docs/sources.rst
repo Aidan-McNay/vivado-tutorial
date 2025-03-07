@@ -41,10 +41,11 @@ In the **Sources** window, under "Design Sources", you should now see the
 
 * From the ``.sv`` extension, Vivado was able to figure out that the file
   was a SystemVerilog file. However, many designers choose to still use
-  the ``.v`` extension. This is a *property* of the source; to change it,
-  click on the source file in the **Sources** window, then in the
-  **Properties** window (under the *Properties* tab), change the
-  ``FILE_TYPE`` to ``SystemVerilog``. Our Tcl script does this
+  the ``.v`` extension, which would cause it to be incorrectly interpreted
+  as base Verilog. The language used to interpret a file is a *property* of
+  the source; to change it, click on the source file in the **Sources**
+  window, then in the **Properties** window (under the *Properties* tab),
+  change the ``FILE_TYPE`` to ``SystemVerilog``. Our Tcl script does this
   automatically
 * If Vivado is unable to parse your file, it will show up in a separate
   sub-category titled "Syntax Error Files" in the **Sources** window.

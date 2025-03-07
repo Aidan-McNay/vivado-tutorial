@@ -42,6 +42,8 @@ Here, we'll create a new collection of IP to generate a slower clock.
 
        * **Design**: The design hierarchy of our block design
        * **Diagram**: A visual block diagram of the design
+       * **Address Mapping**: The addresses used for address-mapped
+         IP blocks (if we were using any)
 
        Next, let's add some blocks!
 
@@ -156,7 +158,7 @@ Here, we'll create a new collection of IP to generate a slower clock.
        the **Sources** window, under our ``CLK_gen`` block design, you should
        now see ``CLK_gen.v``, which is the Verilog interface for our design.
        Examining the ``CLK_gen`` module (although it's a little messy), you
-       should find two output ports, an output signal named ``clk_10mhz``, and
+       should find an output signal named ``clk_10mhz``, and
        an output signal named ``reset_10mhz`` (as well as the ``DDR`` and
        ``FIXED_IO`` ports); these are our generated signals!
 

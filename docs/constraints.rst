@@ -117,11 +117,11 @@ others.
           **Window -> I/O Ports**. This will open up a window to select
           which I/O pins to connect to.
 
-          Here, Vivado should identify that there are four output
+          Here, Vivado should identify that there are five output
           ports that need to be connected - our ``gray_count``
-          outputs. Most of the defaults here should be fine, but
-          if you wanted, you could configure the type of I/O, as
-          well as drive strength and a few other parameters.
+          outputs and ``en``. Most of the defaults here should be fine,
+          but if you wanted, you could configure a few
+          parameters relating to the I/O cell used.
 
           Click the drop-down next to ``gray_count`` to view each
           individual port. These should have a drop-down under
@@ -168,10 +168,11 @@ others.
        - just Tcl commands! This makes them highly portable across
        designs, if you wish to share/reuse constraints; if you
        already had the constraints, you could add them as a source
+       (assuming that the top-level ports were the same).
 
     .. group-tab:: TCL
 
-       .. admonition:: Example Task
+       .. admonition:: Adding Constraints
           :class: important
 
           Either from **Tools -> Run Tcl Script** or from the command

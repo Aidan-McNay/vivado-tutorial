@@ -31,9 +31,12 @@ Generating a Bitstream
           as we're not going through the flow, but simply packaging the
           result.
 
+          Eventually, you should hopefully get a pop-up that the run
+          completed successfully - we're good to go!
+
     .. group-tab:: TCL
 
-       .. admonition:: Running Implementation
+       .. admonition:: Generating a Bitstream
           :class: important
 
           Either from **Tools -> Run Tcl Script** or from the command
@@ -44,4 +47,38 @@ Generating a Bitstream
              vivado -mode batch -source ../scripts/bitstream/gen_bitstream.tcl
 
           Check the output logs for the line
-          ``impl_1 finished``, and you should be good!
+          ``write_bitstream completed successfully``, and you should be good!
+
+Putting a Bitstream on the Board
+--------------------------------------------------------------------------
+
+After this process, we should have a bitstream (located as ``top.bit`` in
+``vivado-walkthrough.runs/impl_1``)
+
+.. admonition:: Debug Probes
+   :class: note
+
+   While the ``.bit`` file is the primary output, some users may later
+   incorporate debug probes into their design; see
+   :doc:`appendices/debug_probes` for more
+   details. In that case, we'd also have a ``top.ltx`` file that specifies
+   our debug probe configuration.
+
+All that's left to do is put this on our board - this is best done from
+the GUI.
+
+.. admonition:: Programming the Board
+   :class: important
+
+   On the left-hand side, in **Flow Navigator**, under
+   **Program and Debug**, click **Open Hardware Manager**.
+
+   You should initially have a banner at the top that says
+   "No hardware target open"; click **Open target**, then
+   **Auto-connect**
+
+This is also where the portability of bitstreams comes in handy. If you
+need to program from a different device than you compiled with (perhaps
+because of license availability), you can simply transfer the bitstream
+(and possibly the debug probes), and open Vivado only with the
+hardware manager to program a device (which doesn't require a license).

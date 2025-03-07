@@ -4,9 +4,10 @@ Overview
 .. admonition:: Vivado Version
    :class: warning
 
-   This tutorial was created for Vivado 2019.2. The high-level workflow
-   (and likely all GUI commands) will hold for future versions, but the
-   exact Tcl commands may change
+   This tutorial was created for Vivado 2019.2 on Linux. The high-level
+   workflow (and likely all GUI commands) will hold for future versions,
+   but the exact Tcl commands may change, especially based on paths if
+   you are using Windows instead of Linux.
 
 Welcome! This tutorial aims to familiarize you with Vivado Design Suite,
 as well as take you through the process of completing a design from

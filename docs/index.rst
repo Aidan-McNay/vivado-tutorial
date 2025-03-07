@@ -33,4 +33,5 @@ Design Studio, walking you through an example project from start to finish
    :caption: Appendices
 
    appendices/processing_system
+   appendices/debug_probes
 
