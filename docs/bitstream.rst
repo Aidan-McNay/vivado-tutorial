@@ -84,8 +84,8 @@ the GUI.
    Once there, click **Program Device** in the
    banner (or from **Tools**) to program the device.
    Vivado should automatically identify the bitstream
-   (and debug probes, if any) associated with your design
-    - click **Program**.
+   (and debug probes, if any) associated with your design;
+   click **Program**.
 
    Vivado will take a second to program the device, and then
    you should be good to go! For this design, this looks like
