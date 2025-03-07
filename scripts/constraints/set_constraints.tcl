@@ -22,7 +22,7 @@ add_files -fileset constrs_1 ../scripts/constraints/walkthrough-constraints.xdc
 # Set our constraints file as the target file
 # ------------------------------------------------------------------------
 
-set_property target_constrs_file ../scripts/constraints/walkthrough-constraints.xdc [current_fileset --constrset]
+set_property target_constrs_file ../scripts/constraints/walkthrough-constraints.xdc [current_fileset -constrset]
 
 # ------------------------------------------------------------------------
 # Re-run synthesis
