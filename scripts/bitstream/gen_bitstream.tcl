@@ -1,7 +1,7 @@
 # ========================================================================
-# impl_design.tcl
+# gen_bitstream.tcl
 # ========================================================================
-# A Tcl script to implement our design
+# A Tcl script to generate our bitstream
 
 # ------------------------------------------------------------------------
 # Open the project if needed (when run in batch)
@@ -13,19 +13,7 @@ if {[catch {current_project } result ]} {
 }
 
 # ------------------------------------------------------------------------
-# Reset implementation (if needed)
+# Generate the bitstream
 # ------------------------------------------------------------------------
 
-reset_run impl_1 -prev_step
-
-# ------------------------------------------------------------------------
-# Run implementation
-# ------------------------------------------------------------------------
-
-launch_runs impl_1 -jobs 4
-
-# ------------------------------------------------------------------------
-# Wait for implementation to finish
-# ------------------------------------------------------------------------
-
-wait_on_run impl_1
+launch_runs impl_1 -to_step write_bitstream -jobs 4

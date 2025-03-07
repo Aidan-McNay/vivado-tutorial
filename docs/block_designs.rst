@@ -52,7 +52,10 @@ Here, we'll create a new collection of IP to generate a slower clock.
           select **Add IP**. Search for "Clocking Wizard", select the
           result, then click Enter to instantiate it. Repeat this process
           to instantiate a "ZYNQ7 Processing System" and a "Processor System
-          Reset"
+          Reset". Once you instantiate the format, a banner should appear
+          at the top hinting to "Run Block Automation"; click this to
+          automatically connect the pins of the processing system appropriately.
+          This will create some unused connections, but that's ok.
 
        In the **Diagram** tab, you can now see a block diagram of our new
        IP blocks. Additionally, our hierarchy in the **Design** tab has
@@ -119,6 +122,9 @@ Here, we'll create a new collection of IP to generate a slower clock.
           create an output named ``reset_10mhz`` connected to ``mb_reset``
           of the system reset
 
+       Finally, since we don't need the generated ``DDR`` and ``FIXED_IO``
+       ports from the processing system, right-click them and select **Delete**.
+
        At this point, our block design is finished! It should look like
        this:
 
@@ -150,8 +156,9 @@ Here, we'll create a new collection of IP to generate a slower clock.
        the **Sources** window, under our ``CLK_gen`` block design, you should
        now see ``CLK_gen.v``, which is the Verilog interface for our design.
        Examining the ``CLK_gen`` module (although it's a little messy), you
-       should find only two ports, an output signal named ``clk_10mhz``, and
-       an output signal named ``reset_10mhz``; this is our generated clock!
+       should find two ports, an output signal named ``clk_10mhz``, and
+       an output signal named ``reset_10mhz``; these are our signals! (As
+       well as the DDR and FIXED_IO ports).
 
        After these steps, our block design will need to be saved again, then
        you can click the **X** in the top-right hand corner to close the
@@ -217,7 +224,32 @@ module!
       
         CLK_gen clk_gen (
           .clk_10mhz   (clk_10mhz),
-          .reset_10mhz (reset_10mhz)
+          .reset_10mhz (reset_10mhz),
+
+          // Unused ports
+
+          .DDR_addr    (),
+          .DDR_ba      (),
+          .DDR_cas_n   (),
+          .DDR_ck_n    (),
+          .DDR_ck_p    (),
+          .DDR_cke     (),
+          .DDR_cs_n    (),
+          .DDR_dm      (),
+          .DDR_dq      (),
+          .DDR_dqs_n   (),
+          .DDR_dqs_p   (),
+          .DDR_odt     (),
+          .DDR_ras_n   (),
+          .DDR_reset_n (),
+          .DDR_we_n    (),
+
+          .FIXED_IO_ddr_vrn  (),
+          .FIXED_IO_ddr_vrp  (),
+          .FIXED_IO_mio      (),
+          .FIXED_IO_ps_clk   (),
+          .FIXED_IO_ps_porb  (),
+          .FIXED_IO_ps_srstb ()
         );
       
         // ---------------------------------------------------------------------

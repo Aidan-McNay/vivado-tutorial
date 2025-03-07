@@ -159,7 +159,8 @@ others.
        Lastly, feel free to double-click the ``.xdc`` in the
        **Sources** window to view what the constraints actually are
        - just Tcl commands! This makes them highly portable across
-       designs, if you wish to share/reuse constraints.
+       designs, if you wish to share/reuse constraints; if you
+       already had the constraints, you could add them as a source
 
     .. group-tab:: TCL
 

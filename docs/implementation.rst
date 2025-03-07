@@ -37,7 +37,11 @@ Running Implementation
              vivado -mode batch -source ../scripts/implementation/impl_design.tcl
 
           Check the output logs for the line
-          ``synth_design completed successfully``, and you should be good!
+          ``impl_1 finished``, and you should be good!
+
+          Similarly to synthesis, implementation isn't logged as completed
+          currently when run from Tcl; due to the pain of re-running it,
+          it's recommend to use the GUI here
 
 Viewing Reports
 --------------------------------------------------------------------------
@@ -52,8 +56,30 @@ our design!
        .. admonition:: Viewing Implementation Reports
           :class: important
 
-          This is a task to be run in Vivado's Graphical User
-          Interface (GUI)!
+          Open the **Reports** window; it may already be open as a
+          tab on the bottom, or you can open it with **Window -> Reports**
+
+          Under **Implementation**, you should now have a tab titled
+          ``impl_1``, which contains the implementation results from
+          our design. Here, you can view various metrics (such as
+          utilization, power, and slack).
+
+          As an exercise, find the following metrics in the reports:
+
+          * The number of LUTs used after placing the design
+            (``impl_1_place_report_utilization_0``, under **Place Design**)
+             
+             * Compare to your synthesis results!
+
+          * The total negative slack (TNS) of all paths after routing
+            the design - this should be 0 to have timing be met
+            (``impl_1_route_report_timing_summary_0``, under **Route Design**)
+
+          * The power usage after routing (``impl_1_route_report_power_0``,
+            under **Route Design**)
+
+             * Which component takes the most power? (``PS7`` is the on-board
+               processing system with the Cortex-A9 processor)
 
     .. group-tab:: TCL
 
@@ -62,4 +88,7 @@ our design!
 
           In the project directory, all of the outputs of flow steps
           are under ``vivado-walkthrough.runs``. Here, you should now
-          find a ``impl_1`` directory
+          find a ``impl_1`` directory with all of the reports. Using
+          the ``top_utilization_placed.rpt``, ``top_timing_summary_routed.rpt``,
+          and ``top_power_routed.rpt``, answer the questions from the GUI
+          section

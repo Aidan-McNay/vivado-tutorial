@@ -57,6 +57,15 @@ Synthesizing Our Design
           Check the output logs for the line
           ``synth_design completed successfully``, and you should be good!
 
+          Note that for whatever reason, synthesis currently isn't logged as
+          up-to-date after this in 2019.2 (`source <https://adaptivesupport.amd.com/s/question/0D52E00006hpko2SAA/vivado-warning-constraints-185210-no-constraints-selected-for-write?language=en_US>`_).
+          This is resolved in later editions, but can be resolved if present
+          by either letting the step re-run when needed later, or to go into
+          the GUI and either re-run synthesis, or right-click on the run
+          in the **Design Runs** console to force it to be up-to-date
+          (I tried ``set_property needs_refresh false`` in Tcl, and that
+          also didn't work - weird)
+
 Viewing Reports
 --------------------------------------------------------------------------
 

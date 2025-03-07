@@ -25,4 +25,6 @@ Design Studio, walking you through an example project from start to finish
    block_designs
    synthesis
    constraints
+   implementation
+   bitstream
 
