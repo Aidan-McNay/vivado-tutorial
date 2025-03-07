@@ -205,7 +205,9 @@ module!
    or through the Vivado GUI with **File -> Add Sources**, choosing a
    design source, and "Create File") named ``top.sv`` with the following
    content (including connections for the ``DDR`` and ``FIXED_IO`` ports;
-   see :doc:`appendices/processing_system` for more details):
+   see :doc:`appendices/processing_system` for more details). Note that you
+   may have to change the capitalization of ``clk_gen``, depending on how
+   Vivado saved the block design name:
 
    .. code-block:: sv
 
@@ -215,7 +217,7 @@ module!
       // Our top-level design file
       
       module top (
-        output logic       en,
+        input  logic       en,
         output logic [3:0] gray_count,
       
         // ---------------------------------------------------------------------
@@ -251,7 +253,7 @@ module!
       
         logic clk_10mhz, reset_10mhz;
       
-        CLK_gen clk_gen (
+        clk_gen my_clk_gen (
           .clk_10mhz   (clk_10mhz),
           .reset_10mhz (reset_10mhz),
       

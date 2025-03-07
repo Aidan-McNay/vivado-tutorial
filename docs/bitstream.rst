@@ -70,12 +70,31 @@ the GUI.
 .. admonition:: Programming the Board
    :class: important
 
+   Ensure that your device is on and plugged in.
+   
    On the left-hand side, in **Flow Navigator**, under
    **Program and Debug**, click **Open Hardware Manager**.
 
    You should initially have a banner at the top that says
    "No hardware target open"; click **Open target**, then
-   **Auto-connect**
+   **Auto Connect**. This will launch a "host" to connect to
+   your device; you should see it show up on the left-hand
+   side.
+   
+   Once there, click **Program Device** in the
+   banner (or from **Tools**) to program the device.
+   Vivado should automatically identify the bitstream
+   (and debug probes, if any) associated with your design
+    - click **Program**.
+
+   Vivado will take a second to program the device, and then
+   you should be good to go! For this design, this looks like
+   the LEDs cycling through all gray codes when the switch is
+   on (looks like the LEDs are all on, since it happens very
+   fast), and pauses on a particular one when the switch is
+   turned off.
+
+   Congratulations - you've just programmed a board with Vivado!
 
 This is also where the portability of bitstreams comes in handy. If you
 need to program from a different device than you compiled with (perhaps
