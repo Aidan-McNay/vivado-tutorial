@@ -29,7 +29,7 @@ Generating a Bitstream
 
           This should hopefully take much less time than the implementation,
           as we're not going through the flow, but simply packaging the
-          result
+          result.
 
     .. group-tab:: TCL
 

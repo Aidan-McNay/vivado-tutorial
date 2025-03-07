@@ -39,10 +39,6 @@ Running Implementation
           Check the output logs for the line
           ``impl_1 finished``, and you should be good!
 
-          Similarly to synthesis, implementation isn't logged as completed
-          currently when run from Tcl; due to the pain of re-running it,
-          it's recommend to use the GUI here
-
 Viewing Reports
 --------------------------------------------------------------------------
 

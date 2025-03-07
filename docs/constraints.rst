@@ -160,7 +160,7 @@ others.
        we need to initially synthesize the design to know what
        constraints we need. Click **OK**, then re-run synthesys from
        before. Now, upon opening the synthesized design, you should
-       have no warnings pop-up, as we eliminated the critical
+       have few to no warnings pop-up, as we eliminated the critical
        warnings due to lack of constraints!
 
        Lastly, feel free to double-click the ``.xdc`` in the
