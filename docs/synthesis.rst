@@ -44,7 +44,7 @@ Synthesizing Our Design
 
     .. group-tab:: TCL
 
-       .. admonition:: Synthesizing Design
+       .. admonition:: Synthesizing Our Design
           :class: important
 
           Either from **Tools -> Run Tcl Script** or from the command
@@ -91,6 +91,10 @@ Vivado expects our design to use.
           section for our ``CLK_gen`` block design; this should
           contain three synthesis reports, one for each of our IP
           blocks that we used.
+
+          Lastly, if you return to the **Project Summary** window,
+          you can see a high-level overview of the utilization in 
+          the bottom-left hand corner.
 
     .. group-tab:: TCL
 

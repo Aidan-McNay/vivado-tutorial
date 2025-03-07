@@ -76,7 +76,7 @@ We should now be able to run our simulation to test our design!
 
     .. group-tab:: TCL
 
-       .. admonition:: Example Task
+       .. admonition:: Running the Simulation
           :class: important
 
           Either from **Tools -> Run Tcl Script** or from the command

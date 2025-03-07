@@ -24,4 +24,5 @@ Design Studio, walking you through an example project from start to finish
    simulation
    block_designs
    synthesis
+   constraints
 
