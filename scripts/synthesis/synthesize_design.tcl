@@ -16,7 +16,7 @@ if {[catch {current_project } result ]} {
 # Reset synthesis (if needed)
 # ------------------------------------------------------------------------
 
-reset_run synth_1 -quiet
+reset_run synth_1
 
 # ------------------------------------------------------------------------
 # Run synthesis
