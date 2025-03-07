@@ -95,7 +95,8 @@ others.
             Vivado recommends adding a timing constraint to ``en``,
             and shows a waveform to indicate the possible parameters;
             however, since this is a free-running demo design, we'll
-            ignore this. Uncheck the constraint and click **Next**.
+            ignore this. Uncheck the constraints for all inputs and
+            click **Next**.
           * Similarly, for "Output Delays", we'll ignore any delays
             on ``gray_count``; uncheck the constraint, then click **Next**
           * From here, there are a few more pages, such as clock
@@ -142,6 +143,12 @@ others.
           Similarly, under ``Scalar ports``, you'll find our
           single-bit (scalar) input ``en``. Connect this to the
           first slider switch on pin G15.
+
+          Finally, for all of the pins, manually set their
+          **I/O Std** (I/O Standard) to LVCMOS18; this is the
+          default, but manually setting it should erase the
+          *(default)* and tell Vivado that it's actually what
+          we want.
 
        Once you're done, manually save the constraints (similar to
        the block design), either with ``Ctrl+S`` or by clicking

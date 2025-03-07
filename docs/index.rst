@@ -28,3 +28,9 @@ Design Studio, walking you through an example project from start to finish
    implementation
    bitstream
 
+.. toctree::
+   :maxdepth: 1
+   :caption: Appendices
+
+   appendices/processing_system
+

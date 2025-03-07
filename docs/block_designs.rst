@@ -52,10 +52,12 @@ Here, we'll create a new collection of IP to generate a slower clock.
           select **Add IP**. Search for "Clocking Wizard", select the
           result, then click Enter to instantiate it. Repeat this process
           to instantiate a "ZYNQ7 Processing System" and a "Processor System
-          Reset". Once you instantiate the format, a banner should appear
-          at the top hinting to "Run Block Automation"; click this to
-          automatically connect the pins of the processing system appropriately.
-          This will create some unused connections, but that's ok.
+          Reset". When you instantiate the former, a banner will appear
+          titled "Run Block Automation"; click on this, and run the
+          automation, ensuring that **Apply Board Preset** is checked.
+          This will create ``DDR`` and ``FIXED_IO`` connections; this
+          is expected. See :doc:`appendices/processing_system` for more
+          details.
 
        In the **Diagram** tab, you can now see a block diagram of our new
        IP blocks. Additionally, our hierarchy in the **Design** tab has
@@ -122,9 +124,6 @@ Here, we'll create a new collection of IP to generate a slower clock.
           create an output named ``reset_10mhz`` connected to ``mb_reset``
           of the system reset
 
-       Finally, since we don't need the generated ``DDR`` and ``FIXED_IO``
-       ports from the processing system, right-click them and select **Delete**.
-
        At this point, our block design is finished! It should look like
        this:
 
@@ -156,9 +155,9 @@ Here, we'll create a new collection of IP to generate a slower clock.
        the **Sources** window, under our ``CLK_gen`` block design, you should
        now see ``CLK_gen.v``, which is the Verilog interface for our design.
        Examining the ``CLK_gen`` module (although it's a little messy), you
-       should find two ports, an output signal named ``clk_10mhz``, and
-       an output signal named ``reset_10mhz``; these are our signals! (As
-       well as the DDR and FIXED_IO ports).
+       should find two output ports, an output signal named ``clk_10mhz``, and
+       an output signal named ``reset_10mhz`` (as well as the ``DDR`` and
+       ``FIXED_IO`` ports); these are our generated signals!
 
        After these steps, our block design will need to be saved again, then
        you can click the **X** in the top-right hand corner to close the
@@ -202,7 +201,8 @@ module!
    Create a new design source file (either with your preferred code editor,
    or through the Vivado GUI with **File -> Add Sources**, choosing a
    design source, and "Create File") named ``top.sv`` with the following
-   content:
+   content (including connections for the ``DDR`` and ``FIXED_IO`` ports;
+   see :doc:`appendices/processing_system` for more details):
 
    .. code-block:: sv
 
@@ -212,8 +212,34 @@ module!
       // Our top-level design file
       
       module top (
-        input  logic       en,
-        output logic [3:0] gray_count
+        output logic       en,
+        output logic [3:0] gray_count,
+      
+        // ---------------------------------------------------------------------
+        // Processing System Connections
+        // ---------------------------------------------------------------------
+      
+        inout  logic [53:0] mio,
+        inout  logic        ddr_vrp,
+        inout  logic        ddr_vrn,
+        inout  logic        ddr_web,
+        inout  logic        ddr_ras_n,
+        inout  logic        ddr_odt,
+        inout  logic        ddr_drstb,
+        inout  logic  [3:0] ddr_dqs,
+        inout  logic  [3:0] ddr_dqs_n,
+        inout  logic [31:0] ddr_dq,
+        inout  logic  [3:0] ddr_dm,
+        inout  logic        ddr_cs_n,
+        inout  logic        ddr_cke,
+        inout  logic        ddr_clk,
+        inout  logic        ddr_clk_n,
+        inout  logic        ddr_cas_n,
+        inout  logic  [2:0] ddr_bankaddr,
+        inout  logic [14:0] ddr_addr,
+        inout  logic        ps_porb,
+        inout  logic        ps_srstb,
+        inout  logic        ps_clk
       );
       
         // ---------------------------------------------------------------------
@@ -225,31 +251,32 @@ module!
         CLK_gen clk_gen (
           .clk_10mhz   (clk_10mhz),
           .reset_10mhz (reset_10mhz),
-
-          // Unused ports
-
-          .DDR_addr    (),
-          .DDR_ba      (),
-          .DDR_cas_n   (),
-          .DDR_ck_n    (),
-          .DDR_ck_p    (),
-          .DDR_cke     (),
-          .DDR_cs_n    (),
-          .DDR_dm      (),
-          .DDR_dq      (),
-          .DDR_dqs_n   (),
-          .DDR_dqs_p   (),
-          .DDR_odt     (),
-          .DDR_ras_n   (),
-          .DDR_reset_n (),
-          .DDR_we_n    (),
-
-          .FIXED_IO_ddr_vrn  (),
-          .FIXED_IO_ddr_vrp  (),
-          .FIXED_IO_mio      (),
-          .FIXED_IO_ps_clk   (),
-          .FIXED_IO_ps_porb  (),
-          .FIXED_IO_ps_srstb ()
+      
+          // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+          // Processing System Connections
+          // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+      
+          .DDR_addr          (ddr_addr),
+          .DDR_ba            (ddr_bankaddr),
+          .DDR_cas_n         (ddr_cas_n),
+          .DDR_ck_n          (ddr_clk_n),
+          .DDR_ck_p          (ddr_clk),
+          .DDR_cke           (ddr_cke),
+          .DDR_cs_n          (ddr_cs_n),
+          .DDR_dm            (ddr_dm),
+          .DDR_dq            (ddr_dq),
+          .DDR_dqs_n         (ddr_dqs_n),
+          .DDR_dqs_p         (ddr_dqs),
+          .DDR_odt           (ddr_odt),
+          .DDR_ras_n         (ddr_ras_n),
+          .DDR_reset_n       (ddr_drstb),
+          .DDR_we_n          (ddr_web),
+          .FIXED_IO_ddr_vrn  (ddr_vrn),
+          .FIXED_IO_ddr_vrp  (ddr_vrp),
+          .FIXED_IO_mio      (mio),
+          .FIXED_IO_ps_clk   (ps_clk),
+          .FIXED_IO_ps_porb  (ps_porb),
+          .FIXED_IO_ps_srstb (ps_srstb)
         );
       
         // ---------------------------------------------------------------------
