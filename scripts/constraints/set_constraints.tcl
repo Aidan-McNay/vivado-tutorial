@@ -29,3 +29,5 @@ set_property target_constrs_file ../scripts/constraints/walkthrough-constraints.
 # ------------------------------------------------------------------------
 
 source ../scripts/synthesis/synthesize_design.tcl
+
+
