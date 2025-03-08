@@ -176,7 +176,7 @@ Here, we'll create a new collection of IP to generate a slower clock.
 
           .. code-block:: bash
 
-             vivado -mode batch -source ../scripts/block_design/make_clk_gen.tcl
+             % vivado -mode batch -source ../scripts/block_design/make_clk_gen.tcl
 
           Inspecting this Tcl script, we can see that most of what it does is
           call another script named ``CLK_gen.tcl``. This script was dumped by

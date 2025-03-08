@@ -84,7 +84,7 @@ We should now be able to run our simulation to test our design!
 
           .. code-block:: bash
 
-             vivado -mode batch -source ../scripts/simulation/simulate_design.tcl
+             % vivado -mode batch -source ../scripts/simulation/simulate_design.tcl
 
           From there, follow along with the steps in the GUI commands to
           examine the results. Note that if running in batch mode, while

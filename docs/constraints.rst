@@ -180,7 +180,7 @@ others.
 
           .. code-block:: bash
 
-             vivado -mode batch -source ../scripts/constraints/set_constraints.tcl
+             % vivado -mode batch -source ../scripts/constraints/set_constraints.tcl
 
           All this script does is add our constraints file, then re-runs synthesys
           (only because we added our constraints file after; if we added our

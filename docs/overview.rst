@@ -93,7 +93,7 @@ between them at any time. In general, Tcl scripts are run with:
 
 .. code-block:: bash
 
-   vivado -mode batch -source /path/to/script.tcl
+   % vivado -mode batch -source /path/to/script.tcl
 
 They can also be run from Vivado's GUI (``Tools -> Run Tcl Script...``);
 scripts not run from an open project will have to open the project
@@ -103,4 +103,4 @@ Finally, if you wish, you can step through commands in a Tcl shell with
 
 .. code-block:: bash
 
-   vivado -mode tcl
+   % vivado -mode tcl

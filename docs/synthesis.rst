@@ -52,7 +52,7 @@ Synthesizing Our Design
 
           .. code-block:: bash
 
-             vivado -mode batch -source ../scripts/synthesis/synthesize_design.tcl
+             % vivado -mode batch -source ../scripts/synthesis/synthesize_design.tcl
 
           Check the output logs for the line
           ``synth_design completed successfully``, and you should be good!

@@ -34,7 +34,7 @@ Running Implementation
 
           .. code-block:: bash
 
-             vivado -mode batch -source ../scripts/implementation/impl_design.tcl
+             % vivado -mode batch -source ../scripts/implementation/impl_design.tcl
 
           Check the output logs for the line
           ``impl_1 finished``, and you should be good!

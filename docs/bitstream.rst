@@ -44,7 +44,7 @@ Generating a Bitstream
 
           .. code-block:: bash
 
-             vivado -mode batch -source ../scripts/bitstream/gen_bitstream.tcl
+             % vivado -mode batch -source ../scripts/bitstream/gen_bitstream.tcl
 
           Check the output logs for the line
           ``write_bitstream completed successfully``, and you should be good!

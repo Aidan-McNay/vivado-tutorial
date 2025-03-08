@@ -34,7 +34,7 @@ files that describe the actual hardware that we want our FPGA to emulate
 
           .. code-block:: bash
 
-             vivado -mode batch -source ../scripts/sources/add_design_sources.tcl
+             % vivado -mode batch -source ../scripts/sources/add_design_sources.tcl
 
 In the **Sources** window, under "Design Sources", you should now see the
 ``GrayCode`` module found from the ``gray_code.sv`` file.
@@ -91,7 +91,7 @@ in a fileset titled ``sim_1``
 
           .. code-block:: bash
 
-             vivado -mode batch -source ../scripts/sources/add_sim_sources.tcl
+             % vivado -mode batch -source ../scripts/sources/add_sim_sources.tcl
 
 In the **Sources** window, under "Simulation Sources", you can see the
 ``sim_1`` fileset. In there, Vivado should now show the ``GrayCodeTest``

@@ -13,10 +13,10 @@ this, we'll create a ``project`` directory (henceforth
 
 .. code-block:: bash
 
-   git clone git@github.com:Aidan-McNay/vivado-tutorial.git
-   cd vivado-tutorial
-   mkdir project
-   cd project # This is the project directory!
+   % git clone git@github.com:Aidan-McNay/vivado-tutorial.git
+   % cd vivado-tutorial
+   % mkdir project
+   % cd project # This is the project directory!
 
 Creating a Vivado Project
 --------------------------------------------------------------------------
@@ -79,7 +79,7 @@ Now that we have our workspace, we can get started with our project!
 
           .. code-block:: bash
 
-             vivado -mode batch -source ../scripts/setup/create-project.tcl
+             % vivado -mode batch -source ../scripts/setup/create-project.tcl
 
           This particular script may take a while, as it updates the board
           repository (assuming that the board isn't already available).
@@ -121,4 +121,4 @@ either from the GUI (using "Open Project") or from the command line:
 
 .. code-block:: bash
 
-   vivado vivado-walkthrough.xpr
+   % vivado vivado-walkthrough.xpr
