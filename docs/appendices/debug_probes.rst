@@ -35,7 +35,7 @@ probes to monitor signals!
      but data will likely not be captured correctly later.
      Right-click on these entries to change the clock domains for
      our signals to the Processing System's clock, then click **Next**.
-     This will have our signals sampled at 10 times faster than they're
+     This will have our signals sampled at 5 times faster than they're
      changing, but that's ok for our purposes.
    * Keep the sample depth (number of samples to acquire at once) and
      the input pipe stages (the delay in sampling, to improve timing)
@@ -111,9 +111,9 @@ From here, we can capture some data!
    the same before the trigger, and then counting in gray code after
    the trigger, indicating the design is working as intended! Finally,
    verify that the signals in ``gray_count`` are changing approximately
-   once every 10 units in the waveform; one unit corresponds to 1 clock
+   once every 5 units in the waveform; one unit corresponds to 1 clock
    cycle of the debug core, and since our signals are connected to a
-   clock that's 10 times slower, their rate of change should reflect that.
+   clock that's 5 times slower, their rate of change should reflect that.
 
    Go through the capture process a few more times to observe that
    the captured data changes (as the place in the count will change
