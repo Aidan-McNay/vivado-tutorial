@@ -95,7 +95,7 @@ others.
             Vivado recommends adding a timing constraint to ``en``,
             and shows a waveform to indicate the possible parameters;
             however, since this is a free-running demo design, we'll
-            ignore this. Uncheck the constraints for all inputs and
+            ignore this. Uncheck the constraints for ``en`` and
             click **Next**.
           * Similarly, for "Output Delays", we'll ignore any delays
             on ``gray_count``; uncheck the constraint, then click **Next**
