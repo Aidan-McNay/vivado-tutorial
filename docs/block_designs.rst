@@ -127,7 +127,8 @@ Here, we'll create a new collection of IP to generate a slower clock.
           of the system reset
 
        At this point, our block design is finished! It should look like
-       this:
+       this (you can use the reload icon to make the block design
+       layout look nicer, if you wish):
 
        .. image:: img/clk_gen_block_diagram.png
           :width: 80%
