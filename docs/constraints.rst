@@ -148,7 +148,9 @@ others.
           **I/O Std** (I/O Standard) to LVCMOS18; this is the
           default, but manually setting it should erase the
           *(default)* and tell Vivado that it's actually what
-          we want.
+          we want; all pins must have explicit values
+          (`source <https://www.xilinx.com/support/documents/sw_manuals/xilinx2022_1/ug899-vivado-io-clock-planning.pdf#page=42>`_).
+          You can read more about I/O Standards `here <https://docs.amd.com/r/en-US/ug912-vivado-properties/IODELAY_GROUP>`_
 
        Once you're done, manually save the constraints (similar to
        the block design), either with ``Ctrl+S`` or by clicking
