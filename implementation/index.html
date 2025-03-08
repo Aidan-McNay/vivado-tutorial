@@ -1,0 +1,213 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Implementing Our Design &mdash; Vivado Tutorial  documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css?v=13237357" />
+      <link rel="stylesheet" type="text/css" href="../_static/tabs.css?v=a5c4661c" />
+
+  
+    <link rel="shortcut icon" href="../_static/favicon.ico"/>
+      <script src="../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../_static/documentation_options.js?v=187304be"></script>
+      <script src="../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script>let toggleHintShow = 'Click to show';</script>
+      <script>let toggleHintHide = 'Click to hide';</script>
+      <script>let toggleOpenOnPrint = 'true';</script>
+      <script src="../_static/togglebutton.js?v=4a39c7ea"></script>
+      <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+      <script src="../_static/tabs.js?v=3030b3cb"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex/" />
+    <link rel="search" title="Search" href="../search/" />
+    <link rel="next" title="Generating a Bitstream" href="../bitstream/" />
+    <link rel="prev" title="Adding Constraints" href="../constraints/" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../" class="icon icon-home">
+            Vivado Tutorial
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search/" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../overview/">Overview</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Walkthrough</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../setup/">Setup</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../sources/">Adding Sources</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../simulation/">Simulating Our Design</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../block_designs/">Adding Block Designs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../synthesis/">Synthesizing Our Design</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../constraints/">Adding Constraints</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Implementing Our Design</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#running-implementation">Running Implementation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#viewing-reports">Viewing Reports</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../bitstream/">Generating a Bitstream</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Appendices</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../appendices/processing_system/">Appendix A: Using the Zynq7 Processing System</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../appendices/debug_probes/">Appendix B: Using Debug Probes</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../">Vivado Tutorial</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Implementing Our Design</li>
+      <li class="wy-breadcrumbs-aside">
+              <a href="https://github.com/Aidan-McNay/vivado-tutorial/blob/main/docs/implementation.rst" class="fa fa-github"> Edit on GitHub</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="implementing-our-design">
+<h1>Implementing Our Design<a class="headerlink" href="#implementing-our-design" title="Link to this heading"></a></h1>
+<p>The second part of the flow is <strong>implementation</strong>; this is where our
+design is placed and routed on the FPGA. Assuming the rest of the process
+went well, so too should implementation; however, for large designs,
+this process will take a <em>while</em>.</p>
+<section id="running-implementation">
+<h2>Running Implementation<a class="headerlink" href="#running-implementation" title="Link to this heading"></a></h2>
+<div class="sphinx-tabs docutils container">
+<div aria-label="Tabbed content" class="closeable" role="tablist"><button aria-controls="panel-0-R1VJ" aria-selected="true" class="sphinx-tabs-tab group-tab" id="tab-0-R1VJ" name="R1VJ" role="tab" tabindex="0">GUI</button><button aria-controls="panel-0-VENM" aria-selected="false" class="sphinx-tabs-tab group-tab" id="tab-0-VENM" name="VENM" role="tab" tabindex="-1">TCL</button></div><div aria-labelledby="tab-0-R1VJ" class="sphinx-tabs-panel group-tab" id="panel-0-R1VJ" name="R1VJ" role="tabpanel" tabindex="0"><div class="important admonition">
+<p class="admonition-title">Running Implementation</p>
+<p>On the left-hand side, in <strong>Flow Navigator</strong>, under
+<strong>Implementation</strong>, click <strong>Run Implementation</strong>, then click
+<strong>OK</strong>.</p>
+<p>This may take a while, and will run in the background; if
+you look in the top-right corner, you will see a spinning
+wheel that gives some indication what is going on.</p>
+</div>
+</div><div aria-labelledby="tab-0-VENM" class="sphinx-tabs-panel group-tab" hidden="true" id="panel-0-VENM" name="VENM" role="tabpanel" tabindex="0"><div class="important admonition">
+<p class="admonition-title">Running Implementation</p>
+<p>Either from <strong>Tools -&gt; Run Tcl Script</strong> or from the command
+line (shown below), run the <code class="docutils literal notranslate"><span class="pre">impl_design.tcl</span></code> script</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>%<span class="w"> </span>vivado<span class="w"> </span>-mode<span class="w"> </span>batch<span class="w"> </span>-source<span class="w"> </span>../scripts/implementation/impl_design.tcl
+</pre></div>
+</div>
+<p>Check the output logs for the line
+<code class="docutils literal notranslate"><span class="pre">impl_1</span> <span class="pre">finished</span></code>, and you should be good!</p>
+</div>
+</div></div>
+</section>
+<section id="viewing-reports">
+<h2>Viewing Reports<a class="headerlink" href="#viewing-reports" title="Link to this heading"></a></h2>
+<p>Compared to synthesis, we have <em>many</em> more reports we can view now about
+our design!</p>
+<div class="sphinx-tabs docutils container">
+<div aria-label="Tabbed content" class="closeable" role="tablist"><button aria-controls="panel-1-R1VJ" aria-selected="true" class="sphinx-tabs-tab group-tab" id="tab-1-R1VJ" name="R1VJ" role="tab" tabindex="0">GUI</button><button aria-controls="panel-1-VENM" aria-selected="false" class="sphinx-tabs-tab group-tab" id="tab-1-VENM" name="VENM" role="tab" tabindex="-1">TCL</button></div><div aria-labelledby="tab-1-R1VJ" class="sphinx-tabs-panel group-tab" id="panel-1-R1VJ" name="R1VJ" role="tabpanel" tabindex="0"><div class="important admonition">
+<p class="admonition-title">Viewing Implementation Reports</p>
+<p>Open the <strong>Reports</strong> window; it may already be open as a
+tab on the bottom, or you can open it with <strong>Window -&gt; Reports</strong></p>
+<p>Under <strong>Implementation</strong>, you should now have a tab titled
+<code class="docutils literal notranslate"><span class="pre">impl_1</span></code>, which contains the implementation results from
+our design. Here, you can view various metrics (such as
+utilization, power, and slack).</p>
+<p>As an exercise, find the following metrics in the reports:</p>
+<ul>
+<li><p>The number of LUTs used after placing the design
+(<code class="docutils literal notranslate"><span class="pre">impl_1_place_report_utilization_0</span></code>, under <strong>Place Design</strong>)</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>Compare to your synthesis results!</p></li>
+</ul>
+</div></blockquote>
+</li>
+<li><p>The total negative slack (TNS) of all paths after routing
+the design - this should be 0 to have timing be met
+(<code class="docutils literal notranslate"><span class="pre">impl_1_route_report_timing_summary_0</span></code>, under <strong>Route Design</strong>)</p></li>
+<li><p>The power usage after routing (<code class="docutils literal notranslate"><span class="pre">impl_1_route_report_power_0</span></code>,
+under <strong>Route Design</strong>)</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>Which component takes the most power? (<code class="docutils literal notranslate"><span class="pre">PS7</span></code> is the on-board
+processing system with the Cortex-A9 processor)</p></li>
+</ul>
+</div></blockquote>
+</li>
+</ul>
+</div>
+</div><div aria-labelledby="tab-1-VENM" class="sphinx-tabs-panel group-tab" hidden="true" id="panel-1-VENM" name="VENM" role="tabpanel" tabindex="0"><div class="important admonition">
+<p class="admonition-title">Viewing Implementation Reports</p>
+<p>In the project directory, all of the outputs of flow steps
+are under <code class="docutils literal notranslate"><span class="pre">vivado-walkthrough.runs</span></code>. Here, you should now
+find a <code class="docutils literal notranslate"><span class="pre">impl_1</span></code> directory with all of the reports. Using
+the <code class="docutils literal notranslate"><span class="pre">top_utilization_placed.rpt</span></code>, <code class="docutils literal notranslate"><span class="pre">top_timing_summary_routed.rpt</span></code>,
+and <code class="docutils literal notranslate"><span class="pre">top_power_routed.rpt</span></code>, answer the questions from the GUI
+section</p>
+</div>
+</div></div>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="../constraints/" class="btn btn-neutral float-left" title="Adding Constraints" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="../bitstream/" class="btn btn-neutral float-right" title="Generating a Bitstream" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, Aidan McNay.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

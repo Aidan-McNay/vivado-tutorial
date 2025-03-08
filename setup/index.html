@@ -1,0 +1,254 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Setup &mdash; Vivado Tutorial  documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css?v=13237357" />
+      <link rel="stylesheet" type="text/css" href="../_static/tabs.css?v=a5c4661c" />
+
+  
+    <link rel="shortcut icon" href="../_static/favicon.ico"/>
+      <script src="../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../_static/documentation_options.js?v=187304be"></script>
+      <script src="../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script>let toggleHintShow = 'Click to show';</script>
+      <script>let toggleHintHide = 'Click to hide';</script>
+      <script>let toggleOpenOnPrint = 'true';</script>
+      <script src="../_static/togglebutton.js?v=4a39c7ea"></script>
+      <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+      <script src="../_static/tabs.js?v=3030b3cb"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex/" />
+    <link rel="search" title="Search" href="../search/" />
+    <link rel="next" title="Adding Sources" href="../sources/" />
+    <link rel="prev" title="Overview" href="../overview/" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../" class="icon icon-home">
+            Vivado Tutorial
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search/" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../overview/">Overview</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Walkthrough</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Setup</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#tutorial-repo">Tutorial Repo</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#creating-a-vivado-project">Creating a Vivado Project</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../sources/">Adding Sources</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../simulation/">Simulating Our Design</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../block_designs/">Adding Block Designs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../synthesis/">Synthesizing Our Design</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../constraints/">Adding Constraints</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../implementation/">Implementing Our Design</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../bitstream/">Generating a Bitstream</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Appendices</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../appendices/processing_system/">Appendix A: Using the Zynq7 Processing System</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../appendices/debug_probes/">Appendix B: Using Debug Probes</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../">Vivado Tutorial</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Setup</li>
+      <li class="wy-breadcrumbs-aside">
+              <a href="https://github.com/Aidan-McNay/vivado-tutorial/blob/main/docs/setup.rst" class="fa fa-github"> Edit on GitHub</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="setup">
+<h1>Setup<a class="headerlink" href="#setup" title="Link to this heading"></a></h1>
+<p>Before we can jump into the walkthrough, we’ll need to do some quick setup</p>
+<section id="tutorial-repo">
+<h2>Tutorial Repo<a class="headerlink" href="#tutorial-repo" title="Link to this heading"></a></h2>
+<p>The first thing we need to do is to clone the tutorial repo, just so we
+have access to the demo design, as well as Tcl scripts if desired. Within
+this, we’ll create a <code class="docutils literal notranslate"><span class="pre">project</span></code> directory (henceforth
+“project directory”), where we’ll make our Vivado project:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>%<span class="w"> </span>git<span class="w"> </span>clone<span class="w"> </span>git@github.com:Aidan-McNay/vivado-tutorial.git
+%<span class="w"> </span><span class="nb">cd</span><span class="w"> </span>vivado-tutorial
+%<span class="w"> </span>mkdir<span class="w"> </span>project
+%<span class="w"> </span><span class="nb">cd</span><span class="w"> </span>project<span class="w"> </span><span class="c1"># This is the project directory!</span>
+</pre></div>
+</div>
+</section>
+<section id="creating-a-vivado-project">
+<h2>Creating a Vivado Project<a class="headerlink" href="#creating-a-vivado-project" title="Link to this heading"></a></h2>
+<p>Now that we have our workspace, we can get started with our project!</p>
+<div class="sphinx-tabs docutils container">
+<div aria-label="Tabbed content" class="closeable" role="tablist"><button aria-controls="panel-0-R1VJ" aria-selected="true" class="sphinx-tabs-tab group-tab" id="tab-0-R1VJ" name="R1VJ" role="tab" tabindex="0">GUI</button><button aria-controls="panel-0-VENM" aria-selected="false" class="sphinx-tabs-tab group-tab" id="tab-0-VENM" name="VENM" role="tab" tabindex="-1">TCL</button></div><div aria-labelledby="tab-0-R1VJ" class="sphinx-tabs-panel group-tab" id="panel-0-R1VJ" name="R1VJ" role="tabpanel" tabindex="0"><div class="important admonition">
+<p class="admonition-title">Creating a Project</p>
+<p>Open up Vivado Design Suite (from the <code class="docutils literal notranslate"><span class="pre">project</span></code> directory,
+if from the command line)</p>
+<p>Click the <strong>Create Project</strong> button:</p>
+<ul>
+<li><p>Click <strong>Next</strong> on the initial welcome</p></li>
+<li><p>On the “Project Name” page:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>Use <code class="docutils literal notranslate"><span class="pre">vivado-walkthrough</span></code> as the project name</p></li>
+<li><p>Make sure that the location is your <code class="docutils literal notranslate"><span class="pre">project</span></code> directory</p></li>
+<li><p>Uncheck <strong>Create project subdirectory</strong> (we already created
+a dedicated directory for it)</p></li>
+<li><p>Click <strong>Next</strong></p></li>
+</ul>
+</div></blockquote>
+</li>
+<li><p>On the “Project Type” page, make sure <strong>RTL Project</strong> is
+selected</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>Check <strong>Do not specify sources at this time</strong> - we’ll
+do that later</p></li>
+</ul>
+</div></blockquote>
+</li>
+<li><p>On the “Default Part” page, we’ll need to identify the part
+we’re using. This can be done in one of two ways; <strong>please
+follow the first</strong>:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>On the <strong>Boards</strong> tab, first click <strong>Update Board Repositories</strong>
+(sometimes labeled <strong>Refresh</strong>), then <strong>Download</strong>
+to update the known boards (if out-of-date), then search for
+and click your board (ex. “Zybo Z7-10”). Then click <strong>Next</strong></p></li>
+<li><p>On the <strong>Parts</strong> tab, search for and select the part name
+for your device. In our case (Zybo Z7-10), the part name
+is <code class="docutils literal notranslate"><span class="pre">xc7z010clg400-1</span></code>. Then click <strong>Next</strong></p></li>
+</ul>
+</div></blockquote>
+<p>(The reason to use a “board” instead of just a “part” is that the
+board carries more information, such as exact pins and resources
+available. While it’s possible to do it with just the part
+information, the process is more error-prone)</p>
+</li>
+<li><p>On the “Project Summary Page”, click <strong>Finish</strong></p></li>
+</ul>
+</div>
+</div><div aria-labelledby="tab-0-VENM" class="sphinx-tabs-panel group-tab" hidden="true" id="panel-0-VENM" name="VENM" role="tabpanel" tabindex="0"><div class="important admonition">
+<p class="admonition-title">Creating a Project</p>
+<p>From your project directory, use Vivado to run the
+<code class="docutils literal notranslate"><span class="pre">create-project.tcl</span></code> script:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>%<span class="w"> </span>vivado<span class="w"> </span>-mode<span class="w"> </span>batch<span class="w"> </span>-source<span class="w"> </span>../scripts/setup/create-project.tcl
+</pre></div>
+</div>
+<p>This particular script may take a while, as it updates the board
+repository (assuming that the board isn’t already available).
+Additionally, this script (unlike others) opens the Vivado GUI
+at the end, just so you can see what’s happened.</p>
+</div>
+</div></div>
+<p>After creating the project, you should now see Vivado’s main GUI open
+to your project! Let’s briefly go over the different windows present:</p>
+<ul class="simple">
+<li><p><strong>Flow Navigator</strong> <em>(left)</em>: This is the main control panel for your
+project. From here, you can run different steps, such as simulation,
+testing, and synthesis. Clicking on any of the steps will automatically
+run all previous steps necessary</p></li>
+<li><p><strong>Sources</strong> <em>(top-middle)</em>: All of the sources for your project. We
+don’t have any right now, but will add to them in the next step</p></li>
+<li><p><strong>Project Summary</strong> <em>(top-right)</em>: An overview of the status of your
+project</p></li>
+<li><p><strong>Properties</strong> <em>(middle-middle)</em>: A panel to view and edit properties
+of various project components</p></li>
+<li><p><em>(bottom)</em>:</p>
+<ul>
+<li><p><strong>Tcl Console</strong>: A shell that shows all of your actions as Tcl
+commands. This is highly useful if you ever want to script actions
+that you take in the GUI, <em>or</em> to use as a Tcl shell for your project</p></li>
+<li><p><strong>Messages</strong>: Any messages Vivado has</p></li>
+<li><p><strong>Log</strong>: The log from different steps taken on your project</p></li>
+<li><p><strong>Reports</strong>: Reports from different steps of the project. This is
+where you will get information such as area, power, slack, etc.</p></li>
+<li><p><strong>Design Runs</strong>: The status of all the runs/steps taken on your design</p></li>
+</ul>
+</li>
+</ul>
+<p>All of these windows (except the Flow Navigator) can be closed; if you
+want to reopen them, you can do so from the <strong>Window</strong> tab on the top.</p>
+<p>Lastly, you’ll notice a file named <code class="docutils literal notranslate"><span class="pre">vivado-walkthrough.xpr</span></code> now in
+your project directory. This is the Vivado project you’ve created,
+which is automatically saved by Vivado whenever you make edits. If
+you close Vivado, you can re-open your project from this file,
+either from the GUI (using “Open Project”) or from the command line:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>%<span class="w"> </span>vivado<span class="w"> </span>vivado-walkthrough.xpr
+</pre></div>
+</div>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="../overview/" class="btn btn-neutral float-left" title="Overview" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="../sources/" class="btn btn-neutral float-right" title="Adding Sources" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, Aidan McNay.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

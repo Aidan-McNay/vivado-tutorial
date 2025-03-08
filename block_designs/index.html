@@ -1,0 +1,413 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Adding Block Designs &mdash; Vivado Tutorial  documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css?v=13237357" />
+      <link rel="stylesheet" type="text/css" href="../_static/tabs.css?v=a5c4661c" />
+
+  
+    <link rel="shortcut icon" href="../_static/favicon.ico"/>
+      <script src="../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../_static/documentation_options.js?v=187304be"></script>
+      <script src="../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script>let toggleHintShow = 'Click to show';</script>
+      <script>let toggleHintHide = 'Click to hide';</script>
+      <script>let toggleOpenOnPrint = 'true';</script>
+      <script src="../_static/togglebutton.js?v=4a39c7ea"></script>
+      <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+      <script src="../_static/tabs.js?v=3030b3cb"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex/" />
+    <link rel="search" title="Search" href="../search/" />
+    <link rel="next" title="Synthesizing Our Design" href="../synthesis/" />
+    <link rel="prev" title="Simulating Our Design" href="../simulation/" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../" class="icon icon-home">
+            Vivado Tutorial
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search/" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../overview/">Overview</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Walkthrough</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../setup/">Setup</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../sources/">Adding Sources</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../simulation/">Simulating Our Design</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Adding Block Designs</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#creating-a-block-design">Creating a Block Design</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#connecting-to-our-design">Connecting to Our Design</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../synthesis/">Synthesizing Our Design</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../constraints/">Adding Constraints</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../implementation/">Implementing Our Design</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../bitstream/">Generating a Bitstream</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Appendices</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../appendices/processing_system/">Appendix A: Using the Zynq7 Processing System</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../appendices/debug_probes/">Appendix B: Using Debug Probes</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../">Vivado Tutorial</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Adding Block Designs</li>
+      <li class="wy-breadcrumbs-aside">
+              <a href="https://github.com/Aidan-McNay/vivado-tutorial/blob/main/docs/block_designs.rst" class="fa fa-github"> Edit on GitHub</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="adding-block-designs">
+<h1>Adding Block Designs<a class="headerlink" href="#adding-block-designs" title="Link to this heading"></a></h1>
+<p>Many FPGA tools additionally come with their own libraries of IP that
+users can include in their designs. In Vivado, these are known as
+<strong>block designs</strong>. Block designs include some helpful hardware, such as
+protocol adapters, as well as other resources like clock generators.</p>
+<div class="warning admonition">
+<p class="admonition-title">Board Dependency</p>
+<p>The resources available will largely vary between boards; accordingly,
+this section is board dependent. If you have another board, not all
+of the same IP blocks will be available</p>
+</div>
+<p>Here, we’ll change the frequency of our clock to slow down our counter
+a bit from the default of 50MHz</p>
+<section id="creating-a-block-design">
+<h2>Creating a Block Design<a class="headerlink" href="#creating-a-block-design" title="Link to this heading"></a></h2>
+<p>Here, we’ll create a new collection of IP to generate a slower clock.</p>
+<div class="sphinx-tabs docutils container">
+<div aria-label="Tabbed content" class="closeable" role="tablist"><button aria-controls="panel-0-R1VJ" aria-selected="true" class="sphinx-tabs-tab group-tab" id="tab-0-R1VJ" name="R1VJ" role="tab" tabindex="0">GUI</button><button aria-controls="panel-0-VENM" aria-selected="false" class="sphinx-tabs-tab group-tab" id="tab-0-VENM" name="VENM" role="tab" tabindex="-1">TCL</button></div><div aria-labelledby="tab-0-R1VJ" class="sphinx-tabs-panel group-tab" id="panel-0-R1VJ" name="R1VJ" role="tabpanel" tabindex="0"><p>First, start by creating a new block design</p>
+<div class="important admonition">
+<p class="admonition-title">Creating a Block Design</p>
+<p>On the left, in <strong>Flow Navigator</strong>, under <strong>IP Integrator</strong>,
+select <strong>Create Block Design</strong>:</p>
+<ul class="simple">
+<li><p>Name the design <code class="docutils literal notranslate"><span class="pre">clk_gen</span></code></p></li>
+<li><p>Have the directory be the default <code class="docutils literal notranslate"><span class="pre">Local</span> <span class="pre">To</span> <span class="pre">Project</span></code></p></li>
+<li><p>Keep the default source set of <code class="docutils literal notranslate"><span class="pre">Design</span> <span class="pre">Sources</span></code></p></li>
+</ul>
+</div>
+<p>This will open up the <strong>Block Design</strong> window, with a few
+new tabs:</p>
+<ul class="simple">
+<li><p><strong>Design</strong>: The design hierarchy of our block design</p></li>
+<li><p><strong>Diagram</strong>: A visual block diagram of the design</p></li>
+<li><p><strong>Address Mapping</strong>: The addresses used for address-mapped
+IP blocks (if we were using any)</p></li>
+</ul>
+<p>Next, let’s add some blocks!</p>
+<div class="important admonition">
+<p class="admonition-title">Adding IP</p>
+<p>In the <strong>Diagram</strong> tab, click the <strong>+</strong> icon or right-click and
+select <strong>Add IP</strong>. Search for “Clocking Wizard”, select the
+result, then click Enter to instantiate it. Repeat this process
+to instantiate a “ZYNQ7 Processing System” and a “Processor System
+Reset”. When you instantiate the former, a banner will appear
+titled “Run Block Automation”; click on this, and run the
+automation, ensuring that <strong>Apply Board Preset</strong> is checked.
+This will create <code class="docutils literal notranslate"><span class="pre">DDR</span></code> and <code class="docutils literal notranslate"><span class="pre">FIXED_IO</span></code> connections; this
+is expected. See <a class="reference internal" href="../appendices/processing_system/"><span class="doc">Appendix A: Using the Zynq7 Processing System</span></a> for more
+details.</p>
+</div>
+<p>In the <strong>Diagram</strong> tab, you can now see a block diagram of our new
+IP blocks. Additionally, our hierarchy in the <strong>Design</strong> tab has
+been updated.</p>
+<p>Let’s make some connections between these IP blocks!</p>
+<div class="important admonition">
+<p class="admonition-title">Connecting IP</p>
+<p>In the <strong>Diagram</strong> tab, hover over the <code class="docutils literal notranslate"><span class="pre">FCLK_CLK0</span></code> pin of the
+ZYNQ7 Processing System, then click and drag to start making a
+connection. Drag this close to the <code class="docutils literal notranslate"><span class="pre">clk_in1</span></code> pin of the
+Clocking Wizard; once you get close, Vivado will recognize
+that <code class="docutils literal notranslate"><span class="pre">FCLK_CLK0</span></code> is a clock output, and <code class="docutils literal notranslate"><span class="pre">clk_in1</span></code> is a clock
+input, and will snap to that connection. Release your mouse to
+connect the two, then repeat to connect the following pins:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">FCLK_RESET0_N</span></code> of the processing system to <code class="docutils literal notranslate"><span class="pre">reset</span></code> of
+the clocking wizard and <code class="docutils literal notranslate"><span class="pre">ext_reset_in</span></code> of the system reset</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">M_AXI_GP0_ACLK</span></code> of the processing system to <code class="docutils literal notranslate"><span class="pre">FCLK_CLK0</span></code>
+of the processing system (just to avoid errors later on)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">clk_out1</span></code> of the clocking wizard to <code class="docutils literal notranslate"><span class="pre">slowest_sync_clk</span></code>
+of the system reset</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">locked</span></code> of the clocking wizard to <code class="docutils literal notranslate"><span class="pre">dcm_locked</span></code> of the
+system reset</p></li>
+</ul>
+</div>
+<p>We now need to customize our clocking wizard to get our
+desired frequency.
+While we could directly edit the block’s configurations in
+the <strong>Properties</strong> window, it’s far more clear to edit them with
+the <strong>Customize Block</strong> tool.</p>
+<div class="important admonition">
+<p class="admonition-title">Customizing Our Block</p>
+<p>In the <strong>Diagram</strong> tab, click on the Clocking Wizard, then click
+the wrench icon, or right-click and select “Customize Block”:</p>
+<ul>
+<li><p>Under “Clocking Options”, under “Input Frequency”, switch from
+“Auto” to “Manual”, then set it to 50MHz (the frequency of
+<code class="docutils literal notranslate"><span class="pre">FCLK_CLK0</span></code> from the processing system)</p></li>
+<li><p>Under “Output Clocks”:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>Change the output frequency of <code class="docutils literal notranslate"><span class="pre">clk_out1</span></code> to 10MHz</p></li>
+<li><p>At the bottom, change the reset type to “Active Low”</p></li>
+</ul>
+</div></blockquote>
+</li>
+<li><p>Click <strong>OK</strong></p></li>
+</ul>
+</div>
+<p>Finally, we need to create the external interface for our design!</p>
+<div class="important admonition">
+<p class="admonition-title">Adding Ports</p>
+<p>Right-click in the <strong>Diagram</strong> tab, then click <strong>Create Port</strong>
+(note that <strong>Create Interface</strong> port would allow us to create
+a particular kind of interface/bundle of signals, if we wanted)</p>
+<p>Name the port <code class="docutils literal notranslate"><span class="pre">clk_10mhz</span></code>, make the direction <strong>Output</strong>, and
+make the type <strong>Clock</strong>. Click <strong>OK</strong></p>
+<p>This should create a new pin in the block diagram. Connect it to
+<code class="docutils literal notranslate"><span class="pre">clk_out1</span></code> of the Clocking Wizard. Repeat this process to
+create an output named <code class="docutils literal notranslate"><span class="pre">reset_10mhz</span></code> connected to <code class="docutils literal notranslate"><span class="pre">mb_reset</span></code>
+of the system reset</p>
+</div>
+<p>At this point, our block design is finished! It should look like
+this (you can use the reload icon to make the block design
+layout look nicer, if you wish):</p>
+<a class="reference internal image-reference" href="../_images/clk_gen_block_diagram.png"><img alt="../_images/clk_gen_block_diagram.png" class="align-center" src="../_images/clk_gen_block_diagram.png" style="width: 80%;" />
+</a>
+<p>Vivado does not automatically save block designs for us (notice
+the star in the upper-left hand corner); do so either with
+<code class="docutils literal notranslate"><span class="pre">Ctrl+S</span></code> or <strong>File -&gt; Save Block Design</strong></p>
+<div class="important admonition">
+<p class="admonition-title">Finishing Up</p>
+<p>There are a few last things we want to do to finish up our
+block design:</p>
+<ul class="simple">
+<li><p><strong>Validation</strong>: Vivado can help validate our block design,
+to try and catch any obvious mistakes. Click on
+<strong>Tools -&gt; Validate Design</strong>. You may get some warnings about
+the DDR interface (since it uses unconventional timing),
+but the design should otherwise be good!</p></li>
+<li><p><strong>Generation</strong>: We additionally need to generate the design
+files for our block design. On the left-hand side, in
+<strong>Flow Navigator</strong>, under <strong>IP Integrator</strong>, click on
+<strong>Generate Block Design</strong>. Click <strong>Generate</strong> in the pop-up.
+Vivado will think for a bit, then click <strong>OK</strong> when it’s done.</p></li>
+</ul>
+</div>
+<p>The design files have now been generated for our design! If you go to
+the <strong>Sources</strong> window, under our <code class="docutils literal notranslate"><span class="pre">CLK_gen</span></code> block design, you should
+now see <code class="docutils literal notranslate"><span class="pre">CLK_gen.v</span></code>, which is the Verilog interface for our design.
+Examining the <code class="docutils literal notranslate"><span class="pre">CLK_gen</span></code> module (although it’s a little messy), you
+should find an output signal named <code class="docutils literal notranslate"><span class="pre">clk_10mhz</span></code>, and
+an output signal named <code class="docutils literal notranslate"><span class="pre">reset_10mhz</span></code> (as well as the <code class="docutils literal notranslate"><span class="pre">DDR</span></code> and
+<code class="docutils literal notranslate"><span class="pre">FIXED_IO</span></code> ports); these are our generated signals!</p>
+<p>After these steps, our block design will need to be saved again, then
+you can click the <strong>X</strong> in the top-right hand corner to close the
+block design and return to the normal view.</p>
+</div><div aria-labelledby="tab-0-VENM" class="sphinx-tabs-panel group-tab" hidden="true" id="panel-0-VENM" name="VENM" role="tabpanel" tabindex="0"><div class="important admonition">
+<p class="admonition-title">Creating A Block Design</p>
+<p>Either from <strong>Tools -&gt; Run Tcl Script</strong> or from the command
+line (shown below), run the <code class="docutils literal notranslate"><span class="pre">make_clk_gen.tcl</span></code> script</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>%<span class="w"> </span>vivado<span class="w"> </span>-mode<span class="w"> </span>batch<span class="w"> </span>-source<span class="w"> </span>../scripts/block_design/make_clk_gen.tcl
+</pre></div>
+</div>
+<p>Inspecting this Tcl script, we can see that most of what it does is
+call another script named <code class="docutils literal notranslate"><span class="pre">CLK_gen.tcl</span></code>. This script was dumped by
+Vivado; after creating the block design in the GUI (with the block
+design open), I used <strong>File -&gt; Export -&gt; Export Block Design</strong> to
+export the entire design as a Tcl script. This allows anyone else
+to perfectly recreate the design by running that script, and can
+be a great way to share block designs.</p>
+<p>The default script does check
+and fail if you’re using a different version of Vivado (to ensure
+compatibility), but if you’re using a later version, it’s probably
+safe to remove this check.</p>
+</div>
+</div></div>
+</section>
+<section id="connecting-to-our-design">
+<h2>Connecting to Our Design<a class="headerlink" href="#connecting-to-our-design" title="Link to this heading"></a></h2>
+<p>To use our block design, we can instantiate it like any other RTL module.
+Let’s create a top-level file to connect our block design and gray code
+module!</p>
+<div class="important admonition">
+<p class="admonition-title">Creating a Top-Level File</p>
+<p>Create a new design source file (either with your preferred code editor,
+or through the Vivado GUI with <strong>File -&gt; Add Sources</strong>, choosing a
+design source, and “Create File”) named <code class="docutils literal notranslate"><span class="pre">top.sv</span></code> with the following
+content (including connections for the <code class="docutils literal notranslate"><span class="pre">DDR</span></code> and <code class="docutils literal notranslate"><span class="pre">FIXED_IO</span></code> ports;
+see <a class="reference internal" href="../appendices/processing_system/"><span class="doc">Appendix A: Using the Zynq7 Processing System</span></a> for more details). Note that you
+may have to change the capitalization of <code class="docutils literal notranslate"><span class="pre">clk_gen</span></code>, depending on how
+Vivado saved the block design name:</p>
+<div class="highlight-sv notranslate"><div class="highlight"><pre><span></span><span class="c1">// =======================================================================</span>
+<span class="c1">// top.sv</span>
+<span class="c1">// =======================================================================</span>
+<span class="c1">// Our top-level design file</span>
+
+<span class="k">module</span><span class="w"> </span><span class="n">top</span><span class="w"> </span><span class="p">(</span>
+<span class="w">  </span><span class="k">input</span><span class="w">  </span><span class="kt">logic</span><span class="w">       </span><span class="n">en</span><span class="p">,</span>
+<span class="w">  </span><span class="k">output</span><span class="w"> </span><span class="kt">logic</span><span class="w"> </span><span class="p">[</span><span class="mi">3</span><span class="o">:</span><span class="mi">0</span><span class="p">]</span><span class="w"> </span><span class="n">gray_count</span><span class="p">,</span>
+
+<span class="w">  </span><span class="c1">// ---------------------------------------------------------------------</span>
+<span class="w">  </span><span class="c1">// Processing System Connections</span>
+<span class="w">  </span><span class="c1">// ---------------------------------------------------------------------</span>
+
+<span class="w">  </span><span class="k">inout</span><span class="w">  </span><span class="kt">logic</span><span class="w"> </span><span class="p">[</span><span class="mi">53</span><span class="o">:</span><span class="mi">0</span><span class="p">]</span><span class="w"> </span><span class="n">mio</span><span class="p">,</span>
+<span class="w">  </span><span class="k">inout</span><span class="w">  </span><span class="kt">logic</span><span class="w">        </span><span class="n">ddr_vrp</span><span class="p">,</span>
+<span class="w">  </span><span class="k">inout</span><span class="w">  </span><span class="kt">logic</span><span class="w">        </span><span class="n">ddr_vrn</span><span class="p">,</span>
+<span class="w">  </span><span class="k">inout</span><span class="w">  </span><span class="kt">logic</span><span class="w">        </span><span class="n">ddr_web</span><span class="p">,</span>
+<span class="w">  </span><span class="k">inout</span><span class="w">  </span><span class="kt">logic</span><span class="w">        </span><span class="n">ddr_ras_n</span><span class="p">,</span>
+<span class="w">  </span><span class="k">inout</span><span class="w">  </span><span class="kt">logic</span><span class="w">        </span><span class="n">ddr_odt</span><span class="p">,</span>
+<span class="w">  </span><span class="k">inout</span><span class="w">  </span><span class="kt">logic</span><span class="w">        </span><span class="n">ddr_drstb</span><span class="p">,</span>
+<span class="w">  </span><span class="k">inout</span><span class="w">  </span><span class="kt">logic</span><span class="w">  </span><span class="p">[</span><span class="mi">3</span><span class="o">:</span><span class="mi">0</span><span class="p">]</span><span class="w"> </span><span class="n">ddr_dqs</span><span class="p">,</span>
+<span class="w">  </span><span class="k">inout</span><span class="w">  </span><span class="kt">logic</span><span class="w">  </span><span class="p">[</span><span class="mi">3</span><span class="o">:</span><span class="mi">0</span><span class="p">]</span><span class="w"> </span><span class="n">ddr_dqs_n</span><span class="p">,</span>
+<span class="w">  </span><span class="k">inout</span><span class="w">  </span><span class="kt">logic</span><span class="w"> </span><span class="p">[</span><span class="mi">31</span><span class="o">:</span><span class="mi">0</span><span class="p">]</span><span class="w"> </span><span class="n">ddr_dq</span><span class="p">,</span>
+<span class="w">  </span><span class="k">inout</span><span class="w">  </span><span class="kt">logic</span><span class="w">  </span><span class="p">[</span><span class="mi">3</span><span class="o">:</span><span class="mi">0</span><span class="p">]</span><span class="w"> </span><span class="n">ddr_dm</span><span class="p">,</span>
+<span class="w">  </span><span class="k">inout</span><span class="w">  </span><span class="kt">logic</span><span class="w">        </span><span class="n">ddr_cs_n</span><span class="p">,</span>
+<span class="w">  </span><span class="k">inout</span><span class="w">  </span><span class="kt">logic</span><span class="w">        </span><span class="n">ddr_cke</span><span class="p">,</span>
+<span class="w">  </span><span class="k">inout</span><span class="w">  </span><span class="kt">logic</span><span class="w">        </span><span class="n">ddr_clk</span><span class="p">,</span>
+<span class="w">  </span><span class="k">inout</span><span class="w">  </span><span class="kt">logic</span><span class="w">        </span><span class="n">ddr_clk_n</span><span class="p">,</span>
+<span class="w">  </span><span class="k">inout</span><span class="w">  </span><span class="kt">logic</span><span class="w">        </span><span class="n">ddr_cas_n</span><span class="p">,</span>
+<span class="w">  </span><span class="k">inout</span><span class="w">  </span><span class="kt">logic</span><span class="w">  </span><span class="p">[</span><span class="mi">2</span><span class="o">:</span><span class="mi">0</span><span class="p">]</span><span class="w"> </span><span class="n">ddr_bankaddr</span><span class="p">,</span>
+<span class="w">  </span><span class="k">inout</span><span class="w">  </span><span class="kt">logic</span><span class="w"> </span><span class="p">[</span><span class="mi">14</span><span class="o">:</span><span class="mi">0</span><span class="p">]</span><span class="w"> </span><span class="n">ddr_addr</span><span class="p">,</span>
+<span class="w">  </span><span class="k">inout</span><span class="w">  </span><span class="kt">logic</span><span class="w">        </span><span class="n">ps_porb</span><span class="p">,</span>
+<span class="w">  </span><span class="k">inout</span><span class="w">  </span><span class="kt">logic</span><span class="w">        </span><span class="n">ps_srstb</span><span class="p">,</span>
+<span class="w">  </span><span class="k">inout</span><span class="w">  </span><span class="kt">logic</span><span class="w">        </span><span class="n">ps_clk</span>
+<span class="p">);</span>
+
+<span class="w">  </span><span class="c1">// ---------------------------------------------------------------------</span>
+<span class="w">  </span><span class="c1">// Instantiate our block design</span>
+<span class="w">  </span><span class="c1">// ---------------------------------------------------------------------</span>
+
+<span class="w">  </span><span class="kt">logic</span><span class="w"> </span><span class="n">clk_10mhz</span><span class="p">,</span><span class="w"> </span><span class="n">reset_10mhz</span><span class="p">;</span>
+
+<span class="w">  </span><span class="n">clk_gen</span><span class="w"> </span><span class="n">my_clk_gen</span><span class="w"> </span><span class="p">(</span>
+<span class="w">    </span><span class="p">.</span><span class="n">clk_10mhz</span><span class="w">   </span><span class="p">(</span><span class="n">clk_10mhz</span><span class="p">),</span>
+<span class="w">    </span><span class="p">.</span><span class="n">reset_10mhz</span><span class="w"> </span><span class="p">(</span><span class="n">reset_10mhz</span><span class="p">),</span>
+
+<span class="w">    </span><span class="c1">// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -</span>
+<span class="w">    </span><span class="c1">// Processing System Connections</span>
+<span class="w">    </span><span class="c1">// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -</span>
+
+<span class="w">    </span><span class="p">.</span><span class="n">DDR_addr</span><span class="w">          </span><span class="p">(</span><span class="n">ddr_addr</span><span class="p">),</span>
+<span class="w">    </span><span class="p">.</span><span class="n">DDR_ba</span><span class="w">            </span><span class="p">(</span><span class="n">ddr_bankaddr</span><span class="p">),</span>
+<span class="w">    </span><span class="p">.</span><span class="n">DDR_cas_n</span><span class="w">         </span><span class="p">(</span><span class="n">ddr_cas_n</span><span class="p">),</span>
+<span class="w">    </span><span class="p">.</span><span class="n">DDR_ck_n</span><span class="w">          </span><span class="p">(</span><span class="n">ddr_clk_n</span><span class="p">),</span>
+<span class="w">    </span><span class="p">.</span><span class="n">DDR_ck_p</span><span class="w">          </span><span class="p">(</span><span class="n">ddr_clk</span><span class="p">),</span>
+<span class="w">    </span><span class="p">.</span><span class="n">DDR_cke</span><span class="w">           </span><span class="p">(</span><span class="n">ddr_cke</span><span class="p">),</span>
+<span class="w">    </span><span class="p">.</span><span class="n">DDR_cs_n</span><span class="w">          </span><span class="p">(</span><span class="n">ddr_cs_n</span><span class="p">),</span>
+<span class="w">    </span><span class="p">.</span><span class="n">DDR_dm</span><span class="w">            </span><span class="p">(</span><span class="n">ddr_dm</span><span class="p">),</span>
+<span class="w">    </span><span class="p">.</span><span class="n">DDR_dq</span><span class="w">            </span><span class="p">(</span><span class="n">ddr_dq</span><span class="p">),</span>
+<span class="w">    </span><span class="p">.</span><span class="n">DDR_dqs_n</span><span class="w">         </span><span class="p">(</span><span class="n">ddr_dqs_n</span><span class="p">),</span>
+<span class="w">    </span><span class="p">.</span><span class="n">DDR_dqs_p</span><span class="w">         </span><span class="p">(</span><span class="n">ddr_dqs</span><span class="p">),</span>
+<span class="w">    </span><span class="p">.</span><span class="n">DDR_odt</span><span class="w">           </span><span class="p">(</span><span class="n">ddr_odt</span><span class="p">),</span>
+<span class="w">    </span><span class="p">.</span><span class="n">DDR_ras_n</span><span class="w">         </span><span class="p">(</span><span class="n">ddr_ras_n</span><span class="p">),</span>
+<span class="w">    </span><span class="p">.</span><span class="n">DDR_reset_n</span><span class="w">       </span><span class="p">(</span><span class="n">ddr_drstb</span><span class="p">),</span>
+<span class="w">    </span><span class="p">.</span><span class="n">DDR_we_n</span><span class="w">          </span><span class="p">(</span><span class="n">ddr_web</span><span class="p">),</span>
+<span class="w">    </span><span class="p">.</span><span class="n">FIXED_IO_ddr_vrn</span><span class="w">  </span><span class="p">(</span><span class="n">ddr_vrn</span><span class="p">),</span>
+<span class="w">    </span><span class="p">.</span><span class="n">FIXED_IO_ddr_vrp</span><span class="w">  </span><span class="p">(</span><span class="n">ddr_vrp</span><span class="p">),</span>
+<span class="w">    </span><span class="p">.</span><span class="n">FIXED_IO_mio</span><span class="w">      </span><span class="p">(</span><span class="n">mio</span><span class="p">),</span>
+<span class="w">    </span><span class="p">.</span><span class="n">FIXED_IO_ps_clk</span><span class="w">   </span><span class="p">(</span><span class="n">ps_clk</span><span class="p">),</span>
+<span class="w">    </span><span class="p">.</span><span class="n">FIXED_IO_ps_porb</span><span class="w">  </span><span class="p">(</span><span class="n">ps_porb</span><span class="p">),</span>
+<span class="w">    </span><span class="p">.</span><span class="n">FIXED_IO_ps_srstb</span><span class="w"> </span><span class="p">(</span><span class="n">ps_srstb</span><span class="p">)</span>
+<span class="w">  </span><span class="p">);</span>
+
+<span class="w">  </span><span class="c1">// ---------------------------------------------------------------------</span>
+<span class="w">  </span><span class="c1">// Instantiate our gray code counter</span>
+<span class="w">  </span><span class="c1">// ---------------------------------------------------------------------</span>
+
+<span class="w">  </span><span class="n">GrayCode</span><span class="w"> </span><span class="n">gray_code</span><span class="w"> </span><span class="p">(</span>
+<span class="w">    </span><span class="p">.</span><span class="n">clk</span><span class="w">        </span><span class="p">(</span><span class="n">clk_10mhz</span><span class="p">),</span>
+<span class="w">    </span><span class="p">.</span><span class="n">rst</span><span class="w">        </span><span class="p">(</span><span class="n">reset_10mhz</span><span class="p">),</span>
+<span class="w">    </span><span class="p">.</span><span class="n">en</span><span class="w">         </span><span class="p">(</span><span class="n">en</span><span class="p">),</span>
+<span class="w">    </span><span class="p">.</span><span class="n">gray_count</span><span class="w"> </span><span class="p">(</span><span class="n">gray_count</span><span class="p">)</span>
+<span class="w">  </span><span class="p">);</span>
+
+<span class="k">endmodule</span>
+</pre></div>
+</div>
+<p>If you didn’t create the file through Vivado, follow the steps from
+<a class="reference internal" href="../sources/"><span class="doc">Adding Sources</span></a> to add it as a design source.</p>
+<p>Vivado should now reorganize the design hierarchy in the <strong>Sources</strong>
+window to show <code class="docutils literal notranslate"><span class="pre">top</span></code> as the top-level module, additionally shown by
+bolding it. If you ever wish to manually change/identify the top-level
+module, you can do so by clicking the gear icon to access the project
+settings.</p>
+</div>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="../simulation/" class="btn btn-neutral float-left" title="Simulating Our Design" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="../synthesis/" class="btn btn-neutral float-right" title="Synthesizing Our Design" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, Aidan McNay.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

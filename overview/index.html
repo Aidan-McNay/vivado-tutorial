@@ -1,0 +1,215 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Overview &mdash; Vivado Tutorial  documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css?v=13237357" />
+      <link rel="stylesheet" type="text/css" href="../_static/tabs.css?v=a5c4661c" />
+
+  
+    <link rel="shortcut icon" href="../_static/favicon.ico"/>
+      <script src="../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../_static/documentation_options.js?v=187304be"></script>
+      <script src="../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script>let toggleHintShow = 'Click to show';</script>
+      <script>let toggleHintHide = 'Click to hide';</script>
+      <script>let toggleOpenOnPrint = 'true';</script>
+      <script src="../_static/togglebutton.js?v=4a39c7ea"></script>
+      <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+      <script src="../_static/tabs.js?v=3030b3cb"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex/" />
+    <link rel="search" title="Search" href="../search/" />
+    <link rel="next" title="Setup" href="../setup/" />
+    <link rel="prev" title="Vivado Tutorial" href="../" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../" class="icon icon-home">
+            Vivado Tutorial
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search/" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Overview</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Walkthrough</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../setup/">Setup</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../sources/">Adding Sources</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../simulation/">Simulating Our Design</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../block_designs/">Adding Block Designs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../synthesis/">Synthesizing Our Design</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../constraints/">Adding Constraints</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../implementation/">Implementing Our Design</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../bitstream/">Generating a Bitstream</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Appendices</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../appendices/processing_system/">Appendix A: Using the Zynq7 Processing System</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../appendices/debug_probes/">Appendix B: Using Debug Probes</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../">Vivado Tutorial</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Overview</li>
+      <li class="wy-breadcrumbs-aside">
+              <a href="https://github.com/Aidan-McNay/vivado-tutorial/blob/main/docs/overview.rst" class="fa fa-github"> Edit on GitHub</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="overview">
+<h1>Overview<a class="headerlink" href="#overview" title="Link to this heading"></a></h1>
+<div class="warning admonition">
+<p class="admonition-title">Vivado Version</p>
+<p>This tutorial was created for Vivado 2019.2 on Linux. The high-level
+workflow (and likely all GUI commands) will hold for future versions,
+but the exact Tcl commands may change, especially based on paths if
+you are using Windows instead of Linux.</p>
+</div>
+<p>Welcome! This tutorial aims to familiarize you with Vivado Design Suite,
+as well as take you through the process of completing a design from
+inception to implementation on an FPGA.</p>
+<p>This tutorial will instruct you to run some command-line arguments; when
+doing so, they will be in the following format (users should omit the
+<code class="docutils literal notranslate"><span class="pre">%</span></code>, which is used to denote a command):</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>%<span class="w"> </span><span class="nb">echo</span><span class="w"> </span><span class="s2">&quot;Hello, Vivado Tutorial User&quot;</span>
+</pre></div>
+</div>
+<p>This tutorial assumes that:</p>
+<ul class="simple">
+<li><p>You have access to Vivado Design Suite</p></li>
+<li><p>You have previous experience with RTL Design</p></li>
+<li><p>You have access to a Xilinx FPGA Board. This tutorial will assume
+a <a class="reference external" href="https://digilent.com/shop/zybo-z7-zynq-7000-arm-fpga-soc-development-board/">ZYBO Z7-10 Board</a>,
+as it’s what is planned for Cornell’s ECE department, but the
+walkthrough can be adapted for other platforms, and will mention
+what steps are board-dependent</p></li>
+</ul>
+<div class="info admonition">
+<p class="admonition-title">Use on ECELinux</p>
+<p>Cornell ECE students have access to Vivado Design Suite through
+ECELinux (as of time of writing). This is done by first loading
+the <code class="docutils literal notranslate"><span class="pre">xilinx</span></code> module:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>%<span class="w"> </span>module<span class="w"> </span>load<span class="w"> </span>xilinx
+</pre></div>
+</div>
+<p>From there, Vivado can be opened simply with</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>%<span class="w"> </span>vivado
+</pre></div>
+</div>
+<p>Note that this requires a graphical connection; this can be done
+through X11 Forwarding, using a workstation in Phillips 314, or
+a separate application like</p>
+<ul class="simple">
+<li><p>Microsoft’s Remote Desktop (preferred)</p></li>
+<li><p><a class="reference external" href="https://mobaxterm.mobatek.net/">MobaXTerm</a></p></li>
+<li><p><a class="reference external" href="https://wiki.x2go.org/doku.php">X2Go</a></p></li>
+</ul>
+</div>
+<p>When the tutorial asks you to perform an action, it will be in a green
+box like the following:</p>
+<div class="important admonition">
+<p class="admonition-title">Example Task</p>
+<p>This is a task you should do! (well, not really in this case)</p>
+</div>
+<p>Finally, many of the tasks we’ll do with Vivado can be done through the
+GUI, but can also be scripted with a <a class="reference external" href="https://docs.amd.com/r/2021.2-English/ug835-vivado-tcl-commands/Revision-History">Tcl script</a>,
+which Vivado can use to automate commands. While the tutorial won’t
+go over scripts for each of these actions, it will provide them if
+you wish to examine/use them. Tasks that have this option will have
+a corresponding toggle button above them, shown below:</p>
+<div class="sphinx-tabs docutils container">
+<div aria-label="Tabbed content" class="closeable" role="tablist"><button aria-controls="panel-0-R1VJ" aria-selected="true" class="sphinx-tabs-tab group-tab" id="tab-0-R1VJ" name="R1VJ" role="tab" tabindex="0">GUI</button><button aria-controls="panel-0-VENM" aria-selected="false" class="sphinx-tabs-tab group-tab" id="tab-0-VENM" name="VENM" role="tab" tabindex="-1">TCL</button></div><div aria-labelledby="tab-0-R1VJ" class="sphinx-tabs-panel group-tab" id="panel-0-R1VJ" name="R1VJ" role="tabpanel" tabindex="0"><div class="important admonition">
+<p class="admonition-title">Example Task</p>
+<p>This is a task to be run in Vivado’s Graphical User
+Interface (GUI)!</p>
+</div>
+</div><div aria-labelledby="tab-0-VENM" class="sphinx-tabs-panel group-tab" hidden="true" id="panel-0-VENM" name="VENM" role="tabpanel" tabindex="0"><div class="important admonition">
+<p class="admonition-title">Example Task</p>
+<p>This is a task to run actions with a Tcl script!</p>
+</div>
+</div></div>
+<p>The GUI and Tcl commands are entirely interchangeable, so you can switch
+between them at any time. In general, Tcl scripts are run with:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>%<span class="w"> </span>vivado<span class="w"> </span>-mode<span class="w"> </span>batch<span class="w"> </span>-source<span class="w"> </span>/path/to/script.tcl
+</pre></div>
+</div>
+<p>They can also be run from Vivado’s GUI (<code class="docutils literal notranslate"><span class="pre">Tools</span> <span class="pre">-&gt;</span> <span class="pre">Run</span> <span class="pre">Tcl</span> <span class="pre">Script...</span></code>);
+scripts not run from an open project will have to open the project
+themselves (look at scripts that edit a project for an example).</p>
+<p>Finally, if you wish, you can step through commands in a Tcl shell with</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>%<span class="w"> </span>vivado<span class="w"> </span>-mode<span class="w"> </span>tcl
+</pre></div>
+</div>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="../" class="btn btn-neutral float-left" title="Vivado Tutorial" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="../setup/" class="btn btn-neutral float-right" title="Setup" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, Aidan McNay.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

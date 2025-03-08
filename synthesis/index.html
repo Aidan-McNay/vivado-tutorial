@@ -1,0 +1,223 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Synthesizing Our Design &mdash; Vivado Tutorial  documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css?v=13237357" />
+      <link rel="stylesheet" type="text/css" href="../_static/tabs.css?v=a5c4661c" />
+
+  
+    <link rel="shortcut icon" href="../_static/favicon.ico"/>
+      <script src="../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../_static/documentation_options.js?v=187304be"></script>
+      <script src="../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script>let toggleHintShow = 'Click to show';</script>
+      <script>let toggleHintHide = 'Click to hide';</script>
+      <script>let toggleOpenOnPrint = 'true';</script>
+      <script src="../_static/togglebutton.js?v=4a39c7ea"></script>
+      <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+      <script src="../_static/tabs.js?v=3030b3cb"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex/" />
+    <link rel="search" title="Search" href="../search/" />
+    <link rel="next" title="Adding Constraints" href="../constraints/" />
+    <link rel="prev" title="Adding Block Designs" href="../block_designs/" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../" class="icon icon-home">
+            Vivado Tutorial
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search/" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../overview/">Overview</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Walkthrough</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../setup/">Setup</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../sources/">Adding Sources</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../simulation/">Simulating Our Design</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../block_designs/">Adding Block Designs</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Synthesizing Our Design</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#id1">Synthesizing Our Design</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#viewing-reports">Viewing Reports</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../constraints/">Adding Constraints</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../implementation/">Implementing Our Design</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../bitstream/">Generating a Bitstream</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Appendices</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../appendices/processing_system/">Appendix A: Using the Zynq7 Processing System</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../appendices/debug_probes/">Appendix B: Using Debug Probes</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../">Vivado Tutorial</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Synthesizing Our Design</li>
+      <li class="wy-breadcrumbs-aside">
+              <a href="https://github.com/Aidan-McNay/vivado-tutorial/blob/main/docs/synthesis.rst" class="fa fa-github"> Edit on GitHub</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="synthesizing-our-design">
+<h1>Synthesizing Our Design<a class="headerlink" href="#synthesizing-our-design" title="Link to this heading"></a></h1>
+<p>Now that we have our top-level module, we can push it through synthesis!
+This will generate the exact hardware resources that will be used to
+represent our design</p>
+<div class="note admonition">
+<p class="admonition-title">RTL Elaboration</p>
+<p>In the Flow Manager, one step you’ll see that I’m skipping over is
+RTL Elaboration. While this step isn’t necessary to complete on
+its own (it will be run as part of synthesis), you may wish to
+explore it on your own, as it will generate a nice RTL block
+diagram of your design.</p>
+</div>
+<section id="id1">
+<h2>Synthesizing Our Design<a class="headerlink" href="#id1" title="Link to this heading"></a></h2>
+<div class="sphinx-tabs docutils container">
+<div aria-label="Tabbed content" class="closeable" role="tablist"><button aria-controls="panel-0-R1VJ" aria-selected="true" class="sphinx-tabs-tab group-tab" id="tab-0-R1VJ" name="R1VJ" role="tab" tabindex="0">GUI</button><button aria-controls="panel-0-VENM" aria-selected="false" class="sphinx-tabs-tab group-tab" id="tab-0-VENM" name="VENM" role="tab" tabindex="-1">TCL</button></div><div aria-labelledby="tab-0-R1VJ" class="sphinx-tabs-panel group-tab" id="panel-0-R1VJ" name="R1VJ" role="tabpanel" tabindex="0"><div class="important admonition">
+<p class="admonition-title">Synthesizing Our Design</p>
+<p>On the left-hand side, in <strong>Flow Navigator</strong>, under
+<strong>Synthesis</strong>, click <strong>Run Synthesis</strong>, then click
+<strong>OK</strong>.</p>
+<p>This may take a while, and will run in the background; if
+you look in the top-right corner, you will see a spinning
+wheel that gives some indication what is going on.</p>
+<p>After a minute, you will get a pop-up (hopefully) saying
+“Synthesis successfully completed” - if synthesis wasn’t
+successful, you would’ve gotten errors in the <strong>Messages</strong>
+tab. Select “Open Synthesized Design”, then click <strong>OK</strong>
+(the same as selecting it from the Flow Navigator).</p>
+<p>You may have some warnings pop up at this stage; you
+can ignore them for now, and click <strong>OK</strong>. Leave this
+window open, as we’ll need it for adding constraints.</p>
+</div>
+</div><div aria-labelledby="tab-0-VENM" class="sphinx-tabs-panel group-tab" hidden="true" id="panel-0-VENM" name="VENM" role="tabpanel" tabindex="0"><div class="important admonition">
+<p class="admonition-title">Synthesizing Our Design</p>
+<p>Either from <strong>Tools -&gt; Run Tcl Script</strong> or from the command
+line (shown below), run the <code class="docutils literal notranslate"><span class="pre">synthesize_design.tcl</span></code> script</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>%<span class="w"> </span>vivado<span class="w"> </span>-mode<span class="w"> </span>batch<span class="w"> </span>-source<span class="w"> </span>../scripts/synthesis/synthesize_design.tcl
+</pre></div>
+</div>
+<p>Check the output logs for the line
+<code class="docutils literal notranslate"><span class="pre">synth_design</span> <span class="pre">completed</span> <span class="pre">successfully</span></code>, and you should be good!</p>
+</div>
+</div></div>
+</section>
+<section id="viewing-reports">
+<h2>Viewing Reports<a class="headerlink" href="#viewing-reports" title="Link to this heading"></a></h2>
+<p>After our design is synthesized, we can gain some information about its
+resource utilization. While this isn’t the most accurate (it will be
+more accurate after future steps), it can give us a good sense of what
+Vivado expects our design to use.</p>
+<div class="sphinx-tabs docutils container">
+<div aria-label="Tabbed content" class="closeable" role="tablist"><button aria-controls="panel-1-R1VJ" aria-selected="true" class="sphinx-tabs-tab group-tab" id="tab-1-R1VJ" name="R1VJ" role="tab" tabindex="0">GUI</button><button aria-controls="panel-1-VENM" aria-selected="false" class="sphinx-tabs-tab group-tab" id="tab-1-VENM" name="VENM" role="tab" tabindex="-1">TCL</button></div><div aria-labelledby="tab-1-R1VJ" class="sphinx-tabs-panel group-tab" id="panel-1-R1VJ" name="R1VJ" role="tabpanel" tabindex="0"><div class="important admonition">
+<p class="admonition-title">Viewing Synthesis Reports</p>
+<p>Open the <strong>Reports</strong> window; it may already be open as a
+tab on the bottom, or you can open it with <strong>Window -&gt; Reports</strong></p>
+<p>Under <strong>Synthesis</strong>, you should now have a tab titled
+<strong>Synth Design</strong>, which contains the synthesis results from
+our design. The <code class="docutils literal notranslate"><span class="pre">synthesis_report</span></code> is simply the raw message
+output from Vivado, but the <code class="docutils literal notranslate"><span class="pre">report_utilization</span></code> will
+detail the utilization of our design - double-click it to open.
+Browse through the report, and see if you can find some
+interesting information about how many resources our design
+uses.</p>
+<p>Additionally under <strong>Synthesis</strong> is a tab titled
+<strong>Out-Of-Context Module Runs</strong>; this is where Vivado
+places any runs that were completed separately, but overall
+as part of synthesis. Examining this, you should find a
+section for our <code class="docutils literal notranslate"><span class="pre">CLK_gen</span></code> block design; this should
+contain three synthesis reports, one for each of our IP
+blocks that we used.</p>
+<p>Lastly, if you return to the <strong>Project Summary</strong> window,
+you can see a high-level overview of the utilization in
+the bottom-left hand corner (as well as many warnings,
+which we’ll resolve in the next section).</p>
+</div>
+</div><div aria-labelledby="tab-1-VENM" class="sphinx-tabs-panel group-tab" hidden="true" id="panel-1-VENM" name="VENM" role="tabpanel" tabindex="0"><div class="important admonition">
+<p class="admonition-title">Viewing Synthesis Reports</p>
+<p>In the project directory, all of the outputs of flow steps
+are under <code class="docutils literal notranslate"><span class="pre">vivado-walkthrough.runs</span></code>. Here, you should now
+find a <code class="docutils literal notranslate"><span class="pre">synth_1</span></code> directory containing a file titled
+<code class="docutils literal notranslate"><span class="pre">top_utilization_synth.rpt</span></code>; this is the utilization
+report, which you can browse the same. Additionally in
+<code class="docutils literal notranslate"><span class="pre">vivado-walkthrough.runs</span></code> are directories for each of
+the out-of-context IP block synthesis runs.</p>
+</div>
+</div></div>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="../block_designs/" class="btn btn-neutral float-left" title="Adding Block Designs" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="../constraints/" class="btn btn-neutral float-right" title="Adding Constraints" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, Aidan McNay.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

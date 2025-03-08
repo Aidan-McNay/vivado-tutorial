@@ -1,0 +1,216 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Generating a Bitstream &mdash; Vivado Tutorial  documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css?v=13237357" />
+      <link rel="stylesheet" type="text/css" href="../_static/tabs.css?v=a5c4661c" />
+
+  
+    <link rel="shortcut icon" href="../_static/favicon.ico"/>
+      <script src="../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../_static/documentation_options.js?v=187304be"></script>
+      <script src="../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script>let toggleHintShow = 'Click to show';</script>
+      <script>let toggleHintHide = 'Click to hide';</script>
+      <script>let toggleOpenOnPrint = 'true';</script>
+      <script src="../_static/togglebutton.js?v=4a39c7ea"></script>
+      <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+      <script src="../_static/tabs.js?v=3030b3cb"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex/" />
+    <link rel="search" title="Search" href="../search/" />
+    <link rel="next" title="Appendix A: Using the Zynq7 Processing System" href="../appendices/processing_system/" />
+    <link rel="prev" title="Implementing Our Design" href="../implementation/" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../" class="icon icon-home">
+            Vivado Tutorial
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search/" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../overview/">Overview</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Walkthrough</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../setup/">Setup</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../sources/">Adding Sources</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../simulation/">Simulating Our Design</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../block_designs/">Adding Block Designs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../synthesis/">Synthesizing Our Design</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../constraints/">Adding Constraints</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../implementation/">Implementing Our Design</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Generating a Bitstream</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#id1">Generating a Bitstream</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#putting-a-bitstream-on-the-board">Putting a Bitstream on the Board</a></li>
+</ul>
+</li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Appendices</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../appendices/processing_system/">Appendix A: Using the Zynq7 Processing System</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../appendices/debug_probes/">Appendix B: Using Debug Probes</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../">Vivado Tutorial</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Generating a Bitstream</li>
+      <li class="wy-breadcrumbs-aside">
+              <a href="https://github.com/Aidan-McNay/vivado-tutorial/blob/main/docs/bitstream.rst" class="fa fa-github"> Edit on GitHub</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="generating-a-bitstream">
+<h1>Generating a Bitstream<a class="headerlink" href="#generating-a-bitstream" title="Link to this heading"></a></h1>
+<p>Now that we have our final design, we have to get it into a form that we
+can put on our board. This is known as a <em>bitstream</em>; an (encrypted) file
+that represents our implemented design in its entirety.</p>
+<div class="note admonition">
+<p class="admonition-title">Encryption</p>
+<p>Having the bitstream encrypted is useful from a security perspective;
+while you may not want sensitive design files to get out, you can
+leave your bitstream lying around, and no one will be able to
+reverse-engineer the design it represents.</p>
+</div>
+<section id="id1">
+<h2>Generating a Bitstream<a class="headerlink" href="#id1" title="Link to this heading"></a></h2>
+<div class="sphinx-tabs docutils container">
+<div aria-label="Tabbed content" class="closeable" role="tablist"><button aria-controls="panel-0-R1VJ" aria-selected="true" class="sphinx-tabs-tab group-tab" id="tab-0-R1VJ" name="R1VJ" role="tab" tabindex="0">GUI</button><button aria-controls="panel-0-VENM" aria-selected="false" class="sphinx-tabs-tab group-tab" id="tab-0-VENM" name="VENM" role="tab" tabindex="-1">TCL</button></div><div aria-labelledby="tab-0-R1VJ" class="sphinx-tabs-panel group-tab" id="panel-0-R1VJ" name="R1VJ" role="tabpanel" tabindex="0"><div class="important admonition">
+<p class="admonition-title">Generating a Bitstream</p>
+<p>On the left-hand side, in <strong>Flow Navigator</strong>, under
+<strong>Program and Debug</strong>, click <strong>Generate Bitstream</strong>, then click
+<strong>OK</strong>.</p>
+<p>This should hopefully take much less time than the implementation,
+as we’re not going through the flow, but simply packaging the
+result.</p>
+<p>Eventually, you should hopefully get a pop-up that the run
+completed successfully - we’re good to go!</p>
+</div>
+</div><div aria-labelledby="tab-0-VENM" class="sphinx-tabs-panel group-tab" hidden="true" id="panel-0-VENM" name="VENM" role="tabpanel" tabindex="0"><div class="important admonition">
+<p class="admonition-title">Generating a Bitstream</p>
+<p>Either from <strong>Tools -&gt; Run Tcl Script</strong> or from the command
+line (shown below), run the <code class="docutils literal notranslate"><span class="pre">impl_design.tcl</span></code> script</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>%<span class="w"> </span>vivado<span class="w"> </span>-mode<span class="w"> </span>batch<span class="w"> </span>-source<span class="w"> </span>../scripts/bitstream/gen_bitstream.tcl
+</pre></div>
+</div>
+<p>Check the output logs for the line
+<code class="docutils literal notranslate"><span class="pre">write_bitstream</span> <span class="pre">completed</span> <span class="pre">successfully</span></code>, and you should be good!</p>
+</div>
+</div></div>
+</section>
+<section id="putting-a-bitstream-on-the-board">
+<h2>Putting a Bitstream on the Board<a class="headerlink" href="#putting-a-bitstream-on-the-board" title="Link to this heading"></a></h2>
+<p>After this process, we should have a bitstream (located as <code class="docutils literal notranslate"><span class="pre">top.bit</span></code> in
+<code class="docutils literal notranslate"><span class="pre">vivado-walkthrough.runs/impl_1</span></code>)</p>
+<div class="note admonition">
+<p class="admonition-title">Debug Probes</p>
+<p>While the <code class="docutils literal notranslate"><span class="pre">.bit</span></code> file is the primary output, some users may later
+incorporate debug probes into their design; see
+<a class="reference internal" href="../appendices/debug_probes/"><span class="doc">Appendix B: Using Debug Probes</span></a> for more
+details. In that case, we’d also have a <code class="docutils literal notranslate"><span class="pre">top.ltx</span></code> file that specifies
+our debug probe configuration.</p>
+</div>
+<p>All that’s left to do is put this on our board - this is best done from
+the GUI.</p>
+<div class="important admonition">
+<p class="admonition-title">Programming the Board</p>
+<p>Ensure that your device is on and plugged in.</p>
+<p>On the left-hand side, in <strong>Flow Navigator</strong>, under
+<strong>Program and Debug</strong>, click <strong>Open Hardware Manager</strong>.</p>
+<p>You should initially have a banner at the top that says
+“No hardware target open”; click <strong>Open target</strong>, then
+<strong>Auto Connect</strong>. This will launch a “host” to connect to
+your device; you should see it show up on the left-hand
+side.</p>
+<p>Once there, click <strong>Program Device</strong> in the
+banner (or from <strong>Tools</strong>) to program the device.
+Vivado should automatically identify the bitstream
+(and debug probes, if any) associated with your design;
+click <strong>Program</strong>.</p>
+<p>Vivado will take a second to program the device, and then
+you should be good to go! For this design, this looks like
+the LEDs cycling through all gray codes when the switch is
+on (looks like the LEDs are all on, since it happens very
+fast), and pauses on a particular one when the switch is
+turned off.</p>
+<p>Congratulations - you’ve just programmed a board with Vivado!</p>
+</div>
+<p>This is also where the portability of bitstreams comes in handy. If you
+need to program from a different device than you compiled with (perhaps
+because of license availability), you can simply transfer the bitstream
+(and possibly the debug probes), and open Vivado only with the
+hardware manager to program a device (which doesn’t require a license).</p>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="../implementation/" class="btn btn-neutral float-left" title="Implementing Our Design" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="../appendices/processing_system/" class="btn btn-neutral float-right" title="Appendix A: Using the Zynq7 Processing System" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, Aidan McNay.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

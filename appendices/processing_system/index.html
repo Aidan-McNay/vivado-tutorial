@@ -1,0 +1,808 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Appendix A: Using the Zynq7 Processing System &mdash; Vivado Tutorial  documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="../../_static/togglebutton.css?v=13237357" />
+
+  
+    <link rel="shortcut icon" href="../../_static/favicon.ico"/>
+      <script src="../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../_static/documentation_options.js?v=187304be"></script>
+      <script src="../../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script>let toggleHintShow = 'Click to show';</script>
+      <script>let toggleHintHide = 'Click to hide';</script>
+      <script>let toggleOpenOnPrint = 'true';</script>
+      <script src="../../_static/togglebutton.js?v=4a39c7ea"></script>
+      <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex/" />
+    <link rel="search" title="Search" href="../../search/" />
+    <link rel="next" title="Appendix B: Using Debug Probes" href="../debug_probes/" />
+    <link rel="prev" title="Generating a Bitstream" href="../../bitstream/" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../" class="icon icon-home">
+            Vivado Tutorial
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search/" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../overview/">Overview</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Walkthrough</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../setup/">Setup</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sources/">Adding Sources</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../simulation/">Simulating Our Design</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../block_designs/">Adding Block Designs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../synthesis/">Synthesizing Our Design</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../constraints/">Adding Constraints</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../implementation/">Implementing Our Design</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../bitstream/">Generating a Bitstream</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Appendices</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Appendix A: Using the Zynq7 Processing System</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#using-in-a-block-design">Using in a Block Design</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#top-level-connections">Top-Level Connections</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../debug_probes/">Appendix B: Using Debug Probes</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../">Vivado Tutorial</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Appendix A: Using the Zynq7 Processing System</li>
+      <li class="wy-breadcrumbs-aside">
+              <a href="https://github.com/Aidan-McNay/vivado-tutorial/blob/main/docs/appendices/processing_system.rst" class="fa fa-github"> Edit on GitHub</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="appendix-a-using-the-zynq7-processing-system">
+<h1>Appendix A: Using the Zynq7 Processing System<a class="headerlink" href="#appendix-a-using-the-zynq7-processing-system" title="Link to this heading"></a></h1>
+<p>Many designs will want to include the Zynq7 Processing System in their
+block designs; it helps define the connections from user hardware to the
+embedded microcontroller. Beyond this, it also provides some useful
+features, including:</p>
+<ul class="simple">
+<li><p>A generated 50MHz clock (although the system can be directly
+configured to produce up to 4 clocks of different frequencies from
+the PLLs)</p></li>
+<li><p>A reset signal (user hardware otherwise has no way to connect to
+the on-board reset button)</p></li>
+</ul>
+<p>In the documentation, you will commonly see the system abbreviated as
+<strong>PS</strong>. The other common acronym is the other section of the board,
+the Programmable Logic (PL). If you don’t wish to use the system
+clock, the Zybo additionally provides a 125MHz reference clock
+directly to the PL.</p>
+<section id="using-in-a-block-design">
+<h2>Using in a Block Design<a class="headerlink" href="#using-in-a-block-design" title="Link to this heading"></a></h2>
+<p>Using the PS in a block design involves instantiating the appropriate
+system. However, when you instantiate it, you will see a banner at the
+top indicating to <strong>Run Block Automation</strong>. Users should click this,
+and ensure that <strong>Apply Board Preset</strong> is checked. This is how the
+PS will know the correct pin mapping.</p>
+<div class="warning admonition">
+<p class="admonition-title">Presets</p>
+<p>If you choose to further customize the board, you will notice that
+you can set the “preset” of the board. Unfortunately, this doesn’t
+work for the Zybo Z7-10 (<a class="reference external" href="https://forum.digilent.com/topic/9087-zybo-z7-20-zynq-presets/">source</a>),
+and the presets don’t appear. Despite the current preset being
+“None”, our design is still properly configured; you can see this
+with the check marks on the block diagram, which indicate that the
+respective peripheral is configured:</p>
+<a class="reference internal image-reference" href="../../_images/configured-zynq7.png"><img alt="../../_images/configured-zynq7.png" class="align-center" src="../../_images/configured-zynq7.png" style="width: 70%;" />
+</a>
+</div>
+<p>Note that this additionally created <code class="docutils literal notranslate"><span class="pre">DDR</span></code> and <code class="docutils literal notranslate"><span class="pre">FIXED_IO</span></code> ports; <strong>those
+are necessary</strong> (see below)</p>
+</section>
+<section id="top-level-connections">
+<h2>Top-Level Connections<a class="headerlink" href="#top-level-connections" title="Link to this heading"></a></h2>
+<p>Block Designs come with their own constraints. When instantiating the
+Zynq7 system, the constraints it creates are shown below:</p>
+<div class="toggle highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1">############################################################################</span>
+<span class="c1">##</span>
+<span class="c1">##  Xilinx, Inc. 2006            www.xilinx.com</span>
+<span class="c1">############################################################################</span>
+<span class="c1">##  File name :       ps7_constraints.xdc</span>
+<span class="c1">##</span>
+<span class="c1">##  Details :     Constraints file</span>
+<span class="c1">##                    FPGA family:       zynq</span>
+<span class="c1">##                    FPGA:              xc7z010clg400-1</span>
+<span class="c1">##                    Device Size:        xc7z010</span>
+<span class="c1">##                    Package:            clg400</span>
+<span class="c1">##                    Speedgrade:         -1</span>
+<span class="c1">##</span>
+<span class="c1">##</span>
+<span class="c1">############################################################################</span>
+<span class="c1">############################################################################</span>
+<span class="c1">############################################################################</span>
+<span class="c1"># Clock constraints                                                        #</span>
+<span class="c1">############################################################################</span>
+<span class="n">create_clock</span> <span class="o">-</span><span class="n">name</span> <span class="n">clk_fpga_0</span> <span class="o">-</span><span class="n">period</span> <span class="s2">&quot;20&quot;</span> <span class="p">[</span><span class="n">get_pins</span> <span class="s2">&quot;PS7_i/FCLKCLK[0]&quot;</span><span class="p">]</span>
+<span class="n">set_input_jitter</span> <span class="n">clk_fpga_0</span> <span class="mf">0.6</span>
+<span class="c1">#The clocks are asynchronous, user should constrain them appropriately.#</span>
+
+
+<span class="c1">############################################################################</span>
+<span class="c1"># I/O STANDARDS and Location Constraints                                   #</span>
+<span class="c1">############################################################################</span>
+
+<span class="c1">#  Enet 0 / mdio / MIO[53]</span>
+<span class="n">set_property</span> <span class="n">iostandard</span> <span class="s2">&quot;LVCMOS18&quot;</span> <span class="p">[</span><span class="n">get_ports</span> <span class="s2">&quot;MIO[53]&quot;</span><span class="p">]</span>
+<span class="n">set_property</span> <span class="n">PACKAGE_PIN</span> <span class="s2">&quot;C11&quot;</span> <span class="p">[</span><span class="n">get_ports</span> <span class="s2">&quot;MIO[53]&quot;</span><span class="p">]</span>
+<span class="n">set_property</span> <span class="n">slew</span> <span class="s2">&quot;slow&quot;</span> <span class="p">[</span><span class="n">get_ports</span> <span class="s2">&quot;MIO[53]&quot;</span><span class="p">]</span>
+<span class="n">set_property</span> <span class="n">drive</span> <span class="s2">&quot;8&quot;</span> <span class="p">[</span><span class="n">get_ports</span> <span class="s2">&quot;MIO[53]&quot;</span><span class="p">]</span>
+<span class="n">set_property</span> <span class="n">pullup</span> <span class="s2">&quot;TRUE&quot;</span> <span class="p">[</span><span class="n">get_ports</span> <span class="s2">&quot;MIO[53]&quot;</span><span class="p">]</span>
+<span class="n">set_property</span> <span class="n">PIO_DIRECTION</span> <span class="s2">&quot;BIDIR&quot;</span> <span class="p">[</span><span class="n">get_ports</span> <span class="s2">&quot;MIO[53]&quot;</span><span class="p">]</span>
+<span class="c1">#  Enet 0 / mdc / MIO[52]</span>
+<span class="n">set_property</span> <span class="n">iostandard</span> <span class="s2">&quot;LVCMOS18&quot;</span> <span class="p">[</span><span class="n">get_ports</span> <span class="s2">&quot;MIO[52]&quot;</span><span class="p">]</span>
+<span class="n">set_property</span> <span class="n">PACKAGE_PIN</span> <span class="s2">&quot;C10&quot;</span> <span class="p">[</span><span class="n">get_ports</span> <span class="s2">&quot;MIO[52]&quot;</span><span class="p">]</span>
+<span class="n">set_property</span> <span class="n">slew</span> <span class="s2">&quot;slow&quot;</span> <span class="p">[</span><span class="n">get_ports</span> <span class="s2">&quot;MIO[52]&quot;</span><span class="p">]</span>
+<span class="n">set_property</span> <span class="n">drive</span> <span class="s2">&quot;8&quot;</span> <span class="p">[</span><span class="n">get_ports</span> <span class="s2">&quot;MIO[52]&quot;</span><span class="p">]</span>
+<span class="n">set_property</span> <span class="n">pullup</span> <span class="s2">&quot;TRUE&quot;</span> <span class="p">[</span><span class="n">get_ports</span> <span class="s2">&quot;MIO[52]&quot;</span><span class="p">]</span>
+<span class="n">set_property</span> <span class="n">PIO_DIRECTION</span> <span class="s2">&quot;OUTPUT&quot;</span> <span class="p">[</span><span class="n">get_ports</span> <span class="s2">&quot;MIO[52]&quot;</span><span class="p">]</span>
+<span class="c1">#  UART 1 / rx / MIO[49]</span>
+<span class="n">set_property</span> <span class="n">iostandard</span> <span class="s2">&quot;LVCMOS18&quot;</span> <span class="p">[</span><span class="n">get_ports</span> <span class="s2">&quot;MIO[49]&quot;</span><span class="p">]</span>
+<span class="n">set_property</span> <span class="n">PACKAGE_PIN</span> <span class="s2">&quot;C12&quot;</span> <span class="p">[</span><span class="n">get_ports</span> <span class="s2">&quot;MIO[49]&quot;</span><span class="p">]</span>
+<span class="n">set_property</span> <span class="n">slew</span> <span class="s2">&quot;slow&quot;</span> <span class="p">[</span><span class="n">get_ports</span> <span class="s2">&quot;MIO[49]&quot;</span><span class="p">]</span>
+<span class="n">set_property</span> <span class="n">drive</span> <span class="s2">&quot;8&quot;</span> <span class="p">[</span><span class="n">get_ports</span> <span class="s2">&quot;MIO[49]&quot;</span><span class="p">]</span>
+<span class="n">set_property</span> <span class="n">pullup</span> <span class="s2">&quot;TRUE&quot;</span> <span class="p">[</span><span class="n">get_ports</span> <span class="s2">&quot;MIO[49]&quot;</span><span class="p">]</span>
+<span class="n">set_property</span> <span class="n">PIO_DIRECTION</span> <span class="s2">&quot;INPUT&quot;</span> <span class="p">[</span><span class="n">get_ports</span> <span class="s2">&quot;MIO[49]&quot;</span><span class="p">]</span>
+<span class="c1">#  UART 1 / tx / MIO[48]</span>
+<span class="n">set_property</span> <span class="n">iostandard</span> <span class="s2">&quot;LVCMOS18&quot;</span> <span class="p">[</span><span class="n">get_ports</span> <span class="s2">&quot;MIO[48]&quot;</span><span class="p">]</span>
+<span class="n">set_property</span> <span class="n">PACKAGE_PIN</span> <span class="s2">&quot;B12&quot;</span> <span class="p">[</span><span class="n">get_ports</span> <span class="s2">&quot;MIO[48]&quot;</span><span class="p">]</span>
+<span class="n">set_property</span> <span class="n">slew</span> <span class="s2">&quot;slow&quot;</span> <span class="p">[</span><span class="n">get_ports</span> <span class="s2">&quot;MIO[48]&quot;</span><span class="p">]</span>
+<span class="n">set_property</span> <span class="n">drive</span> <span class="s2">&quot;8&quot;</span> <span class="p">[</span><span class="n">get_ports</span> <span class="s2">&quot;MIO[48]&quot;</span><span class="p">]</span>
+<span class="n">set_property</span> <span class="n">pullup</span> <span class="s2">&quot;TRUE&quot;</span> <span class="p">[</span><span class="n">get_ports</span> <span class="s2">&quot;MIO[48]&quot;</span><span class="p">]</span>
+<span class="n">set_property</span> <span class="n">PIO_DIRECTION</span> <span class="s2">&quot;OUTPUT&quot;</span> <span class="p">[</span><span class="n">get_ports</span> <span class="s2">&quot;MIO[48]&quot;</span><span class="p">]</span>
+<span class="c1">#  SD 0 / cd / MIO[47]</span>
+<span class="n">set_property</span> <span class="n">iostandard</span> <span class="s2">&quot;LVCMOS18&quot;</span> <span class="p">[</span><span class="n">get_ports</span> <span class="s2">&quot;MIO[47]&quot;</span><span class="p">]</span>
+<span class="n">set_property</span> <span class="n">PACKAGE_PIN</span> <span class="s2">&quot;B14&quot;</span> <span class="p">[</span><span class="n">get_ports</span> <span class="s2">&quot;MIO[47]&quot;</span><span class="p">]</span>
+<span class="n">set_property</span> <span class="n">slew</span> <span class="s2">&quot;slow&quot;</span> <span class="p">[</span><span class="n">get_ports</span> <span class="s2">&quot;MIO[47]&quot;</span><span class="p">]</span>
+<span class="n">set_property</span> <span class="n">drive</span> <span class="s2">&quot;8&quot;</span> <span class="p">[</span><span class="n">get_ports</span> <span class="s2">&quot;MIO[47]&quot;</span><span class="p">]</span>
+<span class="n">set_property</span> <span class="n">pullup</span> <span class="s2">&quot;TRUE&quot;</span> <span class="p">[</span><span class="n">get_ports</span> <span class="s2">&quot;MIO[47]&quot;</span><span class="p">]</span>
+<span class="n">set_property</span> <span class="n">PIO_DIRECTION</span> <span class="s2">&quot;INPUT&quot;</span> <span class="p">[</span><span class="n">get_ports</span> <span class="s2">&quot;MIO[47]&quot;</span><span class="p">]</span>
+<span class="c1">#  SD 0 / data[3] / MIO[45]</span>
+<span class="n">set_property</span> <span class="n">iostandard</span> <span class="s2">&quot;LVCMOS18&quot;</span> <span class="p">[</span><span class="n">get_ports</span> <span class="s2">&quot;MIO[45]&quot;</span><span class="p">]</span>
+<span class="n">set_property</span> <span class="n">PACKAGE_PIN</span> <span class="s2">&quot;B15&quot;</span> <span class="p">[</span><span class="n">get_ports</span> <span class="s2">&quot;MIO[45]&quot;</span><span class="p">]</span>
+<span class="n">set_property</span> <span class="n">slew</span> <span class="s2">&quot;slow&quot;</span> <span class="p">[</span><span class="n">get_ports</span> <span class="s2">&quot;MIO[45]&quot;</span><span class="p">]</span>
+<span class="n">set_property</span> <span class="n">drive</span> <span class="s2">&quot;8&quot;</span> <span class="p">[</span><span class="n">get_ports</span> <span class="s2">&quot;MIO[45]&quot;</span><span class="p">]</span>
+<span class="n">set_property</span> <span class="n">pullup</span> <span class="s2">&quot;TRUE&quot;</span> <span class="p">[</span><span class="n">get_ports</span> <span class="s2">&quot;MIO[45]&quot;</span><span class="p">]</span>
+<span class="n">set_property</span> <span class="n">PIO_DIRECTION</span> <span class="s2">&quot;BIDIR&quot;</span> <span class="p">[</span><span class="n">get_ports</span> <span class="s2">&quot;MIO[45]&quot;</span><span class="p">]</span>
+<span class="c1">#  SD 0 / data[2] / MIO[44]</span>
+<span class="n">set_property</span> <span class="n">iostandard</span> <span class="s2">&quot;LVCMOS18&quot;</span> <span class="p">[</span><span class="n">get_ports</span> <span class="s2">&quot;MIO[44]&quot;</span><span class="p">]</span>
+<span class="n">set_property</span> <span class="n">PACKAGE_PIN</span> <span class="s2">&quot;F13&quot;</span> <span class="p">[</span><span class="n">get_ports</span> <span class="s2">&quot;MIO[44]&quot;</span><span class="p">]</span>
+<span class="n">set_property</span> <span class="n">slew</span> <span class="s2">&quot;slow&quot;</span> <span class="p">[</span><span class="n">get_ports</span> <span class="s2">&quot;MIO[44]&quot;</span><span class="p">]</span>
+<span class="n">set_property</span> <span class="n">drive</span> <span class="s2">&quot;8&quot;</span> <span class="p">[</span><span class="n">get_ports</span> <span class="s2">&quot;MIO[44]&quot;</span><span class="p">]</span>
+<span class="n">set_property</span> <span class="n">pullup</span> <span class="s2">&quot;TRUE&quot;</span> <span class="p">[</span><span class="n">get_ports</span> <span class="s2">&quot;MIO[44]&quot;</span><span class="p">]</span>
+<span class="n">set_property</span> <span class="n">PIO_DIRECTION</span> <span class="s2">&quot;BIDIR&quot;</span> <span class="p">[</span><span class="n">get_ports</span> <span class="s2">&quot;MIO[44]&quot;</span><span class="p">]</span>
+<span class="c1">#  SD 0 / data[1] / MIO[43]</span>
+<span class="n">set_property</span> <span class="n">iostandard</span> <span class="s2">&quot;LVCMOS18&quot;</span> <span class="p">[</span><span class="n">get_ports</span> <span class="s2">&quot;MIO[43]&quot;</span><span class="p">]</span>
+<span class="n">set_property</span> <span class="n">PACKAGE_PIN</span> <span class="s2">&quot;A9&quot;</span> <span class="p">[</span><span class="n">get_ports</span> <span class="s2">&quot;MIO[43]&quot;</span><span class="p">]</span>
+<span class="n">set_property</span> <span class="n">slew</span> <span class="s2">&quot;slow&quot;</span> <span class="p">[</span><span class="n">get_ports</span> <span class="s2">&quot;MIO[43]&quot;</span><span class="p">]</span>
+<span class="n">set_property</span> <span class="n">drive</span> <span class="s2">&quot;8&quot;</span> <span class="p">[</span><span class="n">get_ports</span> <span class="s2">&quot;MIO[43]&quot;</span><span class="p">]</span>
+<span class="n">set_property</span> <span class="n">pullup</span> <span class="s2">&quot;TRUE&quot;</span> <span class="p">[</span><span class="n">get_ports</span> <span class="s2">&quot;MIO[43]&quot;</span><span class="p">]</span>
+<span class="n">set_property</span> <span class="n">PIO_DIRECTION</span> <span class="s2">&quot;BIDIR&quot;</span> <span class="p">[</span><span class="n">get_ports</span> <span class="s2">&quot;MIO[43]&quot;</span><span class="p">]</span>
+<span class="c1">#  SD 0 / data[0] / MIO[42]</span>
+<span class="n">set_property</span> <span class="n">iostandard</span> <span class="s2">&quot;LVCMOS18&quot;</span> <span class="p">[</span><span class="n">get_ports</span> <span class="s2">&quot;MIO[42]&quot;</span><span class="p">]</span>
+<span class="n">set_property</span> <span class="n">PACKAGE_PIN</span> <span class="s2">&quot;E12&quot;</span> <span class="p">[</span><span class="n">get_ports</span> <span class="s2">&quot;MIO[42]&quot;</span><span class="p">]</span>
+<span class="n">set_property</span> <span class="n">slew</span> <span class="s2">&quot;slow&quot;</span> <span class="p">[</span><span class="n">get_ports</span> <span class="s2">&quot;MIO[42]&quot;</span><span class="p">]</span>
+<span class="n">set_property</span> <span class="n">drive</span> <span class="s2">&quot;8&quot;</span> <span class="p">[</span><span class="n">get_ports</span> <span class="s2">&quot;MIO[42]&quot;</span><span class="p">]</span>
+<span class="n">set_property</span> <span class="n">pullup</span> <span class="s2">&quot;TRUE&quot;</span> <span class="p">[</span><span class="n">get_ports</span> <span class="s2">&quot;MIO[42]&quot;</span><span class="p">]</span>
+<span class="n">set_property</span> <span class="n">PIO_DIRECTION</span> <span class="s2">&quot;BIDIR&quot;</span> <span class="p">[</span><span class="n">get_ports</span> <span class="s2">&quot;MIO[42]&quot;</span><span class="p">]</span>
+<span class="c1">#  SD 0 / cmd / MIO[41]</span>
+<span class="n">set_property</span> <span class="n">iostandard</span> <span class="s2">&quot;LVCMOS18&quot;</span> <span class="p">[</span><span class="n">get_ports</span> <span class="s2">&quot;MIO[41]&quot;</span><span class="p">]</span>
+<span class="n">set_property</span> <span class="n">PACKAGE_PIN</span> <span class="s2">&quot;C17&quot;</span> <span class="p">[</span><span class="n">get_ports</span> <span class="s2">&quot;MIO[41]&quot;</span><span class="p">]</span>
+<span class="n">set_property</span> <span class="n">slew</span> <span class="s2">&quot;slow&quot;</span> <span class="p">[</span><span class="n">get_ports</span> <span class="s2">&quot;MIO[41]&quot;</span><span class="p">]</span>
+<span class="n">set_property</span> <span class="n">drive</span> <span class="s2">&quot;8&quot;</span> <span class="p">[</span><span class="n">get_ports</span> <span class="s2">&quot;MIO[41]&quot;</span><span class="p">]</span>
+<span class="n">set_property</span> <span class="n">pullup</span> <span class="s2">&quot;TRUE&quot;</span> <span class="p">[</span><span class="n">get_ports</span> <span class="s2">&quot;MIO[41]&quot;</span><span class="p">]</span>
+<span class="n">set_property</span> <span class="n">PIO_DIRECTION</span> <span class="s2">&quot;BIDIR&quot;</span> <span class="p">[</span><span class="n">get_ports</span> <span class="s2">&quot;MIO[41]&quot;</span><span class="p">]</span>
+<span class="c1">#  SD 0 / clk / MIO[40]</span>
+<span class="n">set_property</span> <span class="n">iostandard</span> <span class="s2">&quot;LVCMOS18&quot;</span> <span class="p">[</span><span class="n">get_ports</span> <span class="s2">&quot;MIO[40]&quot;</span><span class="p">]</span>
+<span class="n">set_property</span> <span class="n">PACKAGE_PIN</span> <span class="s2">&quot;D14&quot;</span> <span class="p">[</span><span class="n">get_ports</span> <span class="s2">&quot;MIO[40]&quot;</span><span class="p">]</span>
+<span class="n">set_property</span> <span class="n">slew</span> <span class="s2">&quot;slow&quot;</span> <span class="p">[</span><span class="n">get_ports</span> <span class="s2">&quot;MIO[40]&quot;</span><span class="p">]</span>
+<span class="n">set_property</span> <span class="n">drive</span> <span class="s2">&quot;8&quot;</span> <span class="p">[</span><span class="n">get_ports</span> <span class="s2">&quot;MIO[40]&quot;</span><span class="p">]</span>
+<span class="n">set_property</span> <span class="n">pullup</span> <span class="s2">&quot;TRUE&quot;</span> <span class="p">[</span><span class="n">get_ports</span> <span class="s2">&quot;MIO[40]&quot;</span><span class="p">]</span>
+<span class="n">set_property</span> <span class="n">PIO_DIRECTION</span> <span class="s2">&quot;BIDIR&quot;</span> <span class="p">[</span><span class="n">get_ports</span> <span class="s2">&quot;MIO[40]&quot;</span><span class="p">]</span>
+<span class="c1">#  USB 0 / data[7] / MIO[39]</span>
+<span class="n">set_property</span> <span class="n">iostandard</span> <span class="s2">&quot;LVCMOS18&quot;</span> <span class="p">[</span><span class="n">get_ports</span> <span class="s2">&quot;MIO[39]&quot;</span><span class="p">]</span>
+<span class="n">set_property</span> <span class="n">PACKAGE_PIN</span> <span class="s2">&quot;C18&quot;</span> <span class="p">[</span><span class="n">get_ports</span> <span class="s2">&quot;MIO[39]&quot;</span><span class="p">]</span>
+<span class="n">set_property</span> <span class="n">slew</span> <span class="s2">&quot;fast&quot;</span> <span class="p">[</span><span class="n">get_ports</span> <span class="s2">&quot;MIO[39]&quot;</span><span class="p">]</span>
+<span class="n">set_property</span> <span class="n">drive</span> <span class="s2">&quot;8&quot;</span> <span class="p">[</span><span class="n">get_ports</span> <span class="s2">&quot;MIO[39]&quot;</span><span class="p">]</span>
+<span class="n">set_property</span> <span class="n">pullup</span> <span class="s2">&quot;TRUE&quot;</span> <span class="p">[</span><span class="n">get_ports</span> <span class="s2">&quot;MIO[39]&quot;</span><span class="p">]</span>
+<span class="n">set_property</span> <span class="n">PIO_DIRECTION</span> <span class="s2">&quot;BIDIR&quot;</span> <span class="p">[</span><span class="n">get_ports</span> <span class="s2">&quot;MIO[39]&quot;</span><span class="p">]</span>
+<span class="c1">#  USB 0 / data[6] / MIO[38]</span>
+<span class="n">set_property</span> <span class="n">iostandard</span> <span class="s2">&quot;LVCMOS18&quot;</span> <span class="p">[</span><span class="n">get_ports</span> <span class="s2">&quot;MIO[38]&quot;</span><span class="p">]</span>
+<span class="n">set_property</span> <span class="n">PACKAGE_PIN</span> <span class="s2">&quot;E13&quot;</span> <span class="p">[</span><span class="n">get_ports</span> <span class="s2">&quot;MIO[38]&quot;</span><span class="p">]</span>
+<span class="n">set_property</span> <span class="n">slew</span> <span class="s2">&quot;fast&quot;</span> <span class="p">[</span><span class="n">get_ports</span> <span class="s2">&quot;MIO[38]&quot;</span><span class="p">]</span>
+<span class="n">set_property</span> <span class="n">drive</span> <span class="s2">&quot;8&quot;</span> <span class="p">[</span><span class="n">get_ports</span> <span class="s2">&quot;MIO[38]&quot;</span><span class="p">]</span>
+<span class="n">set_property</span> <span class="n">pullup</span> <span class="s2">&quot;TRUE&quot;</span> <span class="p">[</span><span class="n">get_ports</span> <span class="s2">&quot;MIO[38]&quot;</span><span class="p">]</span>
+<span class="n">set_property</span> <span class="n">PIO_DIRECTION</span> <span class="s2">&quot;BIDIR&quot;</span> <span class="p">[</span><span class="n">get_ports</span> <span class="s2">&quot;MIO[38]&quot;</span><span class="p">]</span>
+<span class="c1">#  USB 0 / data[5] / MIO[37]</span>
+<span class="n">set_property</span> <span class="n">iostandard</span> <span class="s2">&quot;LVCMOS18&quot;</span> <span class="p">[</span><span class="n">get_ports</span> <span class="s2">&quot;MIO[37]&quot;</span><span class="p">]</span>
+<span class="n">set_property</span> <span class="n">PACKAGE_PIN</span> <span class="s2">&quot;A10&quot;</span> <span class="p">[</span><span class="n">get_ports</span> <span class="s2">&quot;MIO[37]&quot;</span><span class="p">]</span>
+<span class="n">set_property</span> <span class="n">slew</span> <span class="s2">&quot;fast&quot;</span> <span class="p">[</span><span class="n">get_ports</span> <span class="s2">&quot;MIO[37]&quot;</span><span class="p">]</span>
+<span class="n">set_property</span> <span class="n">drive</span> <span class="s2">&quot;8&quot;</span> <span class="p">[</span><span class="n">get_ports</span> <span class="s2">&quot;MIO[37]&quot;</span><span class="p">]</span>
+<span class="n">set_property</span> <span class="n">pullup</span> <span class="s2">&quot;TRUE&quot;</span> <span class="p">[</span><span class="n">get_ports</span> <span class="s2">&quot;MIO[37]&quot;</span><span class="p">]</span>
+<span class="n">set_property</span> <span class="n">PIO_DIRECTION</span> <span class="s2">&quot;BIDIR&quot;</span> <span class="p">[</span><span class="n">get_ports</span> <span class="s2">&quot;MIO[37]&quot;</span><span class="p">]</span>
+<span class="c1">#  USB 0 / clk / MIO[36]</span>
+<span class="n">set_property</span> <span class="n">iostandard</span> <span class="s2">&quot;LVCMOS18&quot;</span> <span class="p">[</span><span class="n">get_ports</span> <span class="s2">&quot;MIO[36]&quot;</span><span class="p">]</span>
+<span class="n">set_property</span> <span class="n">PACKAGE_PIN</span> <span class="s2">&quot;A11&quot;</span> <span class="p">[</span><span class="n">get_ports</span> <span class="s2">&quot;MIO[36]&quot;</span><span class="p">]</span>
+<span class="n">set_property</span> <span class="n">slew</span> <span class="s2">&quot;fast&quot;</span> <span class="p">[</span><span class="n">get_ports</span> <span class="s2">&quot;MIO[36]&quot;</span><span class="p">]</span>
+<span class="n">set_property</span> <span class="n">drive</span> <span class="s2">&quot;8&quot;</span> <span class="p">[</span><span class="n">get_ports</span> <span class="s2">&quot;MIO[36]&quot;</span><span class="p">]</span>
+<span class="n">set_property</span> <span class="n">pullup</span> <span class="s2">&quot;TRUE&quot;</span> <span class="p">[</span><span class="n">get_ports</span> <span class="s2">&quot;MIO[36]&quot;</span><span class="p">]</span>
+<span class="n">set_property</span> <span class="n">PIO_DIRECTION</span> <span class="s2">&quot;INPUT&quot;</span> <span class="p">[</span><span class="n">get_ports</span> <span class="s2">&quot;MIO[36]&quot;</span><span class="p">]</span>
+<span class="c1">#  USB 0 / data[3] / MIO[35]</span>
+<span class="n">set_property</span> <span class="n">iostandard</span> <span class="s2">&quot;LVCMOS18&quot;</span> <span class="p">[</span><span class="n">get_ports</span> <span class="s2">&quot;MIO[35]&quot;</span><span class="p">]</span>
+<span class="n">set_property</span> <span class="n">PACKAGE_PIN</span> <span class="s2">&quot;F12&quot;</span> <span class="p">[</span><span class="n">get_ports</span> <span class="s2">&quot;MIO[35]&quot;</span><span class="p">]</span>
+<span class="n">set_property</span> <span class="n">slew</span> <span class="s2">&quot;fast&quot;</span> <span class="p">[</span><span class="n">get_ports</span> <span class="s2">&quot;MIO[35]&quot;</span><span class="p">]</span>
+<span class="n">set_property</span> <span class="n">drive</span> <span class="s2">&quot;8&quot;</span> <span class="p">[</span><span class="n">get_ports</span> <span class="s2">&quot;MIO[35]&quot;</span><span class="p">]</span>
+<span class="n">set_property</span> <span class="n">pullup</span> <span class="s2">&quot;TRUE&quot;</span> <span class="p">[</span><span class="n">get_ports</span> <span class="s2">&quot;MIO[35]&quot;</span><span class="p">]</span>
+<span class="n">set_property</span> <span class="n">PIO_DIRECTION</span> <span class="s2">&quot;BIDIR&quot;</span> <span class="p">[</span><span class="n">get_ports</span> <span class="s2">&quot;MIO[35]&quot;</span><span class="p">]</span>
+<span class="c1">#  USB 0 / data[2] / MIO[34]</span>
+<span class="n">set_property</span> <span class="n">iostandard</span> <span class="s2">&quot;LVCMOS18&quot;</span> <span class="p">[</span><span class="n">get_ports</span> <span class="s2">&quot;MIO[34]&quot;</span><span class="p">]</span>
+<span class="n">set_property</span> <span class="n">PACKAGE_PIN</span> <span class="s2">&quot;A12&quot;</span> <span class="p">[</span><span class="n">get_ports</span> <span class="s2">&quot;MIO[34]&quot;</span><span class="p">]</span>
+<span class="n">set_property</span> <span class="n">slew</span> <span class="s2">&quot;fast&quot;</span> <span class="p">[</span><span class="n">get_ports</span> <span class="s2">&quot;MIO[34]&quot;</span><span class="p">]</span>
+<span class="n">set_property</span> <span class="n">drive</span> <span class="s2">&quot;8&quot;</span> <span class="p">[</span><span class="n">get_ports</span> <span class="s2">&quot;MIO[34]&quot;</span><span class="p">]</span>
+<span class="n">set_property</span> <span class="n">pullup</span> <span class="s2">&quot;TRUE&quot;</span> <span class="p">[</span><span class="n">get_ports</span> <span class="s2">&quot;MIO[34]&quot;</span><span class="p">]</span>
+<span class="n">set_property</span> <span class="n">PIO_DIRECTION</span> <span class="s2">&quot;BIDIR&quot;</span> <span class="p">[</span><span class="n">get_ports</span> <span class="s2">&quot;MIO[34]&quot;</span><span class="p">]</span>
+<span class="c1">#  USB 0 / data[1] / MIO[33]</span>
+<span class="n">set_property</span> <span class="n">iostandard</span> <span class="s2">&quot;LVCMOS18&quot;</span> <span class="p">[</span><span class="n">get_ports</span> <span class="s2">&quot;MIO[33]&quot;</span><span class="p">]</span>
+<span class="n">set_property</span> <span class="n">PACKAGE_PIN</span> <span class="s2">&quot;D15&quot;</span> <span class="p">[</span><span class="n">get_ports</span> <span class="s2">&quot;MIO[33]&quot;</span><span class="p">]</span>
+<span class="n">set_property</span> <span class="n">slew</span> <span class="s2">&quot;fast&quot;</span> <span class="p">[</span><span class="n">get_ports</span> <span class="s2">&quot;MIO[33]&quot;</span><span class="p">]</span>
+<span class="n">set_property</span> <span class="n">drive</span> <span class="s2">&quot;8&quot;</span> <span class="p">[</span><span class="n">get_ports</span> <span class="s2">&quot;MIO[33]&quot;</span><span class="p">]</span>
+<span class="n">set_property</span> <span class="n">pullup</span> <span class="s2">&quot;TRUE&quot;</span> <span class="p">[</span><span class="n">get_ports</span> <span class="s2">&quot;MIO[33]&quot;</span><span class="p">]</span>
+<span class="n">set_property</span> <span class="n">PIO_DIRECTION</span> <span class="s2">&quot;BIDIR&quot;</span> <span class="p">[</span><span class="n">get_ports</span> <span class="s2">&quot;MIO[33]&quot;</span><span class="p">]</span>
+<span class="c1">#  USB 0 / data[0] / MIO[32]</span>
+<span class="n">set_property</span> <span class="n">iostandard</span> <span class="s2">&quot;LVCMOS18&quot;</span> <span class="p">[</span><span class="n">get_ports</span> <span class="s2">&quot;MIO[32]&quot;</span><span class="p">]</span>
+<span class="n">set_property</span> <span class="n">PACKAGE_PIN</span> <span class="s2">&quot;A14&quot;</span> <span class="p">[</span><span class="n">get_ports</span> <span class="s2">&quot;MIO[32]&quot;</span><span class="p">]</span>
+<span class="n">set_property</span> <span class="n">slew</span> <span class="s2">&quot;fast&quot;</span> <span class="p">[</span><span class="n">get_ports</span> <span class="s2">&quot;MIO[32]&quot;</span><span class="p">]</span>
+<span class="n">set_property</span> <span class="n">drive</span> <span class="s2">&quot;8&quot;</span> <span class="p">[</span><span class="n">get_ports</span> <span class="s2">&quot;MIO[32]&quot;</span><span class="p">]</span>
+<span class="n">set_property</span> <span class="n">pullup</span> <span class="s2">&quot;TRUE&quot;</span> <span class="p">[</span><span class="n">get_ports</span> <span class="s2">&quot;MIO[32]&quot;</span><span class="p">]</span>
+<span class="n">set_property</span> <span class="n">PIO_DIRECTION</span> <span class="s2">&quot;BIDIR&quot;</span> <span class="p">[</span><span class="n">get_ports</span> <span class="s2">&quot;MIO[32]&quot;</span><span class="p">]</span>
+<span class="c1">#  USB 0 / nxt / MIO[31]</span>
+<span class="n">set_property</span> <span class="n">iostandard</span> <span class="s2">&quot;LVCMOS18&quot;</span> <span class="p">[</span><span class="n">get_ports</span> <span class="s2">&quot;MIO[31]&quot;</span><span class="p">]</span>
+<span class="n">set_property</span> <span class="n">PACKAGE_PIN</span> <span class="s2">&quot;E16&quot;</span> <span class="p">[</span><span class="n">get_ports</span> <span class="s2">&quot;MIO[31]&quot;</span><span class="p">]</span>
+<span class="n">set_property</span> <span class="n">slew</span> <span class="s2">&quot;fast&quot;</span> <span class="p">[</span><span class="n">get_ports</span> <span class="s2">&quot;MIO[31]&quot;</span><span class="p">]</span>
+<span class="n">set_property</span> <span class="n">drive</span> <span class="s2">&quot;8&quot;</span> <span class="p">[</span><span class="n">get_ports</span> <span class="s2">&quot;MIO[31]&quot;</span><span class="p">]</span>
+<span class="n">set_property</span> <span class="n">pullup</span> <span class="s2">&quot;TRUE&quot;</span> <span class="p">[</span><span class="n">get_ports</span> <span class="s2">&quot;MIO[31]&quot;</span><span class="p">]</span>
+<span class="n">set_property</span> <span class="n">PIO_DIRECTION</span> <span class="s2">&quot;INPUT&quot;</span> <span class="p">[</span><span class="n">get_ports</span> <span class="s2">&quot;MIO[31]&quot;</span><span class="p">]</span>
+<span class="c1">#  USB 0 / stp / MIO[30]</span>
+<span class="n">set_property</span> <span class="n">iostandard</span> <span class="s2">&quot;LVCMOS18&quot;</span> <span class="p">[</span><span class="n">get_ports</span> <span class="s2">&quot;MIO[30]&quot;</span><span class="p">]</span>
+<span class="n">set_property</span> <span class="n">PACKAGE_PIN</span> <span class="s2">&quot;C15&quot;</span> <span class="p">[</span><span class="n">get_ports</span> <span class="s2">&quot;MIO[30]&quot;</span><span class="p">]</span>
+<span class="n">set_property</span> <span class="n">slew</span> <span class="s2">&quot;fast&quot;</span> <span class="p">[</span><span class="n">get_ports</span> <span class="s2">&quot;MIO[30]&quot;</span><span class="p">]</span>
+<span class="n">set_property</span> <span class="n">drive</span> <span class="s2">&quot;8&quot;</span> <span class="p">[</span><span class="n">get_ports</span> <span class="s2">&quot;MIO[30]&quot;</span><span class="p">]</span>
+<span class="n">set_property</span> <span class="n">pullup</span> <span class="s2">&quot;TRUE&quot;</span> <span class="p">[</span><span class="n">get_ports</span> <span class="s2">&quot;MIO[30]&quot;</span><span class="p">]</span>
+<span class="n">set_property</span> <span class="n">PIO_DIRECTION</span> <span class="s2">&quot;OUTPUT&quot;</span> <span class="p">[</span><span class="n">get_ports</span> <span class="s2">&quot;MIO[30]&quot;</span><span class="p">]</span>
+<span class="c1">#  USB 0 / dir / MIO[29]</span>
+<span class="n">set_property</span> <span class="n">iostandard</span> <span class="s2">&quot;LVCMOS18&quot;</span> <span class="p">[</span><span class="n">get_ports</span> <span class="s2">&quot;MIO[29]&quot;</span><span class="p">]</span>
+<span class="n">set_property</span> <span class="n">PACKAGE_PIN</span> <span class="s2">&quot;C13&quot;</span> <span class="p">[</span><span class="n">get_ports</span> <span class="s2">&quot;MIO[29]&quot;</span><span class="p">]</span>
+<span class="n">set_property</span> <span class="n">slew</span> <span class="s2">&quot;fast&quot;</span> <span class="p">[</span><span class="n">get_ports</span> <span class="s2">&quot;MIO[29]&quot;</span><span class="p">]</span>
+<span class="n">set_property</span> <span class="n">drive</span> <span class="s2">&quot;8&quot;</span> <span class="p">[</span><span class="n">get_ports</span> <span class="s2">&quot;MIO[29]&quot;</span><span class="p">]</span>
+<span class="n">set_property</span> <span class="n">pullup</span> <span class="s2">&quot;TRUE&quot;</span> <span class="p">[</span><span class="n">get_ports</span> <span class="s2">&quot;MIO[29]&quot;</span><span class="p">]</span>
+<span class="n">set_property</span> <span class="n">PIO_DIRECTION</span> <span class="s2">&quot;INPUT&quot;</span> <span class="p">[</span><span class="n">get_ports</span> <span class="s2">&quot;MIO[29]&quot;</span><span class="p">]</span>
+<span class="c1">#  USB 0 / data[4] / MIO[28]</span>
+<span class="n">set_property</span> <span class="n">iostandard</span> <span class="s2">&quot;LVCMOS18&quot;</span> <span class="p">[</span><span class="n">get_ports</span> <span class="s2">&quot;MIO[28]&quot;</span><span class="p">]</span>
+<span class="n">set_property</span> <span class="n">PACKAGE_PIN</span> <span class="s2">&quot;C16&quot;</span> <span class="p">[</span><span class="n">get_ports</span> <span class="s2">&quot;MIO[28]&quot;</span><span class="p">]</span>
+<span class="n">set_property</span> <span class="n">slew</span> <span class="s2">&quot;fast&quot;</span> <span class="p">[</span><span class="n">get_ports</span> <span class="s2">&quot;MIO[28]&quot;</span><span class="p">]</span>
+<span class="n">set_property</span> <span class="n">drive</span> <span class="s2">&quot;8&quot;</span> <span class="p">[</span><span class="n">get_ports</span> <span class="s2">&quot;MIO[28]&quot;</span><span class="p">]</span>
+<span class="n">set_property</span> <span class="n">pullup</span> <span class="s2">&quot;TRUE&quot;</span> <span class="p">[</span><span class="n">get_ports</span> <span class="s2">&quot;MIO[28]&quot;</span><span class="p">]</span>
+<span class="n">set_property</span> <span class="n">PIO_DIRECTION</span> <span class="s2">&quot;BIDIR&quot;</span> <span class="p">[</span><span class="n">get_ports</span> <span class="s2">&quot;MIO[28]&quot;</span><span class="p">]</span>
+<span class="c1">#  Enet 0 / rx_ctl / MIO[27]</span>
+<span class="n">set_property</span> <span class="n">iostandard</span> <span class="s2">&quot;LVCMOS18&quot;</span> <span class="p">[</span><span class="n">get_ports</span> <span class="s2">&quot;MIO[27]&quot;</span><span class="p">]</span>
+<span class="n">set_property</span> <span class="n">PACKAGE_PIN</span> <span class="s2">&quot;D13&quot;</span> <span class="p">[</span><span class="n">get_ports</span> <span class="s2">&quot;MIO[27]&quot;</span><span class="p">]</span>
+<span class="n">set_property</span> <span class="n">slew</span> <span class="s2">&quot;fast&quot;</span> <span class="p">[</span><span class="n">get_ports</span> <span class="s2">&quot;MIO[27]&quot;</span><span class="p">]</span>
+<span class="n">set_property</span> <span class="n">drive</span> <span class="s2">&quot;8&quot;</span> <span class="p">[</span><span class="n">get_ports</span> <span class="s2">&quot;MIO[27]&quot;</span><span class="p">]</span>
+<span class="n">set_property</span> <span class="n">pullup</span> <span class="s2">&quot;TRUE&quot;</span> <span class="p">[</span><span class="n">get_ports</span> <span class="s2">&quot;MIO[27]&quot;</span><span class="p">]</span>
+<span class="n">set_property</span> <span class="n">PIO_DIRECTION</span> <span class="s2">&quot;INPUT&quot;</span> <span class="p">[</span><span class="n">get_ports</span> <span class="s2">&quot;MIO[27]&quot;</span><span class="p">]</span>
+<span class="c1">#  Enet 0 / rxd[3] / MIO[26]</span>
+<span class="n">set_property</span> <span class="n">iostandard</span> <span class="s2">&quot;LVCMOS18&quot;</span> <span class="p">[</span><span class="n">get_ports</span> <span class="s2">&quot;MIO[26]&quot;</span><span class="p">]</span>
+<span class="n">set_property</span> <span class="n">PACKAGE_PIN</span> <span class="s2">&quot;A15&quot;</span> <span class="p">[</span><span class="n">get_ports</span> <span class="s2">&quot;MIO[26]&quot;</span><span class="p">]</span>
+<span class="n">set_property</span> <span class="n">slew</span> <span class="s2">&quot;fast&quot;</span> <span class="p">[</span><span class="n">get_ports</span> <span class="s2">&quot;MIO[26]&quot;</span><span class="p">]</span>
+<span class="n">set_property</span> <span class="n">drive</span> <span class="s2">&quot;8&quot;</span> <span class="p">[</span><span class="n">get_ports</span> <span class="s2">&quot;MIO[26]&quot;</span><span class="p">]</span>
+<span class="n">set_property</span> <span class="n">pullup</span> <span class="s2">&quot;TRUE&quot;</span> <span class="p">[</span><span class="n">get_ports</span> <span class="s2">&quot;MIO[26]&quot;</span><span class="p">]</span>
+<span class="n">set_property</span> <span class="n">PIO_DIRECTION</span> <span class="s2">&quot;INPUT&quot;</span> <span class="p">[</span><span class="n">get_ports</span> <span class="s2">&quot;MIO[26]&quot;</span><span class="p">]</span>
+<span class="c1">#  Enet 0 / rxd[2] / MIO[25]</span>
+<span class="n">set_property</span> <span class="n">iostandard</span> <span class="s2">&quot;LVCMOS18&quot;</span> <span class="p">[</span><span class="n">get_ports</span> <span class="s2">&quot;MIO[25]&quot;</span><span class="p">]</span>
+<span class="n">set_property</span> <span class="n">PACKAGE_PIN</span> <span class="s2">&quot;F15&quot;</span> <span class="p">[</span><span class="n">get_ports</span> <span class="s2">&quot;MIO[25]&quot;</span><span class="p">]</span>
+<span class="n">set_property</span> <span class="n">slew</span> <span class="s2">&quot;fast&quot;</span> <span class="p">[</span><span class="n">get_ports</span> <span class="s2">&quot;MIO[25]&quot;</span><span class="p">]</span>
+<span class="n">set_property</span> <span class="n">drive</span> <span class="s2">&quot;8&quot;</span> <span class="p">[</span><span class="n">get_ports</span> <span class="s2">&quot;MIO[25]&quot;</span><span class="p">]</span>
+<span class="n">set_property</span> <span class="n">pullup</span> <span class="s2">&quot;TRUE&quot;</span> <span class="p">[</span><span class="n">get_ports</span> <span class="s2">&quot;MIO[25]&quot;</span><span class="p">]</span>
+<span class="n">set_property</span> <span class="n">PIO_DIRECTION</span> <span class="s2">&quot;INPUT&quot;</span> <span class="p">[</span><span class="n">get_ports</span> <span class="s2">&quot;MIO[25]&quot;</span><span class="p">]</span>
+<span class="c1">#  Enet 0 / rxd[1] / MIO[24]</span>
+<span class="n">set_property</span> <span class="n">iostandard</span> <span class="s2">&quot;LVCMOS18&quot;</span> <span class="p">[</span><span class="n">get_ports</span> <span class="s2">&quot;MIO[24]&quot;</span><span class="p">]</span>
+<span class="n">set_property</span> <span class="n">PACKAGE_PIN</span> <span class="s2">&quot;A16&quot;</span> <span class="p">[</span><span class="n">get_ports</span> <span class="s2">&quot;MIO[24]&quot;</span><span class="p">]</span>
+<span class="n">set_property</span> <span class="n">slew</span> <span class="s2">&quot;fast&quot;</span> <span class="p">[</span><span class="n">get_ports</span> <span class="s2">&quot;MIO[24]&quot;</span><span class="p">]</span>
+<span class="n">set_property</span> <span class="n">drive</span> <span class="s2">&quot;8&quot;</span> <span class="p">[</span><span class="n">get_ports</span> <span class="s2">&quot;MIO[24]&quot;</span><span class="p">]</span>
+<span class="n">set_property</span> <span class="n">pullup</span> <span class="s2">&quot;TRUE&quot;</span> <span class="p">[</span><span class="n">get_ports</span> <span class="s2">&quot;MIO[24]&quot;</span><span class="p">]</span>
+<span class="n">set_property</span> <span class="n">PIO_DIRECTION</span> <span class="s2">&quot;INPUT&quot;</span> <span class="p">[</span><span class="n">get_ports</span> <span class="s2">&quot;MIO[24]&quot;</span><span class="p">]</span>
+<span class="c1">#  Enet 0 / rxd[0] / MIO[23]</span>
+<span class="n">set_property</span> <span class="n">iostandard</span> <span class="s2">&quot;LVCMOS18&quot;</span> <span class="p">[</span><span class="n">get_ports</span> <span class="s2">&quot;MIO[23]&quot;</span><span class="p">]</span>
+<span class="n">set_property</span> <span class="n">PACKAGE_PIN</span> <span class="s2">&quot;D11&quot;</span> <span class="p">[</span><span class="n">get_ports</span> <span class="s2">&quot;MIO[23]&quot;</span><span class="p">]</span>
+<span class="n">set_property</span> <span class="n">slew</span> <span class="s2">&quot;fast&quot;</span> <span class="p">[</span><span class="n">get_ports</span> <span class="s2">&quot;MIO[23]&quot;</span><span class="p">]</span>
+<span class="n">set_property</span> <span class="n">drive</span> <span class="s2">&quot;8&quot;</span> <span class="p">[</span><span class="n">get_ports</span> <span class="s2">&quot;MIO[23]&quot;</span><span class="p">]</span>
+<span class="n">set_property</span> <span class="n">pullup</span> <span class="s2">&quot;TRUE&quot;</span> <span class="p">[</span><span class="n">get_ports</span> <span class="s2">&quot;MIO[23]&quot;</span><span class="p">]</span>
+<span class="n">set_property</span> <span class="n">PIO_DIRECTION</span> <span class="s2">&quot;INPUT&quot;</span> <span class="p">[</span><span class="n">get_ports</span> <span class="s2">&quot;MIO[23]&quot;</span><span class="p">]</span>
+<span class="c1">#  Enet 0 / rx_clk / MIO[22]</span>
+<span class="n">set_property</span> <span class="n">iostandard</span> <span class="s2">&quot;LVCMOS18&quot;</span> <span class="p">[</span><span class="n">get_ports</span> <span class="s2">&quot;MIO[22]&quot;</span><span class="p">]</span>
+<span class="n">set_property</span> <span class="n">PACKAGE_PIN</span> <span class="s2">&quot;B17&quot;</span> <span class="p">[</span><span class="n">get_ports</span> <span class="s2">&quot;MIO[22]&quot;</span><span class="p">]</span>
+<span class="n">set_property</span> <span class="n">slew</span> <span class="s2">&quot;fast&quot;</span> <span class="p">[</span><span class="n">get_ports</span> <span class="s2">&quot;MIO[22]&quot;</span><span class="p">]</span>
+<span class="n">set_property</span> <span class="n">drive</span> <span class="s2">&quot;8&quot;</span> <span class="p">[</span><span class="n">get_ports</span> <span class="s2">&quot;MIO[22]&quot;</span><span class="p">]</span>
+<span class="n">set_property</span> <span class="n">pullup</span> <span class="s2">&quot;TRUE&quot;</span> <span class="p">[</span><span class="n">get_ports</span> <span class="s2">&quot;MIO[22]&quot;</span><span class="p">]</span>
+<span class="n">set_property</span> <span class="n">PIO_DIRECTION</span> <span class="s2">&quot;INPUT&quot;</span> <span class="p">[</span><span class="n">get_ports</span> <span class="s2">&quot;MIO[22]&quot;</span><span class="p">]</span>
+<span class="c1">#  Enet 0 / tx_ctl / MIO[21]</span>
+<span class="n">set_property</span> <span class="n">iostandard</span> <span class="s2">&quot;LVCMOS18&quot;</span> <span class="p">[</span><span class="n">get_ports</span> <span class="s2">&quot;MIO[21]&quot;</span><span class="p">]</span>
+<span class="n">set_property</span> <span class="n">PACKAGE_PIN</span> <span class="s2">&quot;F14&quot;</span> <span class="p">[</span><span class="n">get_ports</span> <span class="s2">&quot;MIO[21]&quot;</span><span class="p">]</span>
+<span class="n">set_property</span> <span class="n">slew</span> <span class="s2">&quot;fast&quot;</span> <span class="p">[</span><span class="n">get_ports</span> <span class="s2">&quot;MIO[21]&quot;</span><span class="p">]</span>
+<span class="n">set_property</span> <span class="n">drive</span> <span class="s2">&quot;8&quot;</span> <span class="p">[</span><span class="n">get_ports</span> <span class="s2">&quot;MIO[21]&quot;</span><span class="p">]</span>
+<span class="n">set_property</span> <span class="n">pullup</span> <span class="s2">&quot;TRUE&quot;</span> <span class="p">[</span><span class="n">get_ports</span> <span class="s2">&quot;MIO[21]&quot;</span><span class="p">]</span>
+<span class="n">set_property</span> <span class="n">PIO_DIRECTION</span> <span class="s2">&quot;OUTPUT&quot;</span> <span class="p">[</span><span class="n">get_ports</span> <span class="s2">&quot;MIO[21]&quot;</span><span class="p">]</span>
+<span class="c1">#  Enet 0 / txd[3] / MIO[20]</span>
+<span class="n">set_property</span> <span class="n">iostandard</span> <span class="s2">&quot;LVCMOS18&quot;</span> <span class="p">[</span><span class="n">get_ports</span> <span class="s2">&quot;MIO[20]&quot;</span><span class="p">]</span>
+<span class="n">set_property</span> <span class="n">PACKAGE_PIN</span> <span class="s2">&quot;A17&quot;</span> <span class="p">[</span><span class="n">get_ports</span> <span class="s2">&quot;MIO[20]&quot;</span><span class="p">]</span>
+<span class="n">set_property</span> <span class="n">slew</span> <span class="s2">&quot;fast&quot;</span> <span class="p">[</span><span class="n">get_ports</span> <span class="s2">&quot;MIO[20]&quot;</span><span class="p">]</span>
+<span class="n">set_property</span> <span class="n">drive</span> <span class="s2">&quot;8&quot;</span> <span class="p">[</span><span class="n">get_ports</span> <span class="s2">&quot;MIO[20]&quot;</span><span class="p">]</span>
+<span class="n">set_property</span> <span class="n">pullup</span> <span class="s2">&quot;TRUE&quot;</span> <span class="p">[</span><span class="n">get_ports</span> <span class="s2">&quot;MIO[20]&quot;</span><span class="p">]</span>
+<span class="n">set_property</span> <span class="n">PIO_DIRECTION</span> <span class="s2">&quot;OUTPUT&quot;</span> <span class="p">[</span><span class="n">get_ports</span> <span class="s2">&quot;MIO[20]&quot;</span><span class="p">]</span>
+<span class="c1">#  Enet 0 / txd[2] / MIO[19]</span>
+<span class="n">set_property</span> <span class="n">iostandard</span> <span class="s2">&quot;LVCMOS18&quot;</span> <span class="p">[</span><span class="n">get_ports</span> <span class="s2">&quot;MIO[19]&quot;</span><span class="p">]</span>
+<span class="n">set_property</span> <span class="n">PACKAGE_PIN</span> <span class="s2">&quot;D10&quot;</span> <span class="p">[</span><span class="n">get_ports</span> <span class="s2">&quot;MIO[19]&quot;</span><span class="p">]</span>
+<span class="n">set_property</span> <span class="n">slew</span> <span class="s2">&quot;fast&quot;</span> <span class="p">[</span><span class="n">get_ports</span> <span class="s2">&quot;MIO[19]&quot;</span><span class="p">]</span>
+<span class="n">set_property</span> <span class="n">drive</span> <span class="s2">&quot;8&quot;</span> <span class="p">[</span><span class="n">get_ports</span> <span class="s2">&quot;MIO[19]&quot;</span><span class="p">]</span>
+<span class="n">set_property</span> <span class="n">pullup</span> <span class="s2">&quot;TRUE&quot;</span> <span class="p">[</span><span class="n">get_ports</span> <span class="s2">&quot;MIO[19]&quot;</span><span class="p">]</span>
+<span class="n">set_property</span> <span class="n">PIO_DIRECTION</span> <span class="s2">&quot;OUTPUT&quot;</span> <span class="p">[</span><span class="n">get_ports</span> <span class="s2">&quot;MIO[19]&quot;</span><span class="p">]</span>
+<span class="c1">#  Enet 0 / txd[1] / MIO[18]</span>
+<span class="n">set_property</span> <span class="n">iostandard</span> <span class="s2">&quot;LVCMOS18&quot;</span> <span class="p">[</span><span class="n">get_ports</span> <span class="s2">&quot;MIO[18]&quot;</span><span class="p">]</span>
+<span class="n">set_property</span> <span class="n">PACKAGE_PIN</span> <span class="s2">&quot;B18&quot;</span> <span class="p">[</span><span class="n">get_ports</span> <span class="s2">&quot;MIO[18]&quot;</span><span class="p">]</span>
+<span class="n">set_property</span> <span class="n">slew</span> <span class="s2">&quot;fast&quot;</span> <span class="p">[</span><span class="n">get_ports</span> <span class="s2">&quot;MIO[18]&quot;</span><span class="p">]</span>
+<span class="n">set_property</span> <span class="n">drive</span> <span class="s2">&quot;8&quot;</span> <span class="p">[</span><span class="n">get_ports</span> <span class="s2">&quot;MIO[18]&quot;</span><span class="p">]</span>
+<span class="n">set_property</span> <span class="n">pullup</span> <span class="s2">&quot;TRUE&quot;</span> <span class="p">[</span><span class="n">get_ports</span> <span class="s2">&quot;MIO[18]&quot;</span><span class="p">]</span>
+<span class="n">set_property</span> <span class="n">PIO_DIRECTION</span> <span class="s2">&quot;OUTPUT&quot;</span> <span class="p">[</span><span class="n">get_ports</span> <span class="s2">&quot;MIO[18]&quot;</span><span class="p">]</span>
+<span class="c1">#  Enet 0 / txd[0] / MIO[17]</span>
+<span class="n">set_property</span> <span class="n">iostandard</span> <span class="s2">&quot;LVCMOS18&quot;</span> <span class="p">[</span><span class="n">get_ports</span> <span class="s2">&quot;MIO[17]&quot;</span><span class="p">]</span>
+<span class="n">set_property</span> <span class="n">PACKAGE_PIN</span> <span class="s2">&quot;E14&quot;</span> <span class="p">[</span><span class="n">get_ports</span> <span class="s2">&quot;MIO[17]&quot;</span><span class="p">]</span>
+<span class="n">set_property</span> <span class="n">slew</span> <span class="s2">&quot;fast&quot;</span> <span class="p">[</span><span class="n">get_ports</span> <span class="s2">&quot;MIO[17]&quot;</span><span class="p">]</span>
+<span class="n">set_property</span> <span class="n">drive</span> <span class="s2">&quot;8&quot;</span> <span class="p">[</span><span class="n">get_ports</span> <span class="s2">&quot;MIO[17]&quot;</span><span class="p">]</span>
+<span class="n">set_property</span> <span class="n">pullup</span> <span class="s2">&quot;TRUE&quot;</span> <span class="p">[</span><span class="n">get_ports</span> <span class="s2">&quot;MIO[17]&quot;</span><span class="p">]</span>
+<span class="n">set_property</span> <span class="n">PIO_DIRECTION</span> <span class="s2">&quot;OUTPUT&quot;</span> <span class="p">[</span><span class="n">get_ports</span> <span class="s2">&quot;MIO[17]&quot;</span><span class="p">]</span>
+<span class="c1">#  Enet 0 / tx_clk / MIO[16]</span>
+<span class="n">set_property</span> <span class="n">iostandard</span> <span class="s2">&quot;LVCMOS18&quot;</span> <span class="p">[</span><span class="n">get_ports</span> <span class="s2">&quot;MIO[16]&quot;</span><span class="p">]</span>
+<span class="n">set_property</span> <span class="n">PACKAGE_PIN</span> <span class="s2">&quot;A19&quot;</span> <span class="p">[</span><span class="n">get_ports</span> <span class="s2">&quot;MIO[16]&quot;</span><span class="p">]</span>
+<span class="n">set_property</span> <span class="n">slew</span> <span class="s2">&quot;fast&quot;</span> <span class="p">[</span><span class="n">get_ports</span> <span class="s2">&quot;MIO[16]&quot;</span><span class="p">]</span>
+<span class="n">set_property</span> <span class="n">drive</span> <span class="s2">&quot;8&quot;</span> <span class="p">[</span><span class="n">get_ports</span> <span class="s2">&quot;MIO[16]&quot;</span><span class="p">]</span>
+<span class="n">set_property</span> <span class="n">pullup</span> <span class="s2">&quot;TRUE&quot;</span> <span class="p">[</span><span class="n">get_ports</span> <span class="s2">&quot;MIO[16]&quot;</span><span class="p">]</span>
+<span class="n">set_property</span> <span class="n">PIO_DIRECTION</span> <span class="s2">&quot;OUTPUT&quot;</span> <span class="p">[</span><span class="n">get_ports</span> <span class="s2">&quot;MIO[16]&quot;</span><span class="p">]</span>
+<span class="c1">#  Quad SPI Flash / qspi_fbclk / MIO[8]</span>
+<span class="n">set_property</span> <span class="n">iostandard</span> <span class="s2">&quot;LVCMOS33&quot;</span> <span class="p">[</span><span class="n">get_ports</span> <span class="s2">&quot;MIO[8]&quot;</span><span class="p">]</span>
+<span class="n">set_property</span> <span class="n">PACKAGE_PIN</span> <span class="s2">&quot;D5&quot;</span> <span class="p">[</span><span class="n">get_ports</span> <span class="s2">&quot;MIO[8]&quot;</span><span class="p">]</span>
+<span class="n">set_property</span> <span class="n">slew</span> <span class="s2">&quot;slow&quot;</span> <span class="p">[</span><span class="n">get_ports</span> <span class="s2">&quot;MIO[8]&quot;</span><span class="p">]</span>
+<span class="n">set_property</span> <span class="n">drive</span> <span class="s2">&quot;8&quot;</span> <span class="p">[</span><span class="n">get_ports</span> <span class="s2">&quot;MIO[8]&quot;</span><span class="p">]</span>
+<span class="n">set_property</span> <span class="n">PIO_DIRECTION</span> <span class="s2">&quot;OUTPUT&quot;</span> <span class="p">[</span><span class="n">get_ports</span> <span class="s2">&quot;MIO[8]&quot;</span><span class="p">]</span>
+<span class="c1">#  Quad SPI Flash / qspi0_sclk / MIO[6]</span>
+<span class="n">set_property</span> <span class="n">iostandard</span> <span class="s2">&quot;LVCMOS33&quot;</span> <span class="p">[</span><span class="n">get_ports</span> <span class="s2">&quot;MIO[6]&quot;</span><span class="p">]</span>
+<span class="n">set_property</span> <span class="n">PACKAGE_PIN</span> <span class="s2">&quot;A5&quot;</span> <span class="p">[</span><span class="n">get_ports</span> <span class="s2">&quot;MIO[6]&quot;</span><span class="p">]</span>
+<span class="n">set_property</span> <span class="n">slew</span> <span class="s2">&quot;slow&quot;</span> <span class="p">[</span><span class="n">get_ports</span> <span class="s2">&quot;MIO[6]&quot;</span><span class="p">]</span>
+<span class="n">set_property</span> <span class="n">drive</span> <span class="s2">&quot;8&quot;</span> <span class="p">[</span><span class="n">get_ports</span> <span class="s2">&quot;MIO[6]&quot;</span><span class="p">]</span>
+<span class="n">set_property</span> <span class="n">PIO_DIRECTION</span> <span class="s2">&quot;OUTPUT&quot;</span> <span class="p">[</span><span class="n">get_ports</span> <span class="s2">&quot;MIO[6]&quot;</span><span class="p">]</span>
+<span class="c1">#  Quad SPI Flash / qspi0_io[3]/HOLD_B / MIO[5]</span>
+<span class="n">set_property</span> <span class="n">iostandard</span> <span class="s2">&quot;LVCMOS33&quot;</span> <span class="p">[</span><span class="n">get_ports</span> <span class="s2">&quot;MIO[5]&quot;</span><span class="p">]</span>
+<span class="n">set_property</span> <span class="n">PACKAGE_PIN</span> <span class="s2">&quot;A6&quot;</span> <span class="p">[</span><span class="n">get_ports</span> <span class="s2">&quot;MIO[5]&quot;</span><span class="p">]</span>
+<span class="n">set_property</span> <span class="n">slew</span> <span class="s2">&quot;slow&quot;</span> <span class="p">[</span><span class="n">get_ports</span> <span class="s2">&quot;MIO[5]&quot;</span><span class="p">]</span>
+<span class="n">set_property</span> <span class="n">drive</span> <span class="s2">&quot;8&quot;</span> <span class="p">[</span><span class="n">get_ports</span> <span class="s2">&quot;MIO[5]&quot;</span><span class="p">]</span>
+<span class="n">set_property</span> <span class="n">PIO_DIRECTION</span> <span class="s2">&quot;BIDIR&quot;</span> <span class="p">[</span><span class="n">get_ports</span> <span class="s2">&quot;MIO[5]&quot;</span><span class="p">]</span>
+<span class="c1">#  Quad SPI Flash / qspi0_io[2] / MIO[4]</span>
+<span class="n">set_property</span> <span class="n">iostandard</span> <span class="s2">&quot;LVCMOS33&quot;</span> <span class="p">[</span><span class="n">get_ports</span> <span class="s2">&quot;MIO[4]&quot;</span><span class="p">]</span>
+<span class="n">set_property</span> <span class="n">PACKAGE_PIN</span> <span class="s2">&quot;B7&quot;</span> <span class="p">[</span><span class="n">get_ports</span> <span class="s2">&quot;MIO[4]&quot;</span><span class="p">]</span>
+<span class="n">set_property</span> <span class="n">slew</span> <span class="s2">&quot;slow&quot;</span> <span class="p">[</span><span class="n">get_ports</span> <span class="s2">&quot;MIO[4]&quot;</span><span class="p">]</span>
+<span class="n">set_property</span> <span class="n">drive</span> <span class="s2">&quot;8&quot;</span> <span class="p">[</span><span class="n">get_ports</span> <span class="s2">&quot;MIO[4]&quot;</span><span class="p">]</span>
+<span class="n">set_property</span> <span class="n">PIO_DIRECTION</span> <span class="s2">&quot;BIDIR&quot;</span> <span class="p">[</span><span class="n">get_ports</span> <span class="s2">&quot;MIO[4]&quot;</span><span class="p">]</span>
+<span class="c1">#  Quad SPI Flash / qspi0_io[1] / MIO[3]</span>
+<span class="n">set_property</span> <span class="n">iostandard</span> <span class="s2">&quot;LVCMOS33&quot;</span> <span class="p">[</span><span class="n">get_ports</span> <span class="s2">&quot;MIO[3]&quot;</span><span class="p">]</span>
+<span class="n">set_property</span> <span class="n">PACKAGE_PIN</span> <span class="s2">&quot;D6&quot;</span> <span class="p">[</span><span class="n">get_ports</span> <span class="s2">&quot;MIO[3]&quot;</span><span class="p">]</span>
+<span class="n">set_property</span> <span class="n">slew</span> <span class="s2">&quot;slow&quot;</span> <span class="p">[</span><span class="n">get_ports</span> <span class="s2">&quot;MIO[3]&quot;</span><span class="p">]</span>
+<span class="n">set_property</span> <span class="n">drive</span> <span class="s2">&quot;8&quot;</span> <span class="p">[</span><span class="n">get_ports</span> <span class="s2">&quot;MIO[3]&quot;</span><span class="p">]</span>
+<span class="n">set_property</span> <span class="n">PIO_DIRECTION</span> <span class="s2">&quot;BIDIR&quot;</span> <span class="p">[</span><span class="n">get_ports</span> <span class="s2">&quot;MIO[3]&quot;</span><span class="p">]</span>
+<span class="c1">#  Quad SPI Flash / qspi0_io[0] / MIO[2]</span>
+<span class="n">set_property</span> <span class="n">iostandard</span> <span class="s2">&quot;LVCMOS33&quot;</span> <span class="p">[</span><span class="n">get_ports</span> <span class="s2">&quot;MIO[2]&quot;</span><span class="p">]</span>
+<span class="n">set_property</span> <span class="n">PACKAGE_PIN</span> <span class="s2">&quot;B8&quot;</span> <span class="p">[</span><span class="n">get_ports</span> <span class="s2">&quot;MIO[2]&quot;</span><span class="p">]</span>
+<span class="n">set_property</span> <span class="n">slew</span> <span class="s2">&quot;slow&quot;</span> <span class="p">[</span><span class="n">get_ports</span> <span class="s2">&quot;MIO[2]&quot;</span><span class="p">]</span>
+<span class="n">set_property</span> <span class="n">drive</span> <span class="s2">&quot;8&quot;</span> <span class="p">[</span><span class="n">get_ports</span> <span class="s2">&quot;MIO[2]&quot;</span><span class="p">]</span>
+<span class="n">set_property</span> <span class="n">PIO_DIRECTION</span> <span class="s2">&quot;BIDIR&quot;</span> <span class="p">[</span><span class="n">get_ports</span> <span class="s2">&quot;MIO[2]&quot;</span><span class="p">]</span>
+<span class="c1">#  Quad SPI Flash / qspi0_ss_b / MIO[1]</span>
+<span class="n">set_property</span> <span class="n">iostandard</span> <span class="s2">&quot;LVCMOS33&quot;</span> <span class="p">[</span><span class="n">get_ports</span> <span class="s2">&quot;MIO[1]&quot;</span><span class="p">]</span>
+<span class="n">set_property</span> <span class="n">PACKAGE_PIN</span> <span class="s2">&quot;A7&quot;</span> <span class="p">[</span><span class="n">get_ports</span> <span class="s2">&quot;MIO[1]&quot;</span><span class="p">]</span>
+<span class="n">set_property</span> <span class="n">slew</span> <span class="s2">&quot;slow&quot;</span> <span class="p">[</span><span class="n">get_ports</span> <span class="s2">&quot;MIO[1]&quot;</span><span class="p">]</span>
+<span class="n">set_property</span> <span class="n">drive</span> <span class="s2">&quot;8&quot;</span> <span class="p">[</span><span class="n">get_ports</span> <span class="s2">&quot;MIO[1]&quot;</span><span class="p">]</span>
+<span class="n">set_property</span> <span class="n">pullup</span> <span class="s2">&quot;TRUE&quot;</span> <span class="p">[</span><span class="n">get_ports</span> <span class="s2">&quot;MIO[1]&quot;</span><span class="p">]</span>
+<span class="n">set_property</span> <span class="n">PIO_DIRECTION</span> <span class="s2">&quot;OUTPUT&quot;</span> <span class="p">[</span><span class="n">get_ports</span> <span class="s2">&quot;MIO[1]&quot;</span><span class="p">]</span>
+<span class="n">set_property</span> <span class="n">iostandard</span> <span class="s2">&quot;SSTL135_T_DCI&quot;</span> <span class="p">[</span><span class="n">get_ports</span> <span class="s2">&quot;DDR_VRP&quot;</span><span class="p">]</span>
+<span class="n">set_property</span> <span class="n">PACKAGE_PIN</span> <span class="s2">&quot;H5&quot;</span> <span class="p">[</span><span class="n">get_ports</span> <span class="s2">&quot;DDR_VRP&quot;</span><span class="p">]</span>
+<span class="n">set_property</span> <span class="n">slew</span> <span class="s2">&quot;FAST&quot;</span> <span class="p">[</span><span class="n">get_ports</span> <span class="s2">&quot;DDR_VRP&quot;</span><span class="p">]</span>
+<span class="n">set_property</span> <span class="n">PIO_DIRECTION</span> <span class="s2">&quot;BIDIR&quot;</span> <span class="p">[</span><span class="n">get_ports</span> <span class="s2">&quot;DDR_VRP&quot;</span><span class="p">]</span>
+<span class="n">set_property</span> <span class="n">iostandard</span> <span class="s2">&quot;SSTL135_T_DCI&quot;</span> <span class="p">[</span><span class="n">get_ports</span> <span class="s2">&quot;DDR_VRN&quot;</span><span class="p">]</span>
+<span class="n">set_property</span> <span class="n">PACKAGE_PIN</span> <span class="s2">&quot;G5&quot;</span> <span class="p">[</span><span class="n">get_ports</span> <span class="s2">&quot;DDR_VRN&quot;</span><span class="p">]</span>
+<span class="n">set_property</span> <span class="n">slew</span> <span class="s2">&quot;FAST&quot;</span> <span class="p">[</span><span class="n">get_ports</span> <span class="s2">&quot;DDR_VRN&quot;</span><span class="p">]</span>
+<span class="n">set_property</span> <span class="n">PIO_DIRECTION</span> <span class="s2">&quot;BIDIR&quot;</span> <span class="p">[</span><span class="n">get_ports</span> <span class="s2">&quot;DDR_VRN&quot;</span><span class="p">]</span>
+<span class="n">set_property</span> <span class="n">iostandard</span> <span class="s2">&quot;SSTL135&quot;</span> <span class="p">[</span><span class="n">get_ports</span> <span class="s2">&quot;DDR_WEB&quot;</span><span class="p">]</span>
+<span class="n">set_property</span> <span class="n">PACKAGE_PIN</span> <span class="s2">&quot;M5&quot;</span> <span class="p">[</span><span class="n">get_ports</span> <span class="s2">&quot;DDR_WEB&quot;</span><span class="p">]</span>
+<span class="n">set_property</span> <span class="n">slew</span> <span class="s2">&quot;SLOW&quot;</span> <span class="p">[</span><span class="n">get_ports</span> <span class="s2">&quot;DDR_WEB&quot;</span><span class="p">]</span>
+<span class="n">set_property</span> <span class="n">PIO_DIRECTION</span> <span class="s2">&quot;OUTPUT&quot;</span> <span class="p">[</span><span class="n">get_ports</span> <span class="s2">&quot;DDR_WEB&quot;</span><span class="p">]</span>
+<span class="n">set_property</span> <span class="n">iostandard</span> <span class="s2">&quot;SSTL135&quot;</span> <span class="p">[</span><span class="n">get_ports</span> <span class="s2">&quot;DDR_RAS_n&quot;</span><span class="p">]</span>
+<span class="n">set_property</span> <span class="n">PACKAGE_PIN</span> <span class="s2">&quot;P4&quot;</span> <span class="p">[</span><span class="n">get_ports</span> <span class="s2">&quot;DDR_RAS_n&quot;</span><span class="p">]</span>
+<span class="n">set_property</span> <span class="n">slew</span> <span class="s2">&quot;SLOW&quot;</span> <span class="p">[</span><span class="n">get_ports</span> <span class="s2">&quot;DDR_RAS_n&quot;</span><span class="p">]</span>
+<span class="n">set_property</span> <span class="n">PIO_DIRECTION</span> <span class="s2">&quot;OUTPUT&quot;</span> <span class="p">[</span><span class="n">get_ports</span> <span class="s2">&quot;DDR_RAS_n&quot;</span><span class="p">]</span>
+<span class="n">set_property</span> <span class="n">iostandard</span> <span class="s2">&quot;SSTL135&quot;</span> <span class="p">[</span><span class="n">get_ports</span> <span class="s2">&quot;DDR_ODT&quot;</span><span class="p">]</span>
+<span class="n">set_property</span> <span class="n">PACKAGE_PIN</span> <span class="s2">&quot;N5&quot;</span> <span class="p">[</span><span class="n">get_ports</span> <span class="s2">&quot;DDR_ODT&quot;</span><span class="p">]</span>
+<span class="n">set_property</span> <span class="n">slew</span> <span class="s2">&quot;SLOW&quot;</span> <span class="p">[</span><span class="n">get_ports</span> <span class="s2">&quot;DDR_ODT&quot;</span><span class="p">]</span>
+<span class="n">set_property</span> <span class="n">PIO_DIRECTION</span> <span class="s2">&quot;OUTPUT&quot;</span> <span class="p">[</span><span class="n">get_ports</span> <span class="s2">&quot;DDR_ODT&quot;</span><span class="p">]</span>
+<span class="n">set_property</span> <span class="n">iostandard</span> <span class="s2">&quot;SSTL135&quot;</span> <span class="p">[</span><span class="n">get_ports</span> <span class="s2">&quot;DDR_DRSTB&quot;</span><span class="p">]</span>
+<span class="n">set_property</span> <span class="n">PACKAGE_PIN</span> <span class="s2">&quot;B4&quot;</span> <span class="p">[</span><span class="n">get_ports</span> <span class="s2">&quot;DDR_DRSTB&quot;</span><span class="p">]</span>
+<span class="n">set_property</span> <span class="n">slew</span> <span class="s2">&quot;FAST&quot;</span> <span class="p">[</span><span class="n">get_ports</span> <span class="s2">&quot;DDR_DRSTB&quot;</span><span class="p">]</span>
+<span class="n">set_property</span> <span class="n">PIO_DIRECTION</span> <span class="s2">&quot;BIDIR&quot;</span> <span class="p">[</span><span class="n">get_ports</span> <span class="s2">&quot;DDR_DRSTB&quot;</span><span class="p">]</span>
+<span class="n">set_property</span> <span class="n">iostandard</span> <span class="s2">&quot;DIFF_SSTL135_T_DCI&quot;</span> <span class="p">[</span><span class="n">get_ports</span> <span class="s2">&quot;DDR_DQS[3]&quot;</span><span class="p">]</span>
+<span class="n">set_property</span> <span class="n">PACKAGE_PIN</span> <span class="s2">&quot;W5&quot;</span> <span class="p">[</span><span class="n">get_ports</span> <span class="s2">&quot;DDR_DQS[3]&quot;</span><span class="p">]</span>
+<span class="n">set_property</span> <span class="n">slew</span> <span class="s2">&quot;FAST&quot;</span> <span class="p">[</span><span class="n">get_ports</span> <span class="s2">&quot;DDR_DQS[3]&quot;</span><span class="p">]</span>
+<span class="n">set_property</span> <span class="n">PIO_DIRECTION</span> <span class="s2">&quot;BIDIR&quot;</span> <span class="p">[</span><span class="n">get_ports</span> <span class="s2">&quot;DDR_DQS[3]&quot;</span><span class="p">]</span>
+<span class="n">set_property</span> <span class="n">iostandard</span> <span class="s2">&quot;DIFF_SSTL135_T_DCI&quot;</span> <span class="p">[</span><span class="n">get_ports</span> <span class="s2">&quot;DDR_DQS[2]&quot;</span><span class="p">]</span>
+<span class="n">set_property</span> <span class="n">PACKAGE_PIN</span> <span class="s2">&quot;R2&quot;</span> <span class="p">[</span><span class="n">get_ports</span> <span class="s2">&quot;DDR_DQS[2]&quot;</span><span class="p">]</span>
+<span class="n">set_property</span> <span class="n">slew</span> <span class="s2">&quot;FAST&quot;</span> <span class="p">[</span><span class="n">get_ports</span> <span class="s2">&quot;DDR_DQS[2]&quot;</span><span class="p">]</span>
+<span class="n">set_property</span> <span class="n">PIO_DIRECTION</span> <span class="s2">&quot;BIDIR&quot;</span> <span class="p">[</span><span class="n">get_ports</span> <span class="s2">&quot;DDR_DQS[2]&quot;</span><span class="p">]</span>
+<span class="n">set_property</span> <span class="n">iostandard</span> <span class="s2">&quot;DIFF_SSTL135_T_DCI&quot;</span> <span class="p">[</span><span class="n">get_ports</span> <span class="s2">&quot;DDR_DQS[1]&quot;</span><span class="p">]</span>
+<span class="n">set_property</span> <span class="n">PACKAGE_PIN</span> <span class="s2">&quot;G2&quot;</span> <span class="p">[</span><span class="n">get_ports</span> <span class="s2">&quot;DDR_DQS[1]&quot;</span><span class="p">]</span>
+<span class="n">set_property</span> <span class="n">slew</span> <span class="s2">&quot;FAST&quot;</span> <span class="p">[</span><span class="n">get_ports</span> <span class="s2">&quot;DDR_DQS[1]&quot;</span><span class="p">]</span>
+<span class="n">set_property</span> <span class="n">PIO_DIRECTION</span> <span class="s2">&quot;BIDIR&quot;</span> <span class="p">[</span><span class="n">get_ports</span> <span class="s2">&quot;DDR_DQS[1]&quot;</span><span class="p">]</span>
+<span class="n">set_property</span> <span class="n">iostandard</span> <span class="s2">&quot;DIFF_SSTL135_T_DCI&quot;</span> <span class="p">[</span><span class="n">get_ports</span> <span class="s2">&quot;DDR_DQS[0]&quot;</span><span class="p">]</span>
+<span class="n">set_property</span> <span class="n">PACKAGE_PIN</span> <span class="s2">&quot;C2&quot;</span> <span class="p">[</span><span class="n">get_ports</span> <span class="s2">&quot;DDR_DQS[0]&quot;</span><span class="p">]</span>
+<span class="n">set_property</span> <span class="n">slew</span> <span class="s2">&quot;FAST&quot;</span> <span class="p">[</span><span class="n">get_ports</span> <span class="s2">&quot;DDR_DQS[0]&quot;</span><span class="p">]</span>
+<span class="n">set_property</span> <span class="n">PIO_DIRECTION</span> <span class="s2">&quot;BIDIR&quot;</span> <span class="p">[</span><span class="n">get_ports</span> <span class="s2">&quot;DDR_DQS[0]&quot;</span><span class="p">]</span>
+<span class="n">set_property</span> <span class="n">iostandard</span> <span class="s2">&quot;DIFF_SSTL135_T_DCI&quot;</span> <span class="p">[</span><span class="n">get_ports</span> <span class="s2">&quot;DDR_DQS_n[3]&quot;</span><span class="p">]</span>
+<span class="n">set_property</span> <span class="n">PACKAGE_PIN</span> <span class="s2">&quot;W4&quot;</span> <span class="p">[</span><span class="n">get_ports</span> <span class="s2">&quot;DDR_DQS_n[3]&quot;</span><span class="p">]</span>
+<span class="n">set_property</span> <span class="n">slew</span> <span class="s2">&quot;FAST&quot;</span> <span class="p">[</span><span class="n">get_ports</span> <span class="s2">&quot;DDR_DQS_n[3]&quot;</span><span class="p">]</span>
+<span class="n">set_property</span> <span class="n">PIO_DIRECTION</span> <span class="s2">&quot;BIDIR&quot;</span> <span class="p">[</span><span class="n">get_ports</span> <span class="s2">&quot;DDR_DQS_n[3]&quot;</span><span class="p">]</span>
+<span class="n">set_property</span> <span class="n">iostandard</span> <span class="s2">&quot;DIFF_SSTL135_T_DCI&quot;</span> <span class="p">[</span><span class="n">get_ports</span> <span class="s2">&quot;DDR_DQS_n[2]&quot;</span><span class="p">]</span>
+<span class="n">set_property</span> <span class="n">PACKAGE_PIN</span> <span class="s2">&quot;T2&quot;</span> <span class="p">[</span><span class="n">get_ports</span> <span class="s2">&quot;DDR_DQS_n[2]&quot;</span><span class="p">]</span>
+<span class="n">set_property</span> <span class="n">slew</span> <span class="s2">&quot;FAST&quot;</span> <span class="p">[</span><span class="n">get_ports</span> <span class="s2">&quot;DDR_DQS_n[2]&quot;</span><span class="p">]</span>
+<span class="n">set_property</span> <span class="n">PIO_DIRECTION</span> <span class="s2">&quot;BIDIR&quot;</span> <span class="p">[</span><span class="n">get_ports</span> <span class="s2">&quot;DDR_DQS_n[2]&quot;</span><span class="p">]</span>
+<span class="n">set_property</span> <span class="n">iostandard</span> <span class="s2">&quot;DIFF_SSTL135_T_DCI&quot;</span> <span class="p">[</span><span class="n">get_ports</span> <span class="s2">&quot;DDR_DQS_n[1]&quot;</span><span class="p">]</span>
+<span class="n">set_property</span> <span class="n">PACKAGE_PIN</span> <span class="s2">&quot;F2&quot;</span> <span class="p">[</span><span class="n">get_ports</span> <span class="s2">&quot;DDR_DQS_n[1]&quot;</span><span class="p">]</span>
+<span class="n">set_property</span> <span class="n">slew</span> <span class="s2">&quot;FAST&quot;</span> <span class="p">[</span><span class="n">get_ports</span> <span class="s2">&quot;DDR_DQS_n[1]&quot;</span><span class="p">]</span>
+<span class="n">set_property</span> <span class="n">PIO_DIRECTION</span> <span class="s2">&quot;BIDIR&quot;</span> <span class="p">[</span><span class="n">get_ports</span> <span class="s2">&quot;DDR_DQS_n[1]&quot;</span><span class="p">]</span>
+<span class="n">set_property</span> <span class="n">iostandard</span> <span class="s2">&quot;DIFF_SSTL135_T_DCI&quot;</span> <span class="p">[</span><span class="n">get_ports</span> <span class="s2">&quot;DDR_DQS_n[0]&quot;</span><span class="p">]</span>
+<span class="n">set_property</span> <span class="n">PACKAGE_PIN</span> <span class="s2">&quot;B2&quot;</span> <span class="p">[</span><span class="n">get_ports</span> <span class="s2">&quot;DDR_DQS_n[0]&quot;</span><span class="p">]</span>
+<span class="n">set_property</span> <span class="n">slew</span> <span class="s2">&quot;FAST&quot;</span> <span class="p">[</span><span class="n">get_ports</span> <span class="s2">&quot;DDR_DQS_n[0]&quot;</span><span class="p">]</span>
+<span class="n">set_property</span> <span class="n">PIO_DIRECTION</span> <span class="s2">&quot;BIDIR&quot;</span> <span class="p">[</span><span class="n">get_ports</span> <span class="s2">&quot;DDR_DQS_n[0]&quot;</span><span class="p">]</span>
+<span class="n">set_property</span> <span class="n">iostandard</span> <span class="s2">&quot;SSTL135_T_DCI&quot;</span> <span class="p">[</span><span class="n">get_ports</span> <span class="s2">&quot;DDR_DQ[9]&quot;</span><span class="p">]</span>
+<span class="n">set_property</span> <span class="n">PACKAGE_PIN</span> <span class="s2">&quot;E3&quot;</span> <span class="p">[</span><span class="n">get_ports</span> <span class="s2">&quot;DDR_DQ[9]&quot;</span><span class="p">]</span>
+<span class="n">set_property</span> <span class="n">slew</span> <span class="s2">&quot;FAST&quot;</span> <span class="p">[</span><span class="n">get_ports</span> <span class="s2">&quot;DDR_DQ[9]&quot;</span><span class="p">]</span>
+<span class="n">set_property</span> <span class="n">PIO_DIRECTION</span> <span class="s2">&quot;BIDIR&quot;</span> <span class="p">[</span><span class="n">get_ports</span> <span class="s2">&quot;DDR_DQ[9]&quot;</span><span class="p">]</span>
+<span class="n">set_property</span> <span class="n">iostandard</span> <span class="s2">&quot;SSTL135_T_DCI&quot;</span> <span class="p">[</span><span class="n">get_ports</span> <span class="s2">&quot;DDR_DQ[8]&quot;</span><span class="p">]</span>
+<span class="n">set_property</span> <span class="n">PACKAGE_PIN</span> <span class="s2">&quot;E2&quot;</span> <span class="p">[</span><span class="n">get_ports</span> <span class="s2">&quot;DDR_DQ[8]&quot;</span><span class="p">]</span>
+<span class="n">set_property</span> <span class="n">slew</span> <span class="s2">&quot;FAST&quot;</span> <span class="p">[</span><span class="n">get_ports</span> <span class="s2">&quot;DDR_DQ[8]&quot;</span><span class="p">]</span>
+<span class="n">set_property</span> <span class="n">PIO_DIRECTION</span> <span class="s2">&quot;BIDIR&quot;</span> <span class="p">[</span><span class="n">get_ports</span> <span class="s2">&quot;DDR_DQ[8]&quot;</span><span class="p">]</span>
+<span class="n">set_property</span> <span class="n">iostandard</span> <span class="s2">&quot;SSTL135_T_DCI&quot;</span> <span class="p">[</span><span class="n">get_ports</span> <span class="s2">&quot;DDR_DQ[7]&quot;</span><span class="p">]</span>
+<span class="n">set_property</span> <span class="n">PACKAGE_PIN</span> <span class="s2">&quot;E1&quot;</span> <span class="p">[</span><span class="n">get_ports</span> <span class="s2">&quot;DDR_DQ[7]&quot;</span><span class="p">]</span>
+<span class="n">set_property</span> <span class="n">slew</span> <span class="s2">&quot;FAST&quot;</span> <span class="p">[</span><span class="n">get_ports</span> <span class="s2">&quot;DDR_DQ[7]&quot;</span><span class="p">]</span>
+<span class="n">set_property</span> <span class="n">PIO_DIRECTION</span> <span class="s2">&quot;BIDIR&quot;</span> <span class="p">[</span><span class="n">get_ports</span> <span class="s2">&quot;DDR_DQ[7]&quot;</span><span class="p">]</span>
+<span class="n">set_property</span> <span class="n">iostandard</span> <span class="s2">&quot;SSTL135_T_DCI&quot;</span> <span class="p">[</span><span class="n">get_ports</span> <span class="s2">&quot;DDR_DQ[6]&quot;</span><span class="p">]</span>
+<span class="n">set_property</span> <span class="n">PACKAGE_PIN</span> <span class="s2">&quot;C1&quot;</span> <span class="p">[</span><span class="n">get_ports</span> <span class="s2">&quot;DDR_DQ[6]&quot;</span><span class="p">]</span>
+<span class="n">set_property</span> <span class="n">slew</span> <span class="s2">&quot;FAST&quot;</span> <span class="p">[</span><span class="n">get_ports</span> <span class="s2">&quot;DDR_DQ[6]&quot;</span><span class="p">]</span>
+<span class="n">set_property</span> <span class="n">PIO_DIRECTION</span> <span class="s2">&quot;BIDIR&quot;</span> <span class="p">[</span><span class="n">get_ports</span> <span class="s2">&quot;DDR_DQ[6]&quot;</span><span class="p">]</span>
+<span class="n">set_property</span> <span class="n">iostandard</span> <span class="s2">&quot;SSTL135_T_DCI&quot;</span> <span class="p">[</span><span class="n">get_ports</span> <span class="s2">&quot;DDR_DQ[5]&quot;</span><span class="p">]</span>
+<span class="n">set_property</span> <span class="n">PACKAGE_PIN</span> <span class="s2">&quot;D1&quot;</span> <span class="p">[</span><span class="n">get_ports</span> <span class="s2">&quot;DDR_DQ[5]&quot;</span><span class="p">]</span>
+<span class="n">set_property</span> <span class="n">slew</span> <span class="s2">&quot;FAST&quot;</span> <span class="p">[</span><span class="n">get_ports</span> <span class="s2">&quot;DDR_DQ[5]&quot;</span><span class="p">]</span>
+<span class="n">set_property</span> <span class="n">PIO_DIRECTION</span> <span class="s2">&quot;BIDIR&quot;</span> <span class="p">[</span><span class="n">get_ports</span> <span class="s2">&quot;DDR_DQ[5]&quot;</span><span class="p">]</span>
+<span class="n">set_property</span> <span class="n">iostandard</span> <span class="s2">&quot;SSTL135_T_DCI&quot;</span> <span class="p">[</span><span class="n">get_ports</span> <span class="s2">&quot;DDR_DQ[4]&quot;</span><span class="p">]</span>
+<span class="n">set_property</span> <span class="n">PACKAGE_PIN</span> <span class="s2">&quot;D3&quot;</span> <span class="p">[</span><span class="n">get_ports</span> <span class="s2">&quot;DDR_DQ[4]&quot;</span><span class="p">]</span>
+<span class="n">set_property</span> <span class="n">slew</span> <span class="s2">&quot;FAST&quot;</span> <span class="p">[</span><span class="n">get_ports</span> <span class="s2">&quot;DDR_DQ[4]&quot;</span><span class="p">]</span>
+<span class="n">set_property</span> <span class="n">PIO_DIRECTION</span> <span class="s2">&quot;BIDIR&quot;</span> <span class="p">[</span><span class="n">get_ports</span> <span class="s2">&quot;DDR_DQ[4]&quot;</span><span class="p">]</span>
+<span class="n">set_property</span> <span class="n">iostandard</span> <span class="s2">&quot;SSTL135_T_DCI&quot;</span> <span class="p">[</span><span class="n">get_ports</span> <span class="s2">&quot;DDR_DQ[3]&quot;</span><span class="p">]</span>
+<span class="n">set_property</span> <span class="n">PACKAGE_PIN</span> <span class="s2">&quot;A4&quot;</span> <span class="p">[</span><span class="n">get_ports</span> <span class="s2">&quot;DDR_DQ[3]&quot;</span><span class="p">]</span>
+<span class="n">set_property</span> <span class="n">slew</span> <span class="s2">&quot;FAST&quot;</span> <span class="p">[</span><span class="n">get_ports</span> <span class="s2">&quot;DDR_DQ[3]&quot;</span><span class="p">]</span>
+<span class="n">set_property</span> <span class="n">PIO_DIRECTION</span> <span class="s2">&quot;BIDIR&quot;</span> <span class="p">[</span><span class="n">get_ports</span> <span class="s2">&quot;DDR_DQ[3]&quot;</span><span class="p">]</span>
+<span class="n">set_property</span> <span class="n">iostandard</span> <span class="s2">&quot;SSTL135_T_DCI&quot;</span> <span class="p">[</span><span class="n">get_ports</span> <span class="s2">&quot;DDR_DQ[31]&quot;</span><span class="p">]</span>
+<span class="n">set_property</span> <span class="n">PACKAGE_PIN</span> <span class="s2">&quot;V3&quot;</span> <span class="p">[</span><span class="n">get_ports</span> <span class="s2">&quot;DDR_DQ[31]&quot;</span><span class="p">]</span>
+<span class="n">set_property</span> <span class="n">slew</span> <span class="s2">&quot;FAST&quot;</span> <span class="p">[</span><span class="n">get_ports</span> <span class="s2">&quot;DDR_DQ[31]&quot;</span><span class="p">]</span>
+<span class="n">set_property</span> <span class="n">PIO_DIRECTION</span> <span class="s2">&quot;BIDIR&quot;</span> <span class="p">[</span><span class="n">get_ports</span> <span class="s2">&quot;DDR_DQ[31]&quot;</span><span class="p">]</span>
+<span class="n">set_property</span> <span class="n">iostandard</span> <span class="s2">&quot;SSTL135_T_DCI&quot;</span> <span class="p">[</span><span class="n">get_ports</span> <span class="s2">&quot;DDR_DQ[30]&quot;</span><span class="p">]</span>
+<span class="n">set_property</span> <span class="n">PACKAGE_PIN</span> <span class="s2">&quot;V2&quot;</span> <span class="p">[</span><span class="n">get_ports</span> <span class="s2">&quot;DDR_DQ[30]&quot;</span><span class="p">]</span>
+<span class="n">set_property</span> <span class="n">slew</span> <span class="s2">&quot;FAST&quot;</span> <span class="p">[</span><span class="n">get_ports</span> <span class="s2">&quot;DDR_DQ[30]&quot;</span><span class="p">]</span>
+<span class="n">set_property</span> <span class="n">PIO_DIRECTION</span> <span class="s2">&quot;BIDIR&quot;</span> <span class="p">[</span><span class="n">get_ports</span> <span class="s2">&quot;DDR_DQ[30]&quot;</span><span class="p">]</span>
+<span class="n">set_property</span> <span class="n">iostandard</span> <span class="s2">&quot;SSTL135_T_DCI&quot;</span> <span class="p">[</span><span class="n">get_ports</span> <span class="s2">&quot;DDR_DQ[2]&quot;</span><span class="p">]</span>
+<span class="n">set_property</span> <span class="n">PACKAGE_PIN</span> <span class="s2">&quot;A2&quot;</span> <span class="p">[</span><span class="n">get_ports</span> <span class="s2">&quot;DDR_DQ[2]&quot;</span><span class="p">]</span>
+<span class="n">set_property</span> <span class="n">slew</span> <span class="s2">&quot;FAST&quot;</span> <span class="p">[</span><span class="n">get_ports</span> <span class="s2">&quot;DDR_DQ[2]&quot;</span><span class="p">]</span>
+<span class="n">set_property</span> <span class="n">PIO_DIRECTION</span> <span class="s2">&quot;BIDIR&quot;</span> <span class="p">[</span><span class="n">get_ports</span> <span class="s2">&quot;DDR_DQ[2]&quot;</span><span class="p">]</span>
+<span class="n">set_property</span> <span class="n">iostandard</span> <span class="s2">&quot;SSTL135_T_DCI&quot;</span> <span class="p">[</span><span class="n">get_ports</span> <span class="s2">&quot;DDR_DQ[29]&quot;</span><span class="p">]</span>
+<span class="n">set_property</span> <span class="n">PACKAGE_PIN</span> <span class="s2">&quot;W3&quot;</span> <span class="p">[</span><span class="n">get_ports</span> <span class="s2">&quot;DDR_DQ[29]&quot;</span><span class="p">]</span>
+<span class="n">set_property</span> <span class="n">slew</span> <span class="s2">&quot;FAST&quot;</span> <span class="p">[</span><span class="n">get_ports</span> <span class="s2">&quot;DDR_DQ[29]&quot;</span><span class="p">]</span>
+<span class="n">set_property</span> <span class="n">PIO_DIRECTION</span> <span class="s2">&quot;BIDIR&quot;</span> <span class="p">[</span><span class="n">get_ports</span> <span class="s2">&quot;DDR_DQ[29]&quot;</span><span class="p">]</span>
+<span class="n">set_property</span> <span class="n">iostandard</span> <span class="s2">&quot;SSTL135_T_DCI&quot;</span> <span class="p">[</span><span class="n">get_ports</span> <span class="s2">&quot;DDR_DQ[28]&quot;</span><span class="p">]</span>
+<span class="n">set_property</span> <span class="n">PACKAGE_PIN</span> <span class="s2">&quot;Y2&quot;</span> <span class="p">[</span><span class="n">get_ports</span> <span class="s2">&quot;DDR_DQ[28]&quot;</span><span class="p">]</span>
+<span class="n">set_property</span> <span class="n">slew</span> <span class="s2">&quot;FAST&quot;</span> <span class="p">[</span><span class="n">get_ports</span> <span class="s2">&quot;DDR_DQ[28]&quot;</span><span class="p">]</span>
+<span class="n">set_property</span> <span class="n">PIO_DIRECTION</span> <span class="s2">&quot;BIDIR&quot;</span> <span class="p">[</span><span class="n">get_ports</span> <span class="s2">&quot;DDR_DQ[28]&quot;</span><span class="p">]</span>
+<span class="n">set_property</span> <span class="n">iostandard</span> <span class="s2">&quot;SSTL135_T_DCI&quot;</span> <span class="p">[</span><span class="n">get_ports</span> <span class="s2">&quot;DDR_DQ[27]&quot;</span><span class="p">]</span>
+<span class="n">set_property</span> <span class="n">PACKAGE_PIN</span> <span class="s2">&quot;Y4&quot;</span> <span class="p">[</span><span class="n">get_ports</span> <span class="s2">&quot;DDR_DQ[27]&quot;</span><span class="p">]</span>
+<span class="n">set_property</span> <span class="n">slew</span> <span class="s2">&quot;FAST&quot;</span> <span class="p">[</span><span class="n">get_ports</span> <span class="s2">&quot;DDR_DQ[27]&quot;</span><span class="p">]</span>
+<span class="n">set_property</span> <span class="n">PIO_DIRECTION</span> <span class="s2">&quot;BIDIR&quot;</span> <span class="p">[</span><span class="n">get_ports</span> <span class="s2">&quot;DDR_DQ[27]&quot;</span><span class="p">]</span>
+<span class="n">set_property</span> <span class="n">iostandard</span> <span class="s2">&quot;SSTL135_T_DCI&quot;</span> <span class="p">[</span><span class="n">get_ports</span> <span class="s2">&quot;DDR_DQ[26]&quot;</span><span class="p">]</span>
+<span class="n">set_property</span> <span class="n">PACKAGE_PIN</span> <span class="s2">&quot;W1&quot;</span> <span class="p">[</span><span class="n">get_ports</span> <span class="s2">&quot;DDR_DQ[26]&quot;</span><span class="p">]</span>
+<span class="n">set_property</span> <span class="n">slew</span> <span class="s2">&quot;FAST&quot;</span> <span class="p">[</span><span class="n">get_ports</span> <span class="s2">&quot;DDR_DQ[26]&quot;</span><span class="p">]</span>
+<span class="n">set_property</span> <span class="n">PIO_DIRECTION</span> <span class="s2">&quot;BIDIR&quot;</span> <span class="p">[</span><span class="n">get_ports</span> <span class="s2">&quot;DDR_DQ[26]&quot;</span><span class="p">]</span>
+<span class="n">set_property</span> <span class="n">iostandard</span> <span class="s2">&quot;SSTL135_T_DCI&quot;</span> <span class="p">[</span><span class="n">get_ports</span> <span class="s2">&quot;DDR_DQ[25]&quot;</span><span class="p">]</span>
+<span class="n">set_property</span> <span class="n">PACKAGE_PIN</span> <span class="s2">&quot;Y3&quot;</span> <span class="p">[</span><span class="n">get_ports</span> <span class="s2">&quot;DDR_DQ[25]&quot;</span><span class="p">]</span>
+<span class="n">set_property</span> <span class="n">slew</span> <span class="s2">&quot;FAST&quot;</span> <span class="p">[</span><span class="n">get_ports</span> <span class="s2">&quot;DDR_DQ[25]&quot;</span><span class="p">]</span>
+<span class="n">set_property</span> <span class="n">PIO_DIRECTION</span> <span class="s2">&quot;BIDIR&quot;</span> <span class="p">[</span><span class="n">get_ports</span> <span class="s2">&quot;DDR_DQ[25]&quot;</span><span class="p">]</span>
+<span class="n">set_property</span> <span class="n">iostandard</span> <span class="s2">&quot;SSTL135_T_DCI&quot;</span> <span class="p">[</span><span class="n">get_ports</span> <span class="s2">&quot;DDR_DQ[24]&quot;</span><span class="p">]</span>
+<span class="n">set_property</span> <span class="n">PACKAGE_PIN</span> <span class="s2">&quot;V1&quot;</span> <span class="p">[</span><span class="n">get_ports</span> <span class="s2">&quot;DDR_DQ[24]&quot;</span><span class="p">]</span>
+<span class="n">set_property</span> <span class="n">slew</span> <span class="s2">&quot;FAST&quot;</span> <span class="p">[</span><span class="n">get_ports</span> <span class="s2">&quot;DDR_DQ[24]&quot;</span><span class="p">]</span>
+<span class="n">set_property</span> <span class="n">PIO_DIRECTION</span> <span class="s2">&quot;BIDIR&quot;</span> <span class="p">[</span><span class="n">get_ports</span> <span class="s2">&quot;DDR_DQ[24]&quot;</span><span class="p">]</span>
+<span class="n">set_property</span> <span class="n">iostandard</span> <span class="s2">&quot;SSTL135_T_DCI&quot;</span> <span class="p">[</span><span class="n">get_ports</span> <span class="s2">&quot;DDR_DQ[23]&quot;</span><span class="p">]</span>
+<span class="n">set_property</span> <span class="n">PACKAGE_PIN</span> <span class="s2">&quot;U3&quot;</span> <span class="p">[</span><span class="n">get_ports</span> <span class="s2">&quot;DDR_DQ[23]&quot;</span><span class="p">]</span>
+<span class="n">set_property</span> <span class="n">slew</span> <span class="s2">&quot;FAST&quot;</span> <span class="p">[</span><span class="n">get_ports</span> <span class="s2">&quot;DDR_DQ[23]&quot;</span><span class="p">]</span>
+<span class="n">set_property</span> <span class="n">PIO_DIRECTION</span> <span class="s2">&quot;BIDIR&quot;</span> <span class="p">[</span><span class="n">get_ports</span> <span class="s2">&quot;DDR_DQ[23]&quot;</span><span class="p">]</span>
+<span class="n">set_property</span> <span class="n">iostandard</span> <span class="s2">&quot;SSTL135_T_DCI&quot;</span> <span class="p">[</span><span class="n">get_ports</span> <span class="s2">&quot;DDR_DQ[22]&quot;</span><span class="p">]</span>
+<span class="n">set_property</span> <span class="n">PACKAGE_PIN</span> <span class="s2">&quot;U2&quot;</span> <span class="p">[</span><span class="n">get_ports</span> <span class="s2">&quot;DDR_DQ[22]&quot;</span><span class="p">]</span>
+<span class="n">set_property</span> <span class="n">slew</span> <span class="s2">&quot;FAST&quot;</span> <span class="p">[</span><span class="n">get_ports</span> <span class="s2">&quot;DDR_DQ[22]&quot;</span><span class="p">]</span>
+<span class="n">set_property</span> <span class="n">PIO_DIRECTION</span> <span class="s2">&quot;BIDIR&quot;</span> <span class="p">[</span><span class="n">get_ports</span> <span class="s2">&quot;DDR_DQ[22]&quot;</span><span class="p">]</span>
+<span class="n">set_property</span> <span class="n">iostandard</span> <span class="s2">&quot;SSTL135_T_DCI&quot;</span> <span class="p">[</span><span class="n">get_ports</span> <span class="s2">&quot;DDR_DQ[21]&quot;</span><span class="p">]</span>
+<span class="n">set_property</span> <span class="n">PACKAGE_PIN</span> <span class="s2">&quot;U4&quot;</span> <span class="p">[</span><span class="n">get_ports</span> <span class="s2">&quot;DDR_DQ[21]&quot;</span><span class="p">]</span>
+<span class="n">set_property</span> <span class="n">slew</span> <span class="s2">&quot;FAST&quot;</span> <span class="p">[</span><span class="n">get_ports</span> <span class="s2">&quot;DDR_DQ[21]&quot;</span><span class="p">]</span>
+<span class="n">set_property</span> <span class="n">PIO_DIRECTION</span> <span class="s2">&quot;BIDIR&quot;</span> <span class="p">[</span><span class="n">get_ports</span> <span class="s2">&quot;DDR_DQ[21]&quot;</span><span class="p">]</span>
+<span class="n">set_property</span> <span class="n">iostandard</span> <span class="s2">&quot;SSTL135_T_DCI&quot;</span> <span class="p">[</span><span class="n">get_ports</span> <span class="s2">&quot;DDR_DQ[20]&quot;</span><span class="p">]</span>
+<span class="n">set_property</span> <span class="n">PACKAGE_PIN</span> <span class="s2">&quot;T4&quot;</span> <span class="p">[</span><span class="n">get_ports</span> <span class="s2">&quot;DDR_DQ[20]&quot;</span><span class="p">]</span>
+<span class="n">set_property</span> <span class="n">slew</span> <span class="s2">&quot;FAST&quot;</span> <span class="p">[</span><span class="n">get_ports</span> <span class="s2">&quot;DDR_DQ[20]&quot;</span><span class="p">]</span>
+<span class="n">set_property</span> <span class="n">PIO_DIRECTION</span> <span class="s2">&quot;BIDIR&quot;</span> <span class="p">[</span><span class="n">get_ports</span> <span class="s2">&quot;DDR_DQ[20]&quot;</span><span class="p">]</span>
+<span class="n">set_property</span> <span class="n">iostandard</span> <span class="s2">&quot;SSTL135_T_DCI&quot;</span> <span class="p">[</span><span class="n">get_ports</span> <span class="s2">&quot;DDR_DQ[1]&quot;</span><span class="p">]</span>
+<span class="n">set_property</span> <span class="n">PACKAGE_PIN</span> <span class="s2">&quot;B3&quot;</span> <span class="p">[</span><span class="n">get_ports</span> <span class="s2">&quot;DDR_DQ[1]&quot;</span><span class="p">]</span>
+<span class="n">set_property</span> <span class="n">slew</span> <span class="s2">&quot;FAST&quot;</span> <span class="p">[</span><span class="n">get_ports</span> <span class="s2">&quot;DDR_DQ[1]&quot;</span><span class="p">]</span>
+<span class="n">set_property</span> <span class="n">PIO_DIRECTION</span> <span class="s2">&quot;BIDIR&quot;</span> <span class="p">[</span><span class="n">get_ports</span> <span class="s2">&quot;DDR_DQ[1]&quot;</span><span class="p">]</span>
+<span class="n">set_property</span> <span class="n">iostandard</span> <span class="s2">&quot;SSTL135_T_DCI&quot;</span> <span class="p">[</span><span class="n">get_ports</span> <span class="s2">&quot;DDR_DQ[19]&quot;</span><span class="p">]</span>
+<span class="n">set_property</span> <span class="n">PACKAGE_PIN</span> <span class="s2">&quot;R1&quot;</span> <span class="p">[</span><span class="n">get_ports</span> <span class="s2">&quot;DDR_DQ[19]&quot;</span><span class="p">]</span>
+<span class="n">set_property</span> <span class="n">slew</span> <span class="s2">&quot;FAST&quot;</span> <span class="p">[</span><span class="n">get_ports</span> <span class="s2">&quot;DDR_DQ[19]&quot;</span><span class="p">]</span>
+<span class="n">set_property</span> <span class="n">PIO_DIRECTION</span> <span class="s2">&quot;BIDIR&quot;</span> <span class="p">[</span><span class="n">get_ports</span> <span class="s2">&quot;DDR_DQ[19]&quot;</span><span class="p">]</span>
+<span class="n">set_property</span> <span class="n">iostandard</span> <span class="s2">&quot;SSTL135_T_DCI&quot;</span> <span class="p">[</span><span class="n">get_ports</span> <span class="s2">&quot;DDR_DQ[18]&quot;</span><span class="p">]</span>
+<span class="n">set_property</span> <span class="n">PACKAGE_PIN</span> <span class="s2">&quot;R3&quot;</span> <span class="p">[</span><span class="n">get_ports</span> <span class="s2">&quot;DDR_DQ[18]&quot;</span><span class="p">]</span>
+<span class="n">set_property</span> <span class="n">slew</span> <span class="s2">&quot;FAST&quot;</span> <span class="p">[</span><span class="n">get_ports</span> <span class="s2">&quot;DDR_DQ[18]&quot;</span><span class="p">]</span>
+<span class="n">set_property</span> <span class="n">PIO_DIRECTION</span> <span class="s2">&quot;BIDIR&quot;</span> <span class="p">[</span><span class="n">get_ports</span> <span class="s2">&quot;DDR_DQ[18]&quot;</span><span class="p">]</span>
+<span class="n">set_property</span> <span class="n">iostandard</span> <span class="s2">&quot;SSTL135_T_DCI&quot;</span> <span class="p">[</span><span class="n">get_ports</span> <span class="s2">&quot;DDR_DQ[17]&quot;</span><span class="p">]</span>
+<span class="n">set_property</span> <span class="n">PACKAGE_PIN</span> <span class="s2">&quot;P3&quot;</span> <span class="p">[</span><span class="n">get_ports</span> <span class="s2">&quot;DDR_DQ[17]&quot;</span><span class="p">]</span>
+<span class="n">set_property</span> <span class="n">slew</span> <span class="s2">&quot;FAST&quot;</span> <span class="p">[</span><span class="n">get_ports</span> <span class="s2">&quot;DDR_DQ[17]&quot;</span><span class="p">]</span>
+<span class="n">set_property</span> <span class="n">PIO_DIRECTION</span> <span class="s2">&quot;BIDIR&quot;</span> <span class="p">[</span><span class="n">get_ports</span> <span class="s2">&quot;DDR_DQ[17]&quot;</span><span class="p">]</span>
+<span class="n">set_property</span> <span class="n">iostandard</span> <span class="s2">&quot;SSTL135_T_DCI&quot;</span> <span class="p">[</span><span class="n">get_ports</span> <span class="s2">&quot;DDR_DQ[16]&quot;</span><span class="p">]</span>
+<span class="n">set_property</span> <span class="n">PACKAGE_PIN</span> <span class="s2">&quot;P1&quot;</span> <span class="p">[</span><span class="n">get_ports</span> <span class="s2">&quot;DDR_DQ[16]&quot;</span><span class="p">]</span>
+<span class="n">set_property</span> <span class="n">slew</span> <span class="s2">&quot;FAST&quot;</span> <span class="p">[</span><span class="n">get_ports</span> <span class="s2">&quot;DDR_DQ[16]&quot;</span><span class="p">]</span>
+<span class="n">set_property</span> <span class="n">PIO_DIRECTION</span> <span class="s2">&quot;BIDIR&quot;</span> <span class="p">[</span><span class="n">get_ports</span> <span class="s2">&quot;DDR_DQ[16]&quot;</span><span class="p">]</span>
+<span class="n">set_property</span> <span class="n">iostandard</span> <span class="s2">&quot;SSTL135_T_DCI&quot;</span> <span class="p">[</span><span class="n">get_ports</span> <span class="s2">&quot;DDR_DQ[15]&quot;</span><span class="p">]</span>
+<span class="n">set_property</span> <span class="n">PACKAGE_PIN</span> <span class="s2">&quot;J1&quot;</span> <span class="p">[</span><span class="n">get_ports</span> <span class="s2">&quot;DDR_DQ[15]&quot;</span><span class="p">]</span>
+<span class="n">set_property</span> <span class="n">slew</span> <span class="s2">&quot;FAST&quot;</span> <span class="p">[</span><span class="n">get_ports</span> <span class="s2">&quot;DDR_DQ[15]&quot;</span><span class="p">]</span>
+<span class="n">set_property</span> <span class="n">PIO_DIRECTION</span> <span class="s2">&quot;BIDIR&quot;</span> <span class="p">[</span><span class="n">get_ports</span> <span class="s2">&quot;DDR_DQ[15]&quot;</span><span class="p">]</span>
+<span class="n">set_property</span> <span class="n">iostandard</span> <span class="s2">&quot;SSTL135_T_DCI&quot;</span> <span class="p">[</span><span class="n">get_ports</span> <span class="s2">&quot;DDR_DQ[14]&quot;</span><span class="p">]</span>
+<span class="n">set_property</span> <span class="n">PACKAGE_PIN</span> <span class="s2">&quot;H1&quot;</span> <span class="p">[</span><span class="n">get_ports</span> <span class="s2">&quot;DDR_DQ[14]&quot;</span><span class="p">]</span>
+<span class="n">set_property</span> <span class="n">slew</span> <span class="s2">&quot;FAST&quot;</span> <span class="p">[</span><span class="n">get_ports</span> <span class="s2">&quot;DDR_DQ[14]&quot;</span><span class="p">]</span>
+<span class="n">set_property</span> <span class="n">PIO_DIRECTION</span> <span class="s2">&quot;BIDIR&quot;</span> <span class="p">[</span><span class="n">get_ports</span> <span class="s2">&quot;DDR_DQ[14]&quot;</span><span class="p">]</span>
+<span class="n">set_property</span> <span class="n">iostandard</span> <span class="s2">&quot;SSTL135_T_DCI&quot;</span> <span class="p">[</span><span class="n">get_ports</span> <span class="s2">&quot;DDR_DQ[13]&quot;</span><span class="p">]</span>
+<span class="n">set_property</span> <span class="n">PACKAGE_PIN</span> <span class="s2">&quot;H2&quot;</span> <span class="p">[</span><span class="n">get_ports</span> <span class="s2">&quot;DDR_DQ[13]&quot;</span><span class="p">]</span>
+<span class="n">set_property</span> <span class="n">slew</span> <span class="s2">&quot;FAST&quot;</span> <span class="p">[</span><span class="n">get_ports</span> <span class="s2">&quot;DDR_DQ[13]&quot;</span><span class="p">]</span>
+<span class="n">set_property</span> <span class="n">PIO_DIRECTION</span> <span class="s2">&quot;BIDIR&quot;</span> <span class="p">[</span><span class="n">get_ports</span> <span class="s2">&quot;DDR_DQ[13]&quot;</span><span class="p">]</span>
+<span class="n">set_property</span> <span class="n">iostandard</span> <span class="s2">&quot;SSTL135_T_DCI&quot;</span> <span class="p">[</span><span class="n">get_ports</span> <span class="s2">&quot;DDR_DQ[12]&quot;</span><span class="p">]</span>
+<span class="n">set_property</span> <span class="n">PACKAGE_PIN</span> <span class="s2">&quot;J3&quot;</span> <span class="p">[</span><span class="n">get_ports</span> <span class="s2">&quot;DDR_DQ[12]&quot;</span><span class="p">]</span>
+<span class="n">set_property</span> <span class="n">slew</span> <span class="s2">&quot;FAST&quot;</span> <span class="p">[</span><span class="n">get_ports</span> <span class="s2">&quot;DDR_DQ[12]&quot;</span><span class="p">]</span>
+<span class="n">set_property</span> <span class="n">PIO_DIRECTION</span> <span class="s2">&quot;BIDIR&quot;</span> <span class="p">[</span><span class="n">get_ports</span> <span class="s2">&quot;DDR_DQ[12]&quot;</span><span class="p">]</span>
+<span class="n">set_property</span> <span class="n">iostandard</span> <span class="s2">&quot;SSTL135_T_DCI&quot;</span> <span class="p">[</span><span class="n">get_ports</span> <span class="s2">&quot;DDR_DQ[11]&quot;</span><span class="p">]</span>
+<span class="n">set_property</span> <span class="n">PACKAGE_PIN</span> <span class="s2">&quot;H3&quot;</span> <span class="p">[</span><span class="n">get_ports</span> <span class="s2">&quot;DDR_DQ[11]&quot;</span><span class="p">]</span>
+<span class="n">set_property</span> <span class="n">slew</span> <span class="s2">&quot;FAST&quot;</span> <span class="p">[</span><span class="n">get_ports</span> <span class="s2">&quot;DDR_DQ[11]&quot;</span><span class="p">]</span>
+<span class="n">set_property</span> <span class="n">PIO_DIRECTION</span> <span class="s2">&quot;BIDIR&quot;</span> <span class="p">[</span><span class="n">get_ports</span> <span class="s2">&quot;DDR_DQ[11]&quot;</span><span class="p">]</span>
+<span class="n">set_property</span> <span class="n">iostandard</span> <span class="s2">&quot;SSTL135_T_DCI&quot;</span> <span class="p">[</span><span class="n">get_ports</span> <span class="s2">&quot;DDR_DQ[10]&quot;</span><span class="p">]</span>
+<span class="n">set_property</span> <span class="n">PACKAGE_PIN</span> <span class="s2">&quot;G3&quot;</span> <span class="p">[</span><span class="n">get_ports</span> <span class="s2">&quot;DDR_DQ[10]&quot;</span><span class="p">]</span>
+<span class="n">set_property</span> <span class="n">slew</span> <span class="s2">&quot;FAST&quot;</span> <span class="p">[</span><span class="n">get_ports</span> <span class="s2">&quot;DDR_DQ[10]&quot;</span><span class="p">]</span>
+<span class="n">set_property</span> <span class="n">PIO_DIRECTION</span> <span class="s2">&quot;BIDIR&quot;</span> <span class="p">[</span><span class="n">get_ports</span> <span class="s2">&quot;DDR_DQ[10]&quot;</span><span class="p">]</span>
+<span class="n">set_property</span> <span class="n">iostandard</span> <span class="s2">&quot;SSTL135_T_DCI&quot;</span> <span class="p">[</span><span class="n">get_ports</span> <span class="s2">&quot;DDR_DQ[0]&quot;</span><span class="p">]</span>
+<span class="n">set_property</span> <span class="n">PACKAGE_PIN</span> <span class="s2">&quot;C3&quot;</span> <span class="p">[</span><span class="n">get_ports</span> <span class="s2">&quot;DDR_DQ[0]&quot;</span><span class="p">]</span>
+<span class="n">set_property</span> <span class="n">slew</span> <span class="s2">&quot;FAST&quot;</span> <span class="p">[</span><span class="n">get_ports</span> <span class="s2">&quot;DDR_DQ[0]&quot;</span><span class="p">]</span>
+<span class="n">set_property</span> <span class="n">PIO_DIRECTION</span> <span class="s2">&quot;BIDIR&quot;</span> <span class="p">[</span><span class="n">get_ports</span> <span class="s2">&quot;DDR_DQ[0]&quot;</span><span class="p">]</span>
+<span class="n">set_property</span> <span class="n">iostandard</span> <span class="s2">&quot;SSTL135_T_DCI&quot;</span> <span class="p">[</span><span class="n">get_ports</span> <span class="s2">&quot;DDR_DM[3]&quot;</span><span class="p">]</span>
+<span class="n">set_property</span> <span class="n">PACKAGE_PIN</span> <span class="s2">&quot;Y1&quot;</span> <span class="p">[</span><span class="n">get_ports</span> <span class="s2">&quot;DDR_DM[3]&quot;</span><span class="p">]</span>
+<span class="n">set_property</span> <span class="n">slew</span> <span class="s2">&quot;FAST&quot;</span> <span class="p">[</span><span class="n">get_ports</span> <span class="s2">&quot;DDR_DM[3]&quot;</span><span class="p">]</span>
+<span class="n">set_property</span> <span class="n">PIO_DIRECTION</span> <span class="s2">&quot;BIDIR&quot;</span> <span class="p">[</span><span class="n">get_ports</span> <span class="s2">&quot;DDR_DM[3]&quot;</span><span class="p">]</span>
+<span class="n">set_property</span> <span class="n">iostandard</span> <span class="s2">&quot;SSTL135_T_DCI&quot;</span> <span class="p">[</span><span class="n">get_ports</span> <span class="s2">&quot;DDR_DM[2]&quot;</span><span class="p">]</span>
+<span class="n">set_property</span> <span class="n">PACKAGE_PIN</span> <span class="s2">&quot;T1&quot;</span> <span class="p">[</span><span class="n">get_ports</span> <span class="s2">&quot;DDR_DM[2]&quot;</span><span class="p">]</span>
+<span class="n">set_property</span> <span class="n">slew</span> <span class="s2">&quot;FAST&quot;</span> <span class="p">[</span><span class="n">get_ports</span> <span class="s2">&quot;DDR_DM[2]&quot;</span><span class="p">]</span>
+<span class="n">set_property</span> <span class="n">PIO_DIRECTION</span> <span class="s2">&quot;BIDIR&quot;</span> <span class="p">[</span><span class="n">get_ports</span> <span class="s2">&quot;DDR_DM[2]&quot;</span><span class="p">]</span>
+<span class="n">set_property</span> <span class="n">iostandard</span> <span class="s2">&quot;SSTL135_T_DCI&quot;</span> <span class="p">[</span><span class="n">get_ports</span> <span class="s2">&quot;DDR_DM[1]&quot;</span><span class="p">]</span>
+<span class="n">set_property</span> <span class="n">PACKAGE_PIN</span> <span class="s2">&quot;F1&quot;</span> <span class="p">[</span><span class="n">get_ports</span> <span class="s2">&quot;DDR_DM[1]&quot;</span><span class="p">]</span>
+<span class="n">set_property</span> <span class="n">slew</span> <span class="s2">&quot;FAST&quot;</span> <span class="p">[</span><span class="n">get_ports</span> <span class="s2">&quot;DDR_DM[1]&quot;</span><span class="p">]</span>
+<span class="n">set_property</span> <span class="n">PIO_DIRECTION</span> <span class="s2">&quot;BIDIR&quot;</span> <span class="p">[</span><span class="n">get_ports</span> <span class="s2">&quot;DDR_DM[1]&quot;</span><span class="p">]</span>
+<span class="n">set_property</span> <span class="n">iostandard</span> <span class="s2">&quot;SSTL135_T_DCI&quot;</span> <span class="p">[</span><span class="n">get_ports</span> <span class="s2">&quot;DDR_DM[0]&quot;</span><span class="p">]</span>
+<span class="n">set_property</span> <span class="n">PACKAGE_PIN</span> <span class="s2">&quot;A1&quot;</span> <span class="p">[</span><span class="n">get_ports</span> <span class="s2">&quot;DDR_DM[0]&quot;</span><span class="p">]</span>
+<span class="n">set_property</span> <span class="n">slew</span> <span class="s2">&quot;FAST&quot;</span> <span class="p">[</span><span class="n">get_ports</span> <span class="s2">&quot;DDR_DM[0]&quot;</span><span class="p">]</span>
+<span class="n">set_property</span> <span class="n">PIO_DIRECTION</span> <span class="s2">&quot;BIDIR&quot;</span> <span class="p">[</span><span class="n">get_ports</span> <span class="s2">&quot;DDR_DM[0]&quot;</span><span class="p">]</span>
+<span class="n">set_property</span> <span class="n">iostandard</span> <span class="s2">&quot;SSTL135&quot;</span> <span class="p">[</span><span class="n">get_ports</span> <span class="s2">&quot;DDR_CS_n&quot;</span><span class="p">]</span>
+<span class="n">set_property</span> <span class="n">PACKAGE_PIN</span> <span class="s2">&quot;N1&quot;</span> <span class="p">[</span><span class="n">get_ports</span> <span class="s2">&quot;DDR_CS_n&quot;</span><span class="p">]</span>
+<span class="n">set_property</span> <span class="n">slew</span> <span class="s2">&quot;SLOW&quot;</span> <span class="p">[</span><span class="n">get_ports</span> <span class="s2">&quot;DDR_CS_n&quot;</span><span class="p">]</span>
+<span class="n">set_property</span> <span class="n">PIO_DIRECTION</span> <span class="s2">&quot;OUTPUT&quot;</span> <span class="p">[</span><span class="n">get_ports</span> <span class="s2">&quot;DDR_CS_n&quot;</span><span class="p">]</span>
+<span class="n">set_property</span> <span class="n">iostandard</span> <span class="s2">&quot;SSTL135&quot;</span> <span class="p">[</span><span class="n">get_ports</span> <span class="s2">&quot;DDR_CKE&quot;</span><span class="p">]</span>
+<span class="n">set_property</span> <span class="n">PACKAGE_PIN</span> <span class="s2">&quot;N3&quot;</span> <span class="p">[</span><span class="n">get_ports</span> <span class="s2">&quot;DDR_CKE&quot;</span><span class="p">]</span>
+<span class="n">set_property</span> <span class="n">slew</span> <span class="s2">&quot;SLOW&quot;</span> <span class="p">[</span><span class="n">get_ports</span> <span class="s2">&quot;DDR_CKE&quot;</span><span class="p">]</span>
+<span class="n">set_property</span> <span class="n">PIO_DIRECTION</span> <span class="s2">&quot;OUTPUT&quot;</span> <span class="p">[</span><span class="n">get_ports</span> <span class="s2">&quot;DDR_CKE&quot;</span><span class="p">]</span>
+<span class="n">set_property</span> <span class="n">iostandard</span> <span class="s2">&quot;DIFF_SSTL135&quot;</span> <span class="p">[</span><span class="n">get_ports</span> <span class="s2">&quot;DDR_Clk&quot;</span><span class="p">]</span>
+<span class="n">set_property</span> <span class="n">PACKAGE_PIN</span> <span class="s2">&quot;L2&quot;</span> <span class="p">[</span><span class="n">get_ports</span> <span class="s2">&quot;DDR_Clk&quot;</span><span class="p">]</span>
+<span class="n">set_property</span> <span class="n">slew</span> <span class="s2">&quot;FAST&quot;</span> <span class="p">[</span><span class="n">get_ports</span> <span class="s2">&quot;DDR_Clk&quot;</span><span class="p">]</span>
+<span class="n">set_property</span> <span class="n">PIO_DIRECTION</span> <span class="s2">&quot;INPUT&quot;</span> <span class="p">[</span><span class="n">get_ports</span> <span class="s2">&quot;DDR_Clk&quot;</span><span class="p">]</span>
+<span class="n">set_property</span> <span class="n">iostandard</span> <span class="s2">&quot;DIFF_SSTL135&quot;</span> <span class="p">[</span><span class="n">get_ports</span> <span class="s2">&quot;DDR_Clk_n&quot;</span><span class="p">]</span>
+<span class="n">set_property</span> <span class="n">PACKAGE_PIN</span> <span class="s2">&quot;M2&quot;</span> <span class="p">[</span><span class="n">get_ports</span> <span class="s2">&quot;DDR_Clk_n&quot;</span><span class="p">]</span>
+<span class="n">set_property</span> <span class="n">slew</span> <span class="s2">&quot;FAST&quot;</span> <span class="p">[</span><span class="n">get_ports</span> <span class="s2">&quot;DDR_Clk_n&quot;</span><span class="p">]</span>
+<span class="n">set_property</span> <span class="n">PIO_DIRECTION</span> <span class="s2">&quot;INPUT&quot;</span> <span class="p">[</span><span class="n">get_ports</span> <span class="s2">&quot;DDR_Clk_n&quot;</span><span class="p">]</span>
+<span class="n">set_property</span> <span class="n">iostandard</span> <span class="s2">&quot;SSTL135&quot;</span> <span class="p">[</span><span class="n">get_ports</span> <span class="s2">&quot;DDR_CAS_n&quot;</span><span class="p">]</span>
+<span class="n">set_property</span> <span class="n">PACKAGE_PIN</span> <span class="s2">&quot;P5&quot;</span> <span class="p">[</span><span class="n">get_ports</span> <span class="s2">&quot;DDR_CAS_n&quot;</span><span class="p">]</span>
+<span class="n">set_property</span> <span class="n">slew</span> <span class="s2">&quot;SLOW&quot;</span> <span class="p">[</span><span class="n">get_ports</span> <span class="s2">&quot;DDR_CAS_n&quot;</span><span class="p">]</span>
+<span class="n">set_property</span> <span class="n">PIO_DIRECTION</span> <span class="s2">&quot;OUTPUT&quot;</span> <span class="p">[</span><span class="n">get_ports</span> <span class="s2">&quot;DDR_CAS_n&quot;</span><span class="p">]</span>
+<span class="n">set_property</span> <span class="n">iostandard</span> <span class="s2">&quot;SSTL135&quot;</span> <span class="p">[</span><span class="n">get_ports</span> <span class="s2">&quot;DDR_BankAddr[2]&quot;</span><span class="p">]</span>
+<span class="n">set_property</span> <span class="n">PACKAGE_PIN</span> <span class="s2">&quot;J5&quot;</span> <span class="p">[</span><span class="n">get_ports</span> <span class="s2">&quot;DDR_BankAddr[2]&quot;</span><span class="p">]</span>
+<span class="n">set_property</span> <span class="n">slew</span> <span class="s2">&quot;SLOW&quot;</span> <span class="p">[</span><span class="n">get_ports</span> <span class="s2">&quot;DDR_BankAddr[2]&quot;</span><span class="p">]</span>
+<span class="n">set_property</span> <span class="n">PIO_DIRECTION</span> <span class="s2">&quot;OUTPUT&quot;</span> <span class="p">[</span><span class="n">get_ports</span> <span class="s2">&quot;DDR_BankAddr[2]&quot;</span><span class="p">]</span>
+<span class="n">set_property</span> <span class="n">iostandard</span> <span class="s2">&quot;SSTL135&quot;</span> <span class="p">[</span><span class="n">get_ports</span> <span class="s2">&quot;DDR_BankAddr[1]&quot;</span><span class="p">]</span>
+<span class="n">set_property</span> <span class="n">PACKAGE_PIN</span> <span class="s2">&quot;R4&quot;</span> <span class="p">[</span><span class="n">get_ports</span> <span class="s2">&quot;DDR_BankAddr[1]&quot;</span><span class="p">]</span>
+<span class="n">set_property</span> <span class="n">slew</span> <span class="s2">&quot;SLOW&quot;</span> <span class="p">[</span><span class="n">get_ports</span> <span class="s2">&quot;DDR_BankAddr[1]&quot;</span><span class="p">]</span>
+<span class="n">set_property</span> <span class="n">PIO_DIRECTION</span> <span class="s2">&quot;OUTPUT&quot;</span> <span class="p">[</span><span class="n">get_ports</span> <span class="s2">&quot;DDR_BankAddr[1]&quot;</span><span class="p">]</span>
+<span class="n">set_property</span> <span class="n">iostandard</span> <span class="s2">&quot;SSTL135&quot;</span> <span class="p">[</span><span class="n">get_ports</span> <span class="s2">&quot;DDR_BankAddr[0]&quot;</span><span class="p">]</span>
+<span class="n">set_property</span> <span class="n">PACKAGE_PIN</span> <span class="s2">&quot;L5&quot;</span> <span class="p">[</span><span class="n">get_ports</span> <span class="s2">&quot;DDR_BankAddr[0]&quot;</span><span class="p">]</span>
+<span class="n">set_property</span> <span class="n">slew</span> <span class="s2">&quot;SLOW&quot;</span> <span class="p">[</span><span class="n">get_ports</span> <span class="s2">&quot;DDR_BankAddr[0]&quot;</span><span class="p">]</span>
+<span class="n">set_property</span> <span class="n">PIO_DIRECTION</span> <span class="s2">&quot;OUTPUT&quot;</span> <span class="p">[</span><span class="n">get_ports</span> <span class="s2">&quot;DDR_BankAddr[0]&quot;</span><span class="p">]</span>
+<span class="n">set_property</span> <span class="n">iostandard</span> <span class="s2">&quot;SSTL135&quot;</span> <span class="p">[</span><span class="n">get_ports</span> <span class="s2">&quot;DDR_Addr[9]&quot;</span><span class="p">]</span>
+<span class="n">set_property</span> <span class="n">PACKAGE_PIN</span> <span class="s2">&quot;J4&quot;</span> <span class="p">[</span><span class="n">get_ports</span> <span class="s2">&quot;DDR_Addr[9]&quot;</span><span class="p">]</span>
+<span class="n">set_property</span> <span class="n">slew</span> <span class="s2">&quot;SLOW&quot;</span> <span class="p">[</span><span class="n">get_ports</span> <span class="s2">&quot;DDR_Addr[9]&quot;</span><span class="p">]</span>
+<span class="n">set_property</span> <span class="n">PIO_DIRECTION</span> <span class="s2">&quot;OUTPUT&quot;</span> <span class="p">[</span><span class="n">get_ports</span> <span class="s2">&quot;DDR_Addr[9]&quot;</span><span class="p">]</span>
+<span class="n">set_property</span> <span class="n">iostandard</span> <span class="s2">&quot;SSTL135&quot;</span> <span class="p">[</span><span class="n">get_ports</span> <span class="s2">&quot;DDR_Addr[8]&quot;</span><span class="p">]</span>
+<span class="n">set_property</span> <span class="n">PACKAGE_PIN</span> <span class="s2">&quot;K1&quot;</span> <span class="p">[</span><span class="n">get_ports</span> <span class="s2">&quot;DDR_Addr[8]&quot;</span><span class="p">]</span>
+<span class="n">set_property</span> <span class="n">slew</span> <span class="s2">&quot;SLOW&quot;</span> <span class="p">[</span><span class="n">get_ports</span> <span class="s2">&quot;DDR_Addr[8]&quot;</span><span class="p">]</span>
+<span class="n">set_property</span> <span class="n">PIO_DIRECTION</span> <span class="s2">&quot;OUTPUT&quot;</span> <span class="p">[</span><span class="n">get_ports</span> <span class="s2">&quot;DDR_Addr[8]&quot;</span><span class="p">]</span>
+<span class="n">set_property</span> <span class="n">iostandard</span> <span class="s2">&quot;SSTL135&quot;</span> <span class="p">[</span><span class="n">get_ports</span> <span class="s2">&quot;DDR_Addr[7]&quot;</span><span class="p">]</span>
+<span class="n">set_property</span> <span class="n">PACKAGE_PIN</span> <span class="s2">&quot;K4&quot;</span> <span class="p">[</span><span class="n">get_ports</span> <span class="s2">&quot;DDR_Addr[7]&quot;</span><span class="p">]</span>
+<span class="n">set_property</span> <span class="n">slew</span> <span class="s2">&quot;SLOW&quot;</span> <span class="p">[</span><span class="n">get_ports</span> <span class="s2">&quot;DDR_Addr[7]&quot;</span><span class="p">]</span>
+<span class="n">set_property</span> <span class="n">PIO_DIRECTION</span> <span class="s2">&quot;OUTPUT&quot;</span> <span class="p">[</span><span class="n">get_ports</span> <span class="s2">&quot;DDR_Addr[7]&quot;</span><span class="p">]</span>
+<span class="n">set_property</span> <span class="n">iostandard</span> <span class="s2">&quot;SSTL135&quot;</span> <span class="p">[</span><span class="n">get_ports</span> <span class="s2">&quot;DDR_Addr[6]&quot;</span><span class="p">]</span>
+<span class="n">set_property</span> <span class="n">PACKAGE_PIN</span> <span class="s2">&quot;L4&quot;</span> <span class="p">[</span><span class="n">get_ports</span> <span class="s2">&quot;DDR_Addr[6]&quot;</span><span class="p">]</span>
+<span class="n">set_property</span> <span class="n">slew</span> <span class="s2">&quot;SLOW&quot;</span> <span class="p">[</span><span class="n">get_ports</span> <span class="s2">&quot;DDR_Addr[6]&quot;</span><span class="p">]</span>
+<span class="n">set_property</span> <span class="n">PIO_DIRECTION</span> <span class="s2">&quot;OUTPUT&quot;</span> <span class="p">[</span><span class="n">get_ports</span> <span class="s2">&quot;DDR_Addr[6]&quot;</span><span class="p">]</span>
+<span class="n">set_property</span> <span class="n">iostandard</span> <span class="s2">&quot;SSTL135&quot;</span> <span class="p">[</span><span class="n">get_ports</span> <span class="s2">&quot;DDR_Addr[5]&quot;</span><span class="p">]</span>
+<span class="n">set_property</span> <span class="n">PACKAGE_PIN</span> <span class="s2">&quot;L1&quot;</span> <span class="p">[</span><span class="n">get_ports</span> <span class="s2">&quot;DDR_Addr[5]&quot;</span><span class="p">]</span>
+<span class="n">set_property</span> <span class="n">slew</span> <span class="s2">&quot;SLOW&quot;</span> <span class="p">[</span><span class="n">get_ports</span> <span class="s2">&quot;DDR_Addr[5]&quot;</span><span class="p">]</span>
+<span class="n">set_property</span> <span class="n">PIO_DIRECTION</span> <span class="s2">&quot;OUTPUT&quot;</span> <span class="p">[</span><span class="n">get_ports</span> <span class="s2">&quot;DDR_Addr[5]&quot;</span><span class="p">]</span>
+<span class="n">set_property</span> <span class="n">iostandard</span> <span class="s2">&quot;SSTL135&quot;</span> <span class="p">[</span><span class="n">get_ports</span> <span class="s2">&quot;DDR_Addr[4]&quot;</span><span class="p">]</span>
+<span class="n">set_property</span> <span class="n">PACKAGE_PIN</span> <span class="s2">&quot;M4&quot;</span> <span class="p">[</span><span class="n">get_ports</span> <span class="s2">&quot;DDR_Addr[4]&quot;</span><span class="p">]</span>
+<span class="n">set_property</span> <span class="n">slew</span> <span class="s2">&quot;SLOW&quot;</span> <span class="p">[</span><span class="n">get_ports</span> <span class="s2">&quot;DDR_Addr[4]&quot;</span><span class="p">]</span>
+<span class="n">set_property</span> <span class="n">PIO_DIRECTION</span> <span class="s2">&quot;OUTPUT&quot;</span> <span class="p">[</span><span class="n">get_ports</span> <span class="s2">&quot;DDR_Addr[4]&quot;</span><span class="p">]</span>
+<span class="n">set_property</span> <span class="n">iostandard</span> <span class="s2">&quot;SSTL135&quot;</span> <span class="p">[</span><span class="n">get_ports</span> <span class="s2">&quot;DDR_Addr[3]&quot;</span><span class="p">]</span>
+<span class="n">set_property</span> <span class="n">PACKAGE_PIN</span> <span class="s2">&quot;K3&quot;</span> <span class="p">[</span><span class="n">get_ports</span> <span class="s2">&quot;DDR_Addr[3]&quot;</span><span class="p">]</span>
+<span class="n">set_property</span> <span class="n">slew</span> <span class="s2">&quot;SLOW&quot;</span> <span class="p">[</span><span class="n">get_ports</span> <span class="s2">&quot;DDR_Addr[3]&quot;</span><span class="p">]</span>
+<span class="n">set_property</span> <span class="n">PIO_DIRECTION</span> <span class="s2">&quot;OUTPUT&quot;</span> <span class="p">[</span><span class="n">get_ports</span> <span class="s2">&quot;DDR_Addr[3]&quot;</span><span class="p">]</span>
+<span class="n">set_property</span> <span class="n">iostandard</span> <span class="s2">&quot;SSTL135&quot;</span> <span class="p">[</span><span class="n">get_ports</span> <span class="s2">&quot;DDR_Addr[2]&quot;</span><span class="p">]</span>
+<span class="n">set_property</span> <span class="n">PACKAGE_PIN</span> <span class="s2">&quot;M3&quot;</span> <span class="p">[</span><span class="n">get_ports</span> <span class="s2">&quot;DDR_Addr[2]&quot;</span><span class="p">]</span>
+<span class="n">set_property</span> <span class="n">slew</span> <span class="s2">&quot;SLOW&quot;</span> <span class="p">[</span><span class="n">get_ports</span> <span class="s2">&quot;DDR_Addr[2]&quot;</span><span class="p">]</span>
+<span class="n">set_property</span> <span class="n">PIO_DIRECTION</span> <span class="s2">&quot;OUTPUT&quot;</span> <span class="p">[</span><span class="n">get_ports</span> <span class="s2">&quot;DDR_Addr[2]&quot;</span><span class="p">]</span>
+<span class="n">set_property</span> <span class="n">iostandard</span> <span class="s2">&quot;SSTL135&quot;</span> <span class="p">[</span><span class="n">get_ports</span> <span class="s2">&quot;DDR_Addr[1]&quot;</span><span class="p">]</span>
+<span class="n">set_property</span> <span class="n">PACKAGE_PIN</span> <span class="s2">&quot;K2&quot;</span> <span class="p">[</span><span class="n">get_ports</span> <span class="s2">&quot;DDR_Addr[1]&quot;</span><span class="p">]</span>
+<span class="n">set_property</span> <span class="n">slew</span> <span class="s2">&quot;SLOW&quot;</span> <span class="p">[</span><span class="n">get_ports</span> <span class="s2">&quot;DDR_Addr[1]&quot;</span><span class="p">]</span>
+<span class="n">set_property</span> <span class="n">PIO_DIRECTION</span> <span class="s2">&quot;OUTPUT&quot;</span> <span class="p">[</span><span class="n">get_ports</span> <span class="s2">&quot;DDR_Addr[1]&quot;</span><span class="p">]</span>
+<span class="n">set_property</span> <span class="n">iostandard</span> <span class="s2">&quot;SSTL135&quot;</span> <span class="p">[</span><span class="n">get_ports</span> <span class="s2">&quot;DDR_Addr[14]&quot;</span><span class="p">]</span>
+<span class="n">set_property</span> <span class="n">PACKAGE_PIN</span> <span class="s2">&quot;F4&quot;</span> <span class="p">[</span><span class="n">get_ports</span> <span class="s2">&quot;DDR_Addr[14]&quot;</span><span class="p">]</span>
+<span class="n">set_property</span> <span class="n">slew</span> <span class="s2">&quot;SLOW&quot;</span> <span class="p">[</span><span class="n">get_ports</span> <span class="s2">&quot;DDR_Addr[14]&quot;</span><span class="p">]</span>
+<span class="n">set_property</span> <span class="n">PIO_DIRECTION</span> <span class="s2">&quot;OUTPUT&quot;</span> <span class="p">[</span><span class="n">get_ports</span> <span class="s2">&quot;DDR_Addr[14]&quot;</span><span class="p">]</span>
+<span class="n">set_property</span> <span class="n">iostandard</span> <span class="s2">&quot;SSTL135&quot;</span> <span class="p">[</span><span class="n">get_ports</span> <span class="s2">&quot;DDR_Addr[13]&quot;</span><span class="p">]</span>
+<span class="n">set_property</span> <span class="n">PACKAGE_PIN</span> <span class="s2">&quot;D4&quot;</span> <span class="p">[</span><span class="n">get_ports</span> <span class="s2">&quot;DDR_Addr[13]&quot;</span><span class="p">]</span>
+<span class="n">set_property</span> <span class="n">slew</span> <span class="s2">&quot;SLOW&quot;</span> <span class="p">[</span><span class="n">get_ports</span> <span class="s2">&quot;DDR_Addr[13]&quot;</span><span class="p">]</span>
+<span class="n">set_property</span> <span class="n">PIO_DIRECTION</span> <span class="s2">&quot;OUTPUT&quot;</span> <span class="p">[</span><span class="n">get_ports</span> <span class="s2">&quot;DDR_Addr[13]&quot;</span><span class="p">]</span>
+<span class="n">set_property</span> <span class="n">iostandard</span> <span class="s2">&quot;SSTL135&quot;</span> <span class="p">[</span><span class="n">get_ports</span> <span class="s2">&quot;DDR_Addr[12]&quot;</span><span class="p">]</span>
+<span class="n">set_property</span> <span class="n">PACKAGE_PIN</span> <span class="s2">&quot;E4&quot;</span> <span class="p">[</span><span class="n">get_ports</span> <span class="s2">&quot;DDR_Addr[12]&quot;</span><span class="p">]</span>
+<span class="n">set_property</span> <span class="n">slew</span> <span class="s2">&quot;SLOW&quot;</span> <span class="p">[</span><span class="n">get_ports</span> <span class="s2">&quot;DDR_Addr[12]&quot;</span><span class="p">]</span>
+<span class="n">set_property</span> <span class="n">PIO_DIRECTION</span> <span class="s2">&quot;OUTPUT&quot;</span> <span class="p">[</span><span class="n">get_ports</span> <span class="s2">&quot;DDR_Addr[12]&quot;</span><span class="p">]</span>
+<span class="n">set_property</span> <span class="n">iostandard</span> <span class="s2">&quot;SSTL135&quot;</span> <span class="p">[</span><span class="n">get_ports</span> <span class="s2">&quot;DDR_Addr[11]&quot;</span><span class="p">]</span>
+<span class="n">set_property</span> <span class="n">PACKAGE_PIN</span> <span class="s2">&quot;G4&quot;</span> <span class="p">[</span><span class="n">get_ports</span> <span class="s2">&quot;DDR_Addr[11]&quot;</span><span class="p">]</span>
+<span class="n">set_property</span> <span class="n">slew</span> <span class="s2">&quot;SLOW&quot;</span> <span class="p">[</span><span class="n">get_ports</span> <span class="s2">&quot;DDR_Addr[11]&quot;</span><span class="p">]</span>
+<span class="n">set_property</span> <span class="n">PIO_DIRECTION</span> <span class="s2">&quot;OUTPUT&quot;</span> <span class="p">[</span><span class="n">get_ports</span> <span class="s2">&quot;DDR_Addr[11]&quot;</span><span class="p">]</span>
+<span class="n">set_property</span> <span class="n">iostandard</span> <span class="s2">&quot;SSTL135&quot;</span> <span class="p">[</span><span class="n">get_ports</span> <span class="s2">&quot;DDR_Addr[10]&quot;</span><span class="p">]</span>
+<span class="n">set_property</span> <span class="n">PACKAGE_PIN</span> <span class="s2">&quot;F5&quot;</span> <span class="p">[</span><span class="n">get_ports</span> <span class="s2">&quot;DDR_Addr[10]&quot;</span><span class="p">]</span>
+<span class="n">set_property</span> <span class="n">slew</span> <span class="s2">&quot;SLOW&quot;</span> <span class="p">[</span><span class="n">get_ports</span> <span class="s2">&quot;DDR_Addr[10]&quot;</span><span class="p">]</span>
+<span class="n">set_property</span> <span class="n">PIO_DIRECTION</span> <span class="s2">&quot;OUTPUT&quot;</span> <span class="p">[</span><span class="n">get_ports</span> <span class="s2">&quot;DDR_Addr[10]&quot;</span><span class="p">]</span>
+<span class="n">set_property</span> <span class="n">iostandard</span> <span class="s2">&quot;SSTL135&quot;</span> <span class="p">[</span><span class="n">get_ports</span> <span class="s2">&quot;DDR_Addr[0]&quot;</span><span class="p">]</span>
+<span class="n">set_property</span> <span class="n">PACKAGE_PIN</span> <span class="s2">&quot;N2&quot;</span> <span class="p">[</span><span class="n">get_ports</span> <span class="s2">&quot;DDR_Addr[0]&quot;</span><span class="p">]</span>
+<span class="n">set_property</span> <span class="n">slew</span> <span class="s2">&quot;SLOW&quot;</span> <span class="p">[</span><span class="n">get_ports</span> <span class="s2">&quot;DDR_Addr[0]&quot;</span><span class="p">]</span>
+<span class="n">set_property</span> <span class="n">PIO_DIRECTION</span> <span class="s2">&quot;OUTPUT&quot;</span> <span class="p">[</span><span class="n">get_ports</span> <span class="s2">&quot;DDR_Addr[0]&quot;</span><span class="p">]</span>
+<span class="n">set_property</span> <span class="n">iostandard</span> <span class="s2">&quot;LVCMOS33&quot;</span> <span class="p">[</span><span class="n">get_ports</span> <span class="s2">&quot;PS_PORB&quot;</span><span class="p">]</span>
+<span class="n">set_property</span> <span class="n">PACKAGE_PIN</span> <span class="s2">&quot;C7&quot;</span> <span class="p">[</span><span class="n">get_ports</span> <span class="s2">&quot;PS_PORB&quot;</span><span class="p">]</span>
+<span class="n">set_property</span> <span class="n">slew</span> <span class="s2">&quot;fast&quot;</span> <span class="p">[</span><span class="n">get_ports</span> <span class="s2">&quot;PS_PORB&quot;</span><span class="p">]</span>
+<span class="n">set_property</span> <span class="n">iostandard</span> <span class="s2">&quot;LVCMOS18&quot;</span> <span class="p">[</span><span class="n">get_ports</span> <span class="s2">&quot;PS_SRSTB&quot;</span><span class="p">]</span>
+<span class="n">set_property</span> <span class="n">PACKAGE_PIN</span> <span class="s2">&quot;B10&quot;</span> <span class="p">[</span><span class="n">get_ports</span> <span class="s2">&quot;PS_SRSTB&quot;</span><span class="p">]</span>
+<span class="n">set_property</span> <span class="n">slew</span> <span class="s2">&quot;fast&quot;</span> <span class="p">[</span><span class="n">get_ports</span> <span class="s2">&quot;PS_SRSTB&quot;</span><span class="p">]</span>
+<span class="n">set_property</span> <span class="n">iostandard</span> <span class="s2">&quot;LVCMOS33&quot;</span> <span class="p">[</span><span class="n">get_ports</span> <span class="s2">&quot;PS_CLK&quot;</span><span class="p">]</span>
+<span class="n">set_property</span> <span class="n">PACKAGE_PIN</span> <span class="s2">&quot;E7&quot;</span> <span class="p">[</span><span class="n">get_ports</span> <span class="s2">&quot;PS_CLK&quot;</span><span class="p">]</span>
+<span class="n">set_property</span> <span class="n">slew</span> <span class="s2">&quot;fast&quot;</span> <span class="p">[</span><span class="n">get_ports</span> <span class="s2">&quot;PS_CLK&quot;</span><span class="p">]</span>
+
+</pre></div>
+</div>
+<p>While we don’t need to understand all of these, notice that the
+processing system references some of its ports (ex. <code class="docutils literal notranslate"><span class="pre">MIO[53]</span></code>), and
+sets properties that only exist if they are mapped to I/O ports
+(ex. <code class="docutils literal notranslate"><span class="pre">iostandard</span></code>). If we don’t connect these to ports, these
+directives will fail, and a bitstream won’t be generated.</p>
+<p>Because of this, we must connect at least some ports of the
+system to ports in the top-level module; see the block design in the
+walkthrough for a minimal example. Note that the constraints apply to
+the names of the ports for the processing system; accordingly, the
+names of the top-level ports don’t matter, but must be present.</p>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="../../bitstream/" class="btn btn-neutral float-left" title="Generating a Bitstream" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="../debug_probes/" class="btn btn-neutral float-right" title="Appendix B: Using Debug Probes" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, Aidan McNay.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

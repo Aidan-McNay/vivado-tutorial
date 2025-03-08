@@ -1,0 +1,303 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Adding Constraints &mdash; Vivado Tutorial  documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css?v=13237357" />
+      <link rel="stylesheet" type="text/css" href="../_static/tabs.css?v=a5c4661c" />
+
+  
+    <link rel="shortcut icon" href="../_static/favicon.ico"/>
+      <script src="../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../_static/documentation_options.js?v=187304be"></script>
+      <script src="../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script>let toggleHintShow = 'Click to show';</script>
+      <script>let toggleHintHide = 'Click to hide';</script>
+      <script>let toggleOpenOnPrint = 'true';</script>
+      <script src="../_static/togglebutton.js?v=4a39c7ea"></script>
+      <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+      <script src="../_static/tabs.js?v=3030b3cb"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex/" />
+    <link rel="search" title="Search" href="../search/" />
+    <link rel="next" title="Implementing Our Design" href="../implementation/" />
+    <link rel="prev" title="Synthesizing Our Design" href="../synthesis/" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../" class="icon icon-home">
+            Vivado Tutorial
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search/" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../overview/">Overview</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Walkthrough</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../setup/">Setup</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../sources/">Adding Sources</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../simulation/">Simulating Our Design</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../block_designs/">Adding Block Designs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../synthesis/">Synthesizing Our Design</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Adding Constraints</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#constraint-types">Constraint Types</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../implementation/">Implementing Our Design</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../bitstream/">Generating a Bitstream</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Appendices</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../appendices/processing_system/">Appendix A: Using the Zynq7 Processing System</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../appendices/debug_probes/">Appendix B: Using Debug Probes</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../">Vivado Tutorial</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Adding Constraints</li>
+      <li class="wy-breadcrumbs-aside">
+              <a href="https://github.com/Aidan-McNay/vivado-tutorial/blob/main/docs/constraints.rst" class="fa fa-github"> Edit on GitHub</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="adding-constraints">
+<h1>Adding Constraints<a class="headerlink" href="#adding-constraints" title="Link to this heading"></a></h1>
+<p>We’ve told Vivado all about our design, but we haven’t told it all
+the information it needs to create it; it still needs to know where
+all of the pins go, as well as any properties about the signals (such
+as clock speed). In Vivado, these are known as <em>constraints</em>, and
+tell Vivado more information about how your design should be
+created.</p>
+<div class="warning admonition">
+<p class="admonition-title">Board Dependency</p>
+<p>Since this section deals with pin mappings and system-specific
+configurations, the exact constraints will vary by part/board.
+This is also where our <em>board</em> information (including what
+external connections are available) becomes important over just
+our <em>part</em> information</p>
+</div>
+<section id="constraint-types">
+<h2>Constraint Types<a class="headerlink" href="#constraint-types" title="Link to this heading"></a></h2>
+<p>There are three main types of constraints that we need to worry about:</p>
+<ul class="simple">
+<li><p><strong>Timing Constraints</strong>: Telling Vivado information about timing, such
+as what frequencies different clocks run at</p></li>
+<li><p><strong>Physical Constraints</strong>: This tells Vivado information about how to
+place signals, including:</p>
+<ul>
+<li><p><em>Netlist Constraints</em>: Information about how to process/optimize the
+netlist</p></li>
+<li><p><em>I/O Constraints</em>: Which I/O cells to connect to</p></li>
+<li><p><em>Placement Constraints</em>: Information about how to place the design</p></li>
+<li><p><em>Routing Constraints</em>: Information about how to route the design</p></li>
+</ul>
+</li>
+<li><p><strong>Device Constraints</strong>: Telling Vivado about device information, such
+as the operating voltage</p></li>
+</ul>
+<p>Most of the time, you’ll only need to work with the timing and I/O
+constraints, although you can gain more control by viewing/editing the
+others.</p>
+<div class="sphinx-tabs docutils container">
+<div aria-label="Tabbed content" class="closeable" role="tablist"><button aria-controls="panel-0-R1VJ" aria-selected="true" class="sphinx-tabs-tab group-tab" id="tab-0-R1VJ" name="R1VJ" role="tab" tabindex="0">GUI</button><button aria-controls="panel-0-VENM" aria-selected="false" class="sphinx-tabs-tab group-tab" id="tab-0-VENM" name="VENM" role="tab" tabindex="-1">TCL</button></div><div aria-labelledby="tab-0-R1VJ" class="sphinx-tabs-panel group-tab" id="panel-0-R1VJ" name="R1VJ" role="tabpanel" tabindex="0"><div class="important admonition">
+<p class="admonition-title">Creating a Constraints File</p>
+<p>If you don’t already have your synthesis view open, you can
+do so by clicking <strong>Open Synthesized Design</strong>, under
+<strong>Synthesis</strong> in the <strong>Flow Navigator</strong>.</p>
+<p>We’ll also need to create a <em>constraints file</em>, with the
+extension <code class="docutils literal notranslate"><span class="pre">.xdc</span></code> (for Xilinx Design Constraints). You
+can make a new one by going to <strong>File -&gt; Add Sources</strong>:</p>
+<ul class="simple">
+<li><p>Select <strong>Add or create constraints</strong>, then click <strong>Next</strong></p></li>
+<li><p>Verify that the constraints set is <code class="docutils literal notranslate"><span class="pre">constrs_1</span></code> - this
+is the default fileset for constraints, similar to <code class="docutils literal notranslate"><span class="pre">sim_1</span></code>
+for simulation sources.</p></li>
+<li><p>Click <strong>Create File</strong>. Name the constraints
+<strong>walkthrough-constraints</strong>, and keep them local to the project.
+Click <strong>OK</strong>, then <strong>Finish</strong> to create the file.</p></li>
+</ul>
+<p>You should now see the file in the <strong>Sources</strong> window, in the
+<code class="docutils literal notranslate"><span class="pre">constrs_1</span></code> fileset under <strong>Constraints</strong>. Right-click on it,
+then select <strong>Set as Target Constraint File</strong>. This means that
+any constraints we later add will be added to this file.</p>
+</div>
+<p>Now that we have our constraints file, we can start adding
+constraints!</p>
+<div class="important admonition">
+<p class="admonition-title">Adding Timing Constraints</p>
+<p>On the left-hand side, in <strong>Flow Navigator</strong>, under
+<strong>Synthesis</strong> in <strong>Open Synthesized Design</strong>, click on
+<strong>Constraints Wizard</strong> (reload the design if necessary,
+from the new constraints):</p>
+<ul class="simple">
+<li><p>On the Welcome page, click <strong>Next</strong></p></li>
+<li><p>In the “Primary Clocks” page, we shouldn’t have to do
+anything! This is because the block design comes with
+its own constraints file, which identified and constrained
+the existings clocks. If it didn’t, we’d have to identify
+the period of each clock signal. Click <strong>Next</strong></p></li>
+<li><p>Similarly, we don’t generate any clocks in user space, so
+there’s nothing to do in “Generated Clocks”. Click <strong>Next</strong>.
+Do the same with “Forwarded Clocks”.</p></li>
+<li><p>We have no external loops, so we can skip past “External
+Feedback Delays” as well. Click <strong>Next</strong>.</p></li>
+<li><p>“Input Delays” is where we might start describing delays;
+we can specify the delays of any input pins. Here,
+Vivado recommends adding a timing constraint to <code class="docutils literal notranslate"><span class="pre">en</span></code>,
+and shows a waveform to indicate the possible parameters;
+however, since this is a free-running demo design, we’ll
+ignore this. Uncheck the constraints for <code class="docutils literal notranslate"><span class="pre">en</span></code> and
+click <strong>Next</strong>.</p></li>
+<li><p>Similarly, for “Output Delays”, we’ll ignore any delays
+on <code class="docutils literal notranslate"><span class="pre">gray_count</span></code>; uncheck the constraint, then click <strong>Next</strong></p></li>
+<li><p>From here, there are a few more pages, such as clock
+domain crossings, but we won’t edit any of them; click
+<strong>Skip to Finish</strong>, then <strong>Finish</strong>.</p></li>
+</ul>
+<p>Well, that was uneventful - but it does highlight how nice
+it is that block designs take care of some of the constraints
+for us!</p>
+</div>
+<p>In addition to timing constraints, we’ll also need to specify our
+I/O connections:</p>
+<div class="important admonition">
+<p class="admonition-title">Adding I/O Constraints</p>
+<p>Open the <strong>I/O Ports</strong> window by going to
+<strong>Window -&gt; I/O Ports</strong>. This will open up a window to select
+which I/O pins to connect to.</p>
+<p>Here, Vivado should identify that there are five output
+ports that need to be connected - our <code class="docutils literal notranslate"><span class="pre">gray_count</span></code>
+outputs and <code class="docutils literal notranslate"><span class="pre">en</span></code>. Most of the defaults here should be fine,
+but if you wanted, you could configure a few
+parameters relating to the I/O cell used.</p>
+<p>Click the drop-down next to <code class="docutils literal notranslate"><span class="pre">gray_count</span></code> to view each
+individual port. These should have a drop-down under
+<strong>Package Pin</strong> that allows you to select which pin to
+connect to. These names aren’t very informative; to
+know what they actually connect to, you can look at
+the <a class="reference external" href="https://digilent.com/reference/_media/reference/programmable-logic/zybo-z7/zybo-z7_rm.pdf?srsltid=AfmBOoo-inx2ykPdtVIgnq10KIrDVb9gS4hhQT7o08fEdqYPJCa3HzRS">user manual</a>,
+or Digilent has provided an <a class="reference external" href="https://github.com/Digilent/digilent-xdc/blob/master/Zybo-Z7-Master.xdc">example constraints file</a>
+that identifies what each pin connects to.</p>
+<p>We’ll be connecting the gray count to the four
+on-board LEDs; accordingly, connect:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">gray_count[3]</span></code> to pin D18</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">gray_count[2]</span></code> to pin G14</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">gray_count[1]</span></code> to pin M15</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">gray_count[0]</span></code> to pin M14</p></li>
+</ul>
+<p>Similarly, under <code class="docutils literal notranslate"><span class="pre">Scalar</span> <span class="pre">ports</span></code>, you’ll find our
+single-bit (scalar) input <code class="docutils literal notranslate"><span class="pre">en</span></code>. Connect this to the
+first slider switch on pin G15.</p>
+<p>Finally, for all of the pins, manually set their
+<strong>I/O Std</strong> (I/O Standard) to LVCMOS18; this is the
+default, but manually setting it should erase the
+<em>(default)</em> and tell Vivado that it’s actually what
+we want; all pins must have explicit values
+(<a class="reference external" href="https://www.xilinx.com/support/documents/sw_manuals/xilinx2022_1/ug899-vivado-io-clock-planning.pdf#page=42">source</a>).
+You can read more about I/O Standards <a class="reference external" href="https://docs.amd.com/r/en-US/ug912-vivado-properties/IODELAY_GROUP">here</a></p>
+</div>
+<p>Once you’re done, manually save the constraints (similar to
+the block design), either with <code class="docutils literal notranslate"><span class="pre">Ctrl+S</span></code> or by clicking
+<strong>File -&gt; Constraints -&gt; Save</strong>.</p>
+<p>You will get a warning that “Synthesis may go out-of-date”.
+This is expected; the resources that Vivado uses and how it
+represents our design depends on our constraints. However,
+we need to initially synthesize the design to know what
+constraints we need. Click <strong>OK</strong>, then re-run synthesys from
+before. Now, upon opening the synthesized design, you should
+have few to no warnings pop-up, as we eliminated the critical
+warnings due to lack of constraints!</p>
+<p>Lastly, feel free to double-click the <code class="docutils literal notranslate"><span class="pre">.xdc</span></code> in the
+<strong>Sources</strong> window to view what the constraints actually are
+- just Tcl commands! This makes them highly portable across
+designs, if you wish to share/reuse constraints; if you
+already had the constraints, you could add them as a source
+(assuming that the top-level ports were the same).</p>
+</div><div aria-labelledby="tab-0-VENM" class="sphinx-tabs-panel group-tab" hidden="true" id="panel-0-VENM" name="VENM" role="tabpanel" tabindex="0"><div class="important admonition">
+<p class="admonition-title">Adding Constraints</p>
+<p>Either from <strong>Tools -&gt; Run Tcl Script</strong> or from the command
+line (shown below), run the <code class="docutils literal notranslate"><span class="pre">set_constraints.tcl</span></code> script</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>%<span class="w"> </span>vivado<span class="w"> </span>-mode<span class="w"> </span>batch<span class="w"> </span>-source<span class="w"> </span>../scripts/constraints/set_constraints.tcl
+</pre></div>
+</div>
+<p>All this script does is add our constraints file, then re-runs synthesys
+(only because we added our constraints file after; if we added our
+constraints before synthesis, we wouldn’t need to re-run it). If
+you want to know how the constraints file was created, see the
+GUI commands.</p>
+</div>
+</div></div>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="../synthesis/" class="btn btn-neutral float-left" title="Synthesizing Our Design" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="../implementation/" class="btn btn-neutral float-right" title="Implementing Our Design" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, Aidan McNay.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
