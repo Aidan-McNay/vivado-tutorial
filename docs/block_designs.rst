@@ -65,7 +65,7 @@ Here, we'll create a new collection of IP to generate a slower clock.
        IP blocks. Additionally, our hierarchy in the **Design** tab has
        been updated.
 
-       Let's make some connections between these two!
+       Let's make some connections between these IP blocks!
 
        .. admonition:: Connecting IP
           :class: important
